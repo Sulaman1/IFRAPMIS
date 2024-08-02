@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Buttons with Three Options</title>
+    <style>
+        .toggle-button {                     
+            cursor: pointer;
+            user-select: none;
+            padding: 10px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            overflow: hidden;
+            background: linear-gradient(45deg, #FFC371, #FF5F6D);
+            transition: background 0.3s;
+            margin: 10px; /* Added margin for separation between buttons */
+        }
+
+        .option {
+            flex: 1;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 5px;
+            white-space: nowrap; /* Ensure the text is in a single line */
+        }
+
+            .option.active {
+                background: linear-gradient(45deg, #007bff, #00ccff);
+                color: white;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            }
+    </style>
+</head>
+<body>
+
+    <div class="toggle-button" id="toggleButton1" onclick="toggleOption1()" style="display:none">
+        <div class="option" id="option1_1">Total</div>
+        <div class="option" id="option1_2">Phase 1</div>
+        <div class="option" id="option1_3">Phase 2</div>
+    </div>
+
+    <div class="toggle-button" id="toggleButton2" onclick="toggleOption2()" style="display:none">
+        <div class="option" id="option2_1">Total</div>
+        <div class="option" id="option2_2">Phase 1</div>
+        <div class="option" id="option2_3">Phase 2</div>
+    </div>
+
+    <button onclick="show()">show/hide</button>
+    
+    <button onclick="hide()">hide</button>
+
+    <script>
+        function show() {
+            var s = document.getElementById("toggleButton1")           
+            if(s.style.display == "none"){                
+                s.style.display = "inline-flex"
+            }            
+        }
+        function hide() {
+            var s = document.getElementById("toggleButton1")            
+            if (s.style.display == "inline-flex") {                
+                s.style.display = "none"
+            }
+        }
+        var optionIndices1 = [0];
+        var optionIndices2 = [0];
+        var options = ['Total', 'Phase 1', 'Phase 2'];
+
+        function toggleOption1() {
+            var button = document.getElementById('toggleButton1');
+            button.style.display = 'inline-flex'; // Show the button when clicked
+            optionIndices1[0] = (optionIndices1[0] + 1) % options.length;
+            updateButton1();
+        }
+
+        function toggleOption2() {
+            var button = document.getElementById('toggleButton2');
+            button.style.display = 'inline-flex'; // Show the button when clicked
+            optionIndices2[0] = (optionIndices2[0] + 1) % options.length;
+            updateButton2();
+        }
+
+        function updateButton1() {
+            var button = document.getElementById('toggleButton1');
+            var optionElements = button.querySelectorAll('.option');
+            var optionIndex = optionIndices1[0];
+            optionElements.forEach(function (element, index) {
+                if (index === optionIndex) {
+                    element.classList.add('active');
+                } else {
+                    element.classList.remove('active');
+                }
+            });
+        }
+
+        function updateButton2() {
+            var button = document.getElementById('toggleButton2');
+            var optionElements = button.querySelectorAll('.option');
+            var optionIndex = optionIndices2[0];
+            optionElements.forEach(function (element, index) {
+                if (index === optionIndex) {
+                    element.classList.add('active');
+                } else {
+                    element.classList.remove('active');
+                }
+            });
+        }
+
+        updateButton1(); // Initialize the first button with initial option
+        updateButton2(); // Initialize the second button with initial option
+    </script>
+
+</body>
+</html>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +9,8 @@ namespace IFRAPMIS.Controllers
     [Authorize]
     public class UsersController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        public UsersController(UserManager<IdentityUser> userManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public UsersController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using PermissionPro.PreDefined;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace PermissionPro.Seeds
 {
     public static class DefaultUsers
     {
-        public static async Task SeedBasicUserAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedBasicUserAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var defaultUser = new IdentityUser
+            var defaultUser = new ApplicationUser
             {
                 UserName = "basicuser@gmail.com",
                 Email = "basicuser@gmail.com",
@@ -29,9 +30,9 @@ namespace PermissionPro.Seeds
                 }
             }
         }
-        public static async Task SeedSuperAdminAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedSuperAdminAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var defaultUser = new IdentityUser
+            var defaultUser = new ApplicationUser
             {
                 UserName = "superadmin@gmail.com",
                 Email = "superadmin@gmail.com",

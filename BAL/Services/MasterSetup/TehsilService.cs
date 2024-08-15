@@ -1,5 +1,5 @@
 ﻿using BAL.IRepository.MasterSetup;
-using DAL.Models;
+using DAL.Models.Domain.MasterSetup;
 using IFRAPMIS.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -39,14 +39,21 @@ namespace BAL.Services.MasterSetup
         }
 
      //   public async Task<List<Tehsil>> GetAll() => await this._context.Teshsils.Include<Tehsil, District>((Expression<Func<Tehsil, District>>)(a => a.District)).ToListAsync<Tehsil>();
-            public async Task<List<Tehsil>> GetAll()
+        public async Task<List<Tehsil>> GetAll()
         {
-            return await _context.Teshsils.ToListAsync();
+            return await _context.Teshsils
+            .Include(t => t.District) // Eagerly load the related District entity
+            .ToListAsync();
+            //return await _context.Teshsils.ToListAsync();
         }
-       // public async Task<List<District>> GetAllDistrict() => await this._context.District.ToListAsync<District>();
+        public async Task<List<District>> GetAllDistrict()
+        {
+            return await _context.Districts.ToListAsync();
+        }
+
 
         //public async Task<Tehsil> GetById(int? Id) => await this._context.Tehsil.Include<Tehsil, District>((Expression<Func<Tehsil, District>>)(a => a.District)).FirstOrDefaultAsync<Tehsil>((Expression<Func<Tehsil, bool>>)(m => (int?)m.TehsilId == Id));
-        public async Task<Tehsil> GetById(int Id)
+        public async Task<Tehsil> GetById(int? Id)
         {
             return await _context.Teshsils.FindAsync(Id); 
         }
@@ -61,8 +68,10 @@ namespace BAL.Services.MasterSetup
             int num = await this._context.SaveChangesAsync();
         }
 
-        public bool Exist(int Id) => this._context.Teshsils.Any<Tehsil>((Expression<Func<Tehsil, bool>>)(e => e.TehsilId == Id));
-
+        public bool Exist(int Id)
+        {
+            return _context.Teshsils.Any(v => v.TehsilId == Id);
+        }
         public void Update(Tehsil tehsil)
         {
             this._context.Update<Tehsil>(tehsil);

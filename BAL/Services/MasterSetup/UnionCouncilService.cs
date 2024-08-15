@@ -1,5 +1,5 @@
 ﻿using BAL.IRepository.MasterSetup;
-using DAL.Models;
+using DAL.Models.Domain.MasterSetup;
 using IFRAPMIS.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,11 +29,11 @@ namespace BAL.Services.MasterSetup
         {
             return await _context.UnionCouncils.ToListAsync();
         }
-       // public async Task<List<Tehsil>> GetAllTehsil() => await this._context.Tehsil.ToListAsync<Tehsil>();
+       public async Task<List<Tehsil>> GetAllTehsil() => await this._context.Teshsils.ToListAsync<Tehsil>();
 
-       // public async Task<List<District>> GetAllDistrict() => await this._context.District.ToListAsync<District>();
+       public async Task<List<District>> GetAllDistrict() => await this._context.Districts.ToListAsync<District>();
 
-       // public async Task<UnionCouncil> GetById(int? Id) => await this._context.UnionCouncil.FindAsync((object)Id);
+       //public async Task<UnionCouncil> GetById(int? Id) => await this._context.UnionCouncil.FindAsync((object)Id);
         public async Task<UnionCouncil> GetById(int? Id)
         {
             return await _context.UnionCouncils.FindAsync(Id);
@@ -49,7 +49,10 @@ namespace BAL.Services.MasterSetup
             int num = await this._context.SaveChangesAsync();
         }
 
-        public bool Exist(int Id) => this._context.UnionCouncils.Any<UnionCouncil>((Expression<Func<UnionCouncil, bool>>)(e => e.UnionCouncilId == Id));
+        public bool Exist(int Id)
+        {
+            return _context.UnionCouncils.Any(v => v.UnionCouncilId == Id);
+        }
 
         public void Update(UnionCouncil unionCouncil)
         {

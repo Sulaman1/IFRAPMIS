@@ -27,6 +27,12 @@ namespace IFRAPMIS
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddTransient<IVillage, VillageService>();
+            builder.Services.AddTransient<IDistrict, DistrictService>();
+            builder.Services.AddTransient<IDivision, DivisionService>();
+            builder.Services.AddTransient<IProvience, ProvienceService>();
+            builder.Services.AddTransient<ITehsil, TehsilService>();
+            builder.Services.AddTransient<IUnionCouncil, UnionCouncilService>();
+            builder.Services.AddTransient<ITrainingHead, TrainingHeadService>();
 
             //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

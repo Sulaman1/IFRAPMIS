@@ -1,3 +1,5 @@
+.vs/
+
 # Ignore build directories
 **/bin/
 **/obj/

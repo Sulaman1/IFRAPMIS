@@ -1,5 +1,5 @@
 ﻿using BAL.IRepository.MasterSetup;
-using DAL.Models;
+using DAL.Models.Domain.MasterSetup;
 using IFRAPMIS.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,11 +31,11 @@ namespace BAL.Services.MasterSetup
             return await _context.Districts.ToListAsync();
         }
 
-        //public List<Division> GetAllDivision() => this._context.Division.ToList<Division>();
+        public List<Division> GetAllDivision() => _context.Divisions.ToList<Division>();
 
         //public async Task<District> GetById(int? Id) => await this._context.District.Include<District, Division>((Expression<Func<District, Division>>)(d => d.Division)).FirstOrDefaultAsync<District>((Expression<Func<District, bool>>)(m => (int?)m.DistrictId == Id));
 
-        public async Task<District> GetById(int Id)
+        public async Task<District> GetById(int? Id)
         {
             return await _context.Districts.FindAsync(Id);
         }
@@ -48,11 +48,11 @@ namespace BAL.Services.MasterSetup
 
         public async Task Save()
         {
-            int num = await this._context.SaveChangesAsync();
+            int num = await _context.SaveChangesAsync();
         }
-        public async Task<bool> Exist(int Id)
+        public bool Exist(int Id)
         {
-            return await _context.Districts.AnyAsync(v => v.DistrictId == Id);
+            return _context.Districts.Any(v => v.DistrictId == Id);
         }
 
         public void Update(District district)

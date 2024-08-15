@@ -1,4 +1,6 @@
+using BAL.IRepository.BeneficiaryVerification;
 using BAL.IRepository.MasterSetup;
+using BAL.Services.BeneficiaryVerification;
 using BAL.Services.MasterSetup;
 using DAL.Models;
 using IFRAPMIS.Data;
@@ -33,6 +35,8 @@ namespace IFRAPMIS
             builder.Services.AddTransient<ITehsil, TehsilService>();
             builder.Services.AddTransient<IUnionCouncil, UnionCouncilService>();
             builder.Services.AddTransient<ITrainingHead, TrainingHeadService>();
+            builder.Services.AddTransient<IBeneficiaryIP, BeneficiaryIPService>();
+            builder.Services.AddTransient<IBeneficiaryPDMA, BeneficiaryPDMAService>();
 
             //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

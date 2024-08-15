@@ -1,0 +1,122 @@
+﻿@model IEnumerable<DAL.Models.Domain.MasterSetup.BeneficiaryIP>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryFather)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CNIC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mobile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaritialStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDisable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CNICAttachment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsRefugee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfilePicture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.District)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tehsil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnionCouncil)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeneficiaryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeneficiaryFather)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CNIC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mobile)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaritialStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDisable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CNICAttachment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRefugee)
+            </td>
+            <td>
+                @if (item.ProfilePicture != null && item.ProfilePicture.Length > 0)
+                {
+                    var base64 = Convert.ToBase64String(item.ProfilePicture);
+                    var imgSrc = $"data:image/png;base64,{base64}";
+                    <img src="@imgSrc" alt="Profile Picture" style="width: 100px; height: 100px;" />
+                }
+                else
+                {
+                    <span>No picture available</span>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.District)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tehsil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnionCouncil)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BeneficiaryIPId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BeneficiaryIPId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BeneficiaryIPId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

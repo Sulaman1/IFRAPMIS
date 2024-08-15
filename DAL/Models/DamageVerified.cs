@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL.Models.Domain.HTS;
+using DAL.Models.Domain.MasterSetup;
 
 namespace DAL.Models
 {

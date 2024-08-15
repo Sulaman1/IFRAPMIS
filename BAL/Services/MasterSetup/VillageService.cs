@@ -1,5 +1,6 @@
 ﻿using BAL.IRepository.MasterSetup;
 using DAL.Models;
+using DAL.Models.Domain.MasterSetup;
 using IFRAPMIS.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -76,7 +77,10 @@ namespace BAL.Services.MasterSetup
             int num = await this._context.SaveChangesAsync();
         }
 
-        public bool Exist(int Id) => this._context.Villages.Any<Village>((Expression<Func<Village, bool>>)(e => e.VillageId == Id));
+        public bool Exist(int Id)
+        {
+            return _context.Villages.Any(v => v.VillageId == Id);
+        }
 
         public void Update(Village village)
         {

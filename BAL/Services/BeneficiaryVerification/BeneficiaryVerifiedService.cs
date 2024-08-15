@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace BAL.Services.BeneficiaryVerification
 {
-    public class BeneficiaryService : IBeneficiaryVerified
+    public class BeneficiaryVerifiedService : IBeneficiaryVerified
     {
         private readonly ApplicationDbContext _context;
 
-        public BeneficiaryService(ApplicationDbContext context) => _context = context;
+        public BeneficiaryVerifiedService(ApplicationDbContext context) => _context = context;
 
         public void Remove(BeneficiaryVerified beneficiaryVerified) => _context.Remove(beneficiaryVerified);
 

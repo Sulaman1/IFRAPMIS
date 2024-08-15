@@ -1,4 +1,4 @@
-﻿using DAL.Models;
+﻿using DAL.Models.Domain.MasterSetup;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +11,9 @@ namespace BAL.IRepository.MasterSetup
     {
         Task<List<District>> GetAll();
 
-        //List<Division> GetAllDivision();
+        List<Division> GetAllDivision();
 
-        Task<District> GetById(int Id);
+        Task<District> GetById(int? Id);
 
         void Insert(District district);
 
@@ -23,7 +23,7 @@ namespace BAL.IRepository.MasterSetup
 
         Task Save();
 
-        Task<bool> Exist(int Id);
+        bool Exist(int Id);
 
         int Count(string name);
     }

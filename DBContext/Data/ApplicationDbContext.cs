@@ -1,4 +1,8 @@
 ﻿using DAL.Models;
+using DAL.Models.Domain.HTS;
+using DAL.Models.Domain.MasterSetup;
+using DAL.Models.Domain.SocialMobilization;
+using DAL.Models.Domain.SocialMobilization.Training;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,24 +14,27 @@ namespace IFRAPMIS.Data
             : base(options)
         {
         }
-        public virtual DbSet<ApplicationUser> AppUsers { get; set; }
-        public virtual DbSet<BeneficiaryIP> BeneficiaryIPs { get; set; }
-        public virtual DbSet<BeneficiaryPDMA> BeneficiaryPDMAs { get; set; }
-        public virtual DbSet<BeneficiaryVerified> BeneficiaryVerifieds { get; set; }
-        public virtual DbSet<CICIG> CICIGs { get; set; }
-        public virtual DbSet<CICIGTrainings> CICIGTrainings { get; set; }
-        public virtual DbSet<CIMember> CIMembers { get; set; }
-        public virtual DbSet<CITrainingMember> CITrainingMembers { get; set; }
-        public virtual DbSet<CITrainingParticipation> CITrainingParticipations { get; set; }
-        public virtual DbSet<DamageAssessmentHTS> DamageAssessmentHTSs { get; set; }
-        public virtual DbSet<DamageAssessmentLivestock> DamageAssessmentLivestocks { get; set; }
-        public virtual DbSet<DamageIP> DamageIPs { get; set; }
-        public virtual DbSet<DamagePDMA> DamagePDMAs { get; set; }
-        public virtual DbSet<DamageVerified> DamageVerifieds { get; set; }
-        public virtual DbSet<District> Districts { get; set; }
-        public virtual DbSet<Tehsil> Teshsils { get; set; }
-        public virtual DbSet<UnionCouncil> UnionCouncils { get; set; }
-        public virtual DbSet<Village> Villages { get; set; }
+        public DbSet<ApplicationUser> AppUsers { get; set; }
+        public DbSet<BeneficiaryIP> BeneficiaryIPs { get; set; }
+        public DbSet<BeneficiaryPDMA> BeneficiaryPDMAs { get; set; }
+        public DbSet<BeneficiaryVerified> BeneficiaryVerifieds { get; set; }
+        public DbSet<CICIG> CICIGs { get; set; }
+        public DbSet<CICIGTrainings> CICIGTrainings { get; set; }
+        public DbSet<CIMember> CIMembers { get; set; }
+        public DbSet<CITrainingMember> CITrainingMembers { get; set; }
+        public DbSet<CITrainingParticipation> CITrainingParticipations { get; set; }
+        public DbSet<TrainingHead> TrainingHeads { get; set; }
+        public DbSet<DamageAssessmentHTS> DamageAssessmentHTSs { get; set; }
+        public DbSet<DamageAssessmentLivestock> DamageAssessmentLivestocks { get; set; }
+        public DbSet<DamageIP> DamageIPs { get; set; }
+        public DbSet<DamagePDMA> DamagePDMAs { get; set; }
+        public DbSet<DamageVerified> DamageVerifieds { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Division> Divisions { get; set; }
+        public DbSet<Provience> Proviences { get; set; }
+        public DbSet<Tehsil> Teshsils { get; set; }
+        public DbSet<UnionCouncil> UnionCouncils { get; set; }
+        public DbSet<Village> Villages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

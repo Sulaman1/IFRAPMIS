@@ -1,4 +1,4 @@
-﻿using DAL.Models;
+﻿using DAL.Models.Domain.MasterSetup;
 using System;
 using System.Collections.Generic;
 using System.Linq;

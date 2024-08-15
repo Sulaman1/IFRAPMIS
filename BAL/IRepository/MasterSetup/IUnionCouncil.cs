@@ -1,4 +1,4 @@
-﻿using DAL.Models;
+﻿using DAL.Models.Domain.MasterSetup;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +11,9 @@ namespace BAL.IRepository.MasterSetup
     {
         Task<List<UnionCouncil>> GetAll();
 
-       // Task<List<Tehsil>> GetAllTehsil();
+        Task<List<Tehsil>> GetAllTehsil();
 
-       // Task<List<District>> GetAllDistrict();
+        Task<List<District>> GetAllDistrict();
 
         Task<UnionCouncil> GetById(int? Id);
 

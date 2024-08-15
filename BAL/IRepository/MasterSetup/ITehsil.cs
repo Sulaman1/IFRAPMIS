@@ -1,4 +1,4 @@
-﻿using DAL.Models;
+﻿using DAL.Models.Domain.MasterSetup;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +11,9 @@ namespace BAL.IRepository.MasterSetup
     {
         Task<List<Tehsil>> GetAll();
 
-       // Task<List<District>> GetAllDistrict();
+       Task<List<District>> GetAllDistrict();
 
-        Task<Tehsil> GetById(int Id);
+        Task<Tehsil> GetById(int? Id);
 
         void Insert(Tehsil tehsil);
 

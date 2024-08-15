@@ -55,6 +55,7 @@ namespace PermissionPro.Seeds
         {
             var adminRole = await roleManager.FindByNameAsync("SuperAdmin");
             await roleManager.AddPermissionClaim(adminRole, "Products");
+            await roleManager.AddPermissionClaim(adminRole, "Administrator");
         }
         public static async Task AddPermissionClaim(this RoleManager<IdentityRole> roleManager, IdentityRole role, string module)
         {

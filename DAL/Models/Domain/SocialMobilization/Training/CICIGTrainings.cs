@@ -22,9 +22,9 @@ namespace DAL.Models.Domain.SocialMobilization.Training
         public string? TrainingTitleName { get; set; }
         public string? TrainingHeadName { get; set; }
         public string? Gender { get; set; }
-        public string? TotalMembersParticipated { get; set; }
-        public string? TotalNumberMale { get; set; }
-        public string? TotalNumberFemale { get; set; }
+        public int? TotalMembersParticipated { get; set; }
+        public int? TotalNumberMale { get; set; }
+        public int? TotalNumberFemale { get; set; }
         public string? Venue { get; set; }
         public DateTime DateOfCreation { get; set; }
         public DateTime Started { get; set; }

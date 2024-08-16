@@ -1,7 +1,9 @@
 using BAL.IRepository.BeneficiaryVerification;
 using BAL.IRepository.MasterSetup;
+using BAL.IRepository.SocialMobilization;
 using BAL.Services.BeneficiaryVerification;
 using BAL.Services.MasterSetup;
+using BAL.Services.SocialMobilization;
 using DAL.Models;
 using IFRAPMIS.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -37,6 +39,7 @@ namespace IFRAPMIS
             builder.Services.AddTransient<ITrainingHead, TrainingHeadService>();
             builder.Services.AddTransient<IBeneficiaryIP, BeneficiaryIPService>();
             builder.Services.AddTransient<IBeneficiaryPDMA, BeneficiaryPDMAService>();
+            builder.Services.AddTransient<ICICIG, CICIGService>();
 
             //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

@@ -1,0 +1,42 @@
+﻿@model DAL.Models.Domain.SocialMobilization.Training.CITrainingMember
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>CITrainingMember</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CITrainingMemberId" />
+            <div class="form-group">
+                <label asp-for="CICIGTrainingsId" class="control-label"></label>
+                <select asp-for="CICIGTrainingsId" class="form-control" asp-items="ViewBag.CICIGTrainingsId"></select>
+                <span asp-validation-for="CICIGTrainingsId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CIMemberId" class="control-label"></label>
+                <select asp-for="CIMemberId" class="form-control" asp-items="ViewBag.CIMemberId"></select>
+                <span asp-validation-for="CIMemberId" class="text-danger"></span>
+            </div>
+            @* <div class="form-group">
+                <label asp-for="CreatedOn" class="control-label"></label>
+                <input asp-for="CreatedOn" class="form-control" />
+                <span asp-validation-for="CreatedOn" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

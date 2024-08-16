@@ -16,9 +16,4 @@
     <ProjectReference Include="..\DBContext\DBContext.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="IRepository\SocialMobilization\Training\" />
-    <Folder Include="Services\SocialMobilization\Training\" />
-  </ItemGroup>
-
 </Project>

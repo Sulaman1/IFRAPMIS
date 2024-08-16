@@ -42,11 +42,11 @@ namespace BAL.Services.MasterSetup
         {
             List<Tehsil> applicationDbContext = await this._context.Teshsils.ToListAsync<Tehsil>();
             ApplicationUser currentuser = await this._userManager.GetUserAsync(user);
-            if (currentuser.DistrictId > 1)
-                applicationDbContext = applicationDbContext.Where<Tehsil>((Func<Tehsil, bool>)(a => a.DistrictId == currentuser.DistrictId)).ToList<Tehsil>();
-            List<Tehsil> allTehsil = applicationDbContext;
-            applicationDbContext = (List<Tehsil>)null;
-            return allTehsil;
+            //if (currentuser.DistrictId > 1)
+                //applicationDbContext = applicationDbContext.Where<Tehsil>((Func<Tehsil, bool>)(a => a.DistrictId == currentuser.DistrictId)).ToList<Tehsil>();
+            //List<Tehsil> allTehsil = applicationDbContext;
+            //applicationDbContext = (List<Tehsil>)null;
+            return applicationDbContext;
         }
 
         //public async Task<List<UnionCouncil>> GetAllUC(ClaimsPrincipal user)

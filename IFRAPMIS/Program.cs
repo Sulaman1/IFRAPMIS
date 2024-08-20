@@ -1,3 +1,8 @@
+using BAL.IRepository.Damage;
+using BAL.IRepository.MasterSetup;
+using BAL.Services.Damage;
+using BAL.Services.MasterSetup;
+using DAL.Models;
 using IFRAPMIS.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,10 +28,28 @@ namespace IFRAPMIS
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddTransient<IVillage, VillageService>();
+            builder.Services.AddTransient<IDistrict, DistrictService>();
+            builder.Services.AddTransient<IDivision, DivisionService>();
+            builder.Services.AddTransient<IProvience, ProvienceService>();
+            builder.Services.AddTransient<ITehsil, TehsilService>();
+            builder.Services.AddTransient<IUnionCouncil, UnionCouncilService>();
+            builder.Services.AddTransient<ITrainingHead, TrainingHeadService>();
+            builder.Services.AddTransient<IDamageAssessmentLivestock, DamageAssessmentLivestockService>();
+            builder.Services.AddTransient<IDamageAssessmentHTS, DamageAssessmentHTSService>();
+
+            //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+            {
+                opt.Password.RequiredLength = 7;
+                opt.Password.RequireDigit = false;
+                opt.Password.RequireUppercase = false;
+                opt.User.RequireUniqueEmail = true;
+                opt.SignIn.RequireConfirmedEmail = false;
+            })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultUI()
             .AddDefaultTokenProviders();
@@ -43,7 +66,7 @@ namespace IFRAPMIS
                 var logger = loggerFactory.CreateLogger("app");
                 try
                 {
-                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     await PermissionPro.Seeds.DefaultRoles.SeedAsync(userManager, roleManager);
                     await PermissionPro.Seeds.DefaultUsers.SeedBasicUserAsync(userManager, roleManager);

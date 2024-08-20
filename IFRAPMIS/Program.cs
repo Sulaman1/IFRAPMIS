@@ -1,4 +1,6 @@
+using BAL.IRepository.Damage;
 using BAL.IRepository.MasterSetup;
+using BAL.Services.Damage;
 using BAL.Services.MasterSetup;
 using DAL.Models;
 using IFRAPMIS.Data;
@@ -33,6 +35,8 @@ namespace IFRAPMIS
             builder.Services.AddTransient<ITehsil, TehsilService>();
             builder.Services.AddTransient<IUnionCouncil, UnionCouncilService>();
             builder.Services.AddTransient<ITrainingHead, TrainingHeadService>();
+            builder.Services.AddTransient<IDamageAssessmentLivestock, DamageAssessmentLivestockService>();
+            builder.Services.AddTransient<IDamageAssessmentHTS, DamageAssessmentHTSService>();
 
             //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

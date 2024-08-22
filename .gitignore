@@ -1,5 +1,10 @@
 .vs/
 
+/IFRAPMIS/wwwroot/
+/wwwroot/
+**/wwwroot/
+.wwwroot/
+
 # Ignore build directories
 **/bin/
 **/obj/

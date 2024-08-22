@@ -12,12 +12,12 @@ namespace DAL.Models.Domain.MasterSetup
         [Key]
         public int TehsilId { get; set; }
         public string? TehsilName { get; set; }
+        
+        //Connections
         public int DistrictId { get; set; }
+        public District? District { get; set; }
 
         //Collections
         public ICollection<UnionCouncil>? UnionCouncils { get; set; }
-        
-        //Navigations
-        public District? District { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace DAL.Models.Domain.MasterSetup
 
         //Connections
         public int? TrainingHeadId { get; set; }
+        public TrainingHead? TrainingHead { get; set; }
 
         //Navigations
         public CICIGTrainings? CICIGTrainings { get; set; }

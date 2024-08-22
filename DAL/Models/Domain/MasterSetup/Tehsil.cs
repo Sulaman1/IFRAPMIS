@@ -19,6 +19,5 @@ namespace DAL.Models.Domain.MasterSetup
 
         //Collections
         public ICollection<UnionCouncil>? UnionCouncils { get; set; }
-
     }
 }

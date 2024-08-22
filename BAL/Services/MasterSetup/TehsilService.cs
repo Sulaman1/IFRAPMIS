@@ -38,6 +38,7 @@ namespace BAL.Services.MasterSetup
             return _context.Tehsils.Count(a => a.TehsilName.ToLower() == name.ToLower());
         }
 
+
      //   public async Task<List<Tehsil>> GetAll() => await this._context.Tehsils.Include<Tehsil, District>((Expression<Func<Tehsil, District>>)(a => a.District)).ToListAsync<Tehsil>();
         public async Task<List<Tehsil>> GetAll()
         {

@@ -34,5 +34,6 @@ namespace DAL.Models.Domain.MasterSetup
 
         //Navigation
         public Trainer? Trainer { get; set; }
+
     }
 }

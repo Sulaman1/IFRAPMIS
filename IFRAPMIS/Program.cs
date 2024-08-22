@@ -2,6 +2,8 @@ using BAL.IRepository.BeneficiaryVerification;
 using BAL.IRepository.MasterSetup;
 using BAL.IRepository.SocialMobilization;
 using BAL.Services.BeneficiaryVerification;
+using BAL.IRepository.Damage;
+using BAL.Services.Damage;
 using BAL.Services.MasterSetup;
 using BAL.Services.SocialMobilization;
 using DAL.Models;
@@ -37,9 +39,14 @@ namespace IFRAPMIS
             builder.Services.AddTransient<ITehsil, TehsilService>();
             builder.Services.AddTransient<IUnionCouncil, UnionCouncilService>();
             builder.Services.AddTransient<ITrainingHead, TrainingHeadService>();
+
             builder.Services.AddTransient<IBeneficiaryIP, BeneficiaryIPService>();
             builder.Services.AddTransient<IBeneficiaryPDMA, BeneficiaryPDMAService>();
             builder.Services.AddTransient<ICICIG, CICIGService>();
+
+            builder.Services.AddTransient<IDamageAssessmentLivestock, DamageAssessmentLivestockService>();
+            builder.Services.AddTransient<IDamageAssessmentHTS, DamageAssessmentHTSService>();
+
 
             //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

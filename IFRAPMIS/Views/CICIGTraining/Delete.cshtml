@@ -1,0 +1,82 @@
+﻿@model DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>MemberTraining</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TrainingName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TrainingName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AttendanceAttachment)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AttendanceAttachment)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReportAttachment)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReportAttachment)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Started)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Started)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfCreation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfCreation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TrainingTitle)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TrainingTitle.TrainingName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CICIGTrainingTrainers)
+        </dt>
+@*         <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Trainer.EmployeeName)
+        </dd> *@
+
+        <dd class="col-md-10">            
+            <ul>
+                @foreach (var trainer in Model.CICIGTrainingTrainers)
+                {
+                    @Html.DisplayFor(model => trainer.Trainer.TrainerName)
+                    @* <li>
+                        <input type="text" class="form-control" style="background-color:lightcyan" value="@trainer.TrainerName" disabled="disabled" />
+                    </li> *@
+                }
+            </ul>
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="CICIGTrainingsId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

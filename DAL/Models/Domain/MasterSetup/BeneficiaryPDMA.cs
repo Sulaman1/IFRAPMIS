@@ -21,8 +21,9 @@ namespace DAL.Models.Domain.MasterSetup
         public string? Mobile { get; set; }
         public int Age { get; set; }
         public string? MaritialStatus { get; set; }
-        public string? DisabilityType { get; set; }
+        public bool? IsDisable { get; set; }
         public string? CNICAttachment { get; set; }
+        public bool? IsRefugee { get; set; }
         public byte[]? ProfilePicture { get; set; }
         public string? District { get; set; }
         public string? Tehsil { get; set; }

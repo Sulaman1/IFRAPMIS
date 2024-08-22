@@ -6,7 +6,7 @@ namespace DAL.Models
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public int DistrictId { get; set; }
+        public string? DistrictName { get; set; }
         public string? UserPassword { get; set; }
         public string ToolAccess { get; set; } = "";
         public int UsernameChangeLimit { get; set; } = 10;

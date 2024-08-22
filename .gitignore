@@ -1,16 +1,15 @@
-<<<<<<< HEAD
-# Ignore build directories
-**/bin/
-**/obj/
 
-=======
 .vs/
 
+/IFRAPMIS/wwwroot/
+/wwwroot/
+**/wwwroot/
+.wwwroot/
+
 # Ignore build directories
 **/bin/
 **/obj/
 
->>>>>>> 17371e9217042ee37df4d2d765369e522ac85167
 # Ignore user-specific files
 *.user
 *.suo

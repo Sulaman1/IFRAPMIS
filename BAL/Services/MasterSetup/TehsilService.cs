@@ -35,16 +35,17 @@ namespace BAL.Services.MasterSetup
             // ISSUE: field reference
             // ISSUE: method reference
             //return this._context.Tehsil.Count<Tehsil>(Expression.Lambda<Func<Tehsil, bool>>((Expression)Expression.Equal((Expression)Expression.Call(a.TehsilName, (MethodInfo)MethodBase.GetMethodFromHandle(__methodref(string.ToLower)), Array.Empty<Expression>()), (Expression)Expression.Call((Expression)Expression.Field((Expression)Expression.Constant((object)cDisplayClass30, typeof(TehsilService.\u003C\u003Ec__DisplayClass3_0)), FieldInfo.GetFieldFromHandle(__fieldref(TehsilService.\u003C\u003Ec__DisplayClass3_0.name))), (MethodInfo)MethodBase.GetMethodFromHandle(__methodref(string.ToLower)), Array.Empty<Expression>())), parameterExpression));
-            return _context.Teshsils.Count(a => a.TehsilName.ToLower() == name.ToLower());
+            return _context.Tehsils.Count(a => a.TehsilName.ToLower() == name.ToLower());
         }
 
-     //   public async Task<List<Tehsil>> GetAll() => await this._context.Teshsils.Include<Tehsil, District>((Expression<Func<Tehsil, District>>)(a => a.District)).ToListAsync<Tehsil>();
+
+     //   public async Task<List<Tehsil>> GetAll() => await this._context.Tehsils.Include<Tehsil, District>((Expression<Func<Tehsil, District>>)(a => a.District)).ToListAsync<Tehsil>();
         public async Task<List<Tehsil>> GetAll()
         {
-            return await _context.Teshsils
+            return await _context.Tehsils
             .Include(t => t.District) // Eagerly load the related District entity
             .ToListAsync();
-            //return await _context.Teshsils.ToListAsync();
+            //return await _context.Tehsils.ToListAsync();
         }
         public async Task<List<District>> GetAllDistrict()
         {
@@ -55,7 +56,7 @@ namespace BAL.Services.MasterSetup
         //public async Task<Tehsil> GetById(int? Id) => await this._context.Tehsil.Include<Tehsil, District>((Expression<Func<Tehsil, District>>)(a => a.District)).FirstOrDefaultAsync<Tehsil>((Expression<Func<Tehsil, bool>>)(m => (int?)m.TehsilId == Id));
         public async Task<Tehsil> GetById(int? Id)
         {
-            return await _context.Teshsils.FindAsync(Id); 
+            return await _context.Tehsils.FindAsync(Id); 
         }
         public void Insert(Tehsil tehsil)
         {
@@ -70,7 +71,7 @@ namespace BAL.Services.MasterSetup
 
         public bool Exist(int Id)
         {
-            return _context.Teshsils.Any(v => v.TehsilId == Id);
+            return _context.Tehsils.Any(v => v.TehsilId == Id);
         }
         public void Update(Tehsil tehsil)
         {

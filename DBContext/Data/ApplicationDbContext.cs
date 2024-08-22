@@ -1,6 +1,7 @@
 ﻿using DAL.Models;
-using DAL.Models.Domain.Damage;
 using DAL.Models.Domain.MasterSetup;
+using DAL.Models.Domain.ResolveManyToMany;
+using DAL.Models.Domain.Damage;
 using DAL.Models.Domain.SocialMobilization;
 using DAL.Models.Domain.SocialMobilization.Training;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -19,11 +20,16 @@ namespace IFRAPMIS.Data
         public DbSet<BeneficiaryPDMA> BeneficiaryPDMAs { get; set; }
         public DbSet<BeneficiaryVerified> BeneficiaryVerifieds { get; set; }
         public DbSet<CICIG> CICIGs { get; set; }
+        public DbSet<CommunityType> CommunityTypes { get; set; }
         public DbSet<CICIGTrainings> CICIGTrainings { get; set; }
         public DbSet<CIMember> CIMembers { get; set; }
         public DbSet<CITrainingMember> CITrainingMembers { get; set; }
         public DbSet<CITrainingParticipation> CITrainingParticipations { get; set; }
+        public DbSet<Trainer> Trainers { get; set; }
+        public DbSet<Section> Sections { get; set; }
         public DbSet<TrainingHead> TrainingHeads { get; set; }
+        public DbSet<TrainingTitle> TrainingTitles { get; set; }
+        public DbSet<Phase> Phases { get; set; }
         public DbSet<DamageAssessmentHTS> DamageAssessmentHTSs { get; set; }
         public DbSet<DamageAssessmentLivestock> DamageAssessmentLivestocks { get; set; }
         public DbSet<DamageIP> DamageIPs { get; set; }
@@ -32,7 +38,7 @@ namespace IFRAPMIS.Data
         public DbSet<District> Districts { get; set; }
         public DbSet<Division> Divisions { get; set; }
         public DbSet<Provience> Proviences { get; set; }
-        public DbSet<Tehsil> Teshsils { get; set; }
+        public DbSet<Tehsil> Tehsils { get; set; }
         public DbSet<UnionCouncil> UnionCouncils { get; set; }
         public DbSet<Village> Villages { get; set; }
 
@@ -46,6 +52,19 @@ namespace IFRAPMIS.Data
                 .WithMany(v => v.CICIGTrainings)
                 .HasForeignKey(ct => ct.VillageId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<CICIGTrainingTrainer>()
+                .HasKey(ct => new { ct.CICIGTrainingsId, ct.TrainerId });
+
+            modelBuilder.Entity<CICIGTrainingTrainer>()
+                .HasOne(ct => ct.CICIGTrainings)
+                .WithMany(c => c.CICIGTrainingTrainers)
+                .HasForeignKey(ct => ct.CICIGTrainingsId);
+
+            modelBuilder.Entity<CICIGTrainingTrainer>()
+                .HasOne(ct => ct.Trainer)
+                .WithMany(t => t.CICIGTrainingTrainers)
+                .HasForeignKey(ct => ct.TrainerId);
 
             // Configure the foreign key for CICIG in CICIGTrainings
             //modelBuilder.Entity<CICIGTrainings>()

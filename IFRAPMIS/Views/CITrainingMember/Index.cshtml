@@ -1,0 +1,48 @@
+﻿@model IEnumerable<DAL.Models.Domain.SocialMobilization.Training.CITrainingMember>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            @* <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.CIMember)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CICIGTrainings)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           @*  <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.CIMember.BeneficiaryVerified.CNIC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CICIGTrainings.CICIGTrainingsId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CITrainingMemberId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CITrainingMemberId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CITrainingMemberId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

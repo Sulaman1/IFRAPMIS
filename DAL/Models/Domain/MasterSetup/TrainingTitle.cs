@@ -14,7 +14,12 @@ namespace DAL.Models.Domain.MasterSetup
 
         public int TitleId { get; set; }
         public required string TrainingName { get; set; }
+        public required string TrainingTitleCode { get; set; }
         public required string TrainingIntervention { get; set; }
+
+        //Connections
+        public int? TrainingHeadId { get; set; }
+        public TrainingHead? TrainingHead { get; set; }
 
         //Navigations
         public CICIGTrainings? CICIGTrainings { get; set; }

@@ -61,7 +61,8 @@ namespace IFRAPMIS.Controllers.MasterSetup
                     return View(division);
                 }
                 _context.Insert(division);
-                _context.Save();
+                await _context.Save();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProvienceId"] = new SelectList(_context.GetAllProvience(), "ProvienceId", "Name", division.ProvienceId);

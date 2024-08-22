@@ -1,0 +1,48 @@
+﻿@* @model IEnumerable<DAL.Models.Domain.Training.MemberTrainingCICIG>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                            <tr>                                              
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.CommunityInstitution.CICode)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.CommunityInstitution.Name)
+                                                </th>
+                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Delete)).Result.Succeeded)
+                                                {
+                                                    <th>
+                                                        Action
+                                                    </th>
+                                                }                                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>                                                    
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.CommunityInstitution.CICode)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.CommunityInstitution.Name)
+                                                    </td>                                                    
+                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Delete)).Result.Succeeded)
+                                                    {
+                                                        <td>
+                                                            <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.MemberTrainingCICIGId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                                                        </td>
+                                                    }                                                    
+                                                  
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+       
+
+ *@

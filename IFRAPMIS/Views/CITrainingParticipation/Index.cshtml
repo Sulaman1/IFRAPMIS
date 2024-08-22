@@ -1,0 +1,223 @@
+﻿@* @model IEnumerable<DAL.Models.Domain.Training.MemberTrainingCICIG>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Index";
+    ViewBag.pageTitle = "CI/CIG";
+    ViewBag.Title = "Training";
+    ViewBag.pTitle = "Training";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <!-- DataTables -->
+    <style>
+        input {
+            color: black;
+        }
+
+        .mapouter {
+            position: relative;
+            text-align: right;
+            height: 500px;
+            width: 100%;
+        }
+
+        .gmap_canvas {
+            overflow: hidden;
+            background: none !important;
+            height: 500px;
+            width: 100%;
+        }
+
+        #link {
+            color: #FFFFFF;
+        }
+
+        .main-footer.main-footer {
+            margin: 0;
+        }
+
+        .page-title-box {
+            padding: 0;
+        }
+
+        label {
+            margin-top: 5px;
+        }
+        /* CSS link color */
+        .modal-dialog {
+            height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+        }
+
+        .modal-content {
+            height: 100%; /* = 100% of the .modal-dialog block */
+        }
+
+        #PdfModal {
+            height: 100%;
+        }
+    </style>
+}
+@if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.View).Result.Succeeded)
+{
+    <!-- DataTables -->
+    <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-autoFill-bs4/css/autoFill.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-keytable-bs4/css/keyTable.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-gen-ques-tab" data-toggle="pill" href="#v-pills-gen-ques" role="tab" aria-controls="v-pills-gen-ques" aria-selected="true">
+                        <i class="bx bxs-grid-alt d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of CO</p>
+                    </a>
+                    @{
+                        if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Create).Result.Succeeded)
+                        {
+                            <a class="nav-link" role="tab" asp-route-id="@ViewBag.Id" asp-action="Create" asp-controller="MemberTrainingCICIGs" aria-controls="v-pills-privacy" aria-selected="false">
+                                <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
+                                <p class="font-weight-bold mb-4">Add New CO</p>
+                            </a>
+                        }
+                    }                    
+                    <a class="nav-link" id="v-pills-support-tab" data-toggle="pill" href="#v-pills-support" role="tab" aria-controls="v-pills-support" aria-selected="false">
+                        <i class="bx bx-support d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Support</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <h4 class="mt-2 card-title">List of CO</h4>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.CommunityInstitution.Name)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.CommunityInstitution.CICode)
+                                                </th>
+                                                
+                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Delete)).Result.Succeeded)
+                                                {
+                                                    <th>Delete</th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.CommunityInstitution.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.CommunityInstitution.CICode)
+                                                    </td>
+                                                    
+                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Delete)).Result.Succeeded)
+                                                    {
+                                                        <td>
+                                                            <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.MemberTrainingCICIGId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                                                        </td>
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div><a asp-action="Index" asp-controller="MemberTrainingCICIGs" asp-route-id="@ViewBag.Id">Back to List</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h4 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h4>
+                        <h4 class="text-uppercase">Sorry, Access denied!</h4>
+                        <h6>Contact with IT Administrator</h6> *@
+
+
+
+
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+
+
+
+@* 
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%"> *@
+
+
+
+
+
+                    @*<div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div> *@
+
+
+
+
+@* 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">          
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
+}
+ *@

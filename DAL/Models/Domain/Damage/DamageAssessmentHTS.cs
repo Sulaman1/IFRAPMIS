@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Models.Domain.HTS
+namespace DAL.Models.Domain.Damage
 {
     public class DamageAssessmentHTS
     {

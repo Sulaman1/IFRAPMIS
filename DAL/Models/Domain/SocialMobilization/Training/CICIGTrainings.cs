@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DAL.Models.Domain.MasterSetup;
 using DAL.Models.Domain.ResolveManyToMany;
 
+
 namespace DAL.Models.Domain.SocialMobilization.Training
 {
     public class CICIGTrainings
@@ -26,6 +27,7 @@ namespace DAL.Models.Domain.SocialMobilization.Training
         public int? TotalMembersParticipated { get; set; }
         public int? TotalNumberMale { get; set; }
         public int? TotalNumberFemale { get; set; }
+
         public string? Venue { get; set; }
         public DateTime DateOfCreation { get; set; }
         public DateTime Started { get; set; }
@@ -40,7 +42,6 @@ namespace DAL.Models.Domain.SocialMobilization.Training
         public string? PictureAttachment2 { get; set; }
         public string? PictureAttachment3 { get; set; }
         public string? PictureAttachment4 { get; set; }
-
 
         //Connections
         public int VillageId { get; set; }
@@ -60,10 +61,11 @@ namespace DAL.Models.Domain.SocialMobilization.Training
 
         //public int[]? TrainerIds { get; set; }
         //public ICollection<Trainer>? Trainer { get; set; }
-        
-        
+                
         //Navigations
         public ICollection<CICIGTrainingTrainer>? CICIGTrainingTrainers { get; set; }  // Navigation property for many-to-many relationship
+        //Navigations
+
         //public CITrainingMember? CITrainingMember { get; set; }
     }
 }

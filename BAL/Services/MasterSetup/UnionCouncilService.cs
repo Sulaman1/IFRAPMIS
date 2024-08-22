@@ -29,6 +29,7 @@ namespace BAL.Services.MasterSetup
         {
             return await _context.UnionCouncils.ToListAsync();
         }
+
        public async Task<List<Tehsil>> GetAllTehsil() => await this._context.Tehsils.ToListAsync<Tehsil>();
 
        public async Task<List<District>> GetAllDistrict() => await this._context.Districts.ToListAsync<District>();

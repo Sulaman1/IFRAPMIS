@@ -19,7 +19,6 @@ namespace DAL.Models.Domain.MasterSetup
         public required string TrainingHeadCode { get; set; }
         public required string TrainingIntervention { get; set; }
 
-
         //Collection
         public ICollection<TrainingTitle>? TrainingTitle { get; set; }
 

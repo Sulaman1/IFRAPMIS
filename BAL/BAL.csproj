@@ -12,6 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="IRepository\SocialMobilization\Training\" />
+    <Folder Include="Services\SocialMobilization\Training\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\DBContext\DBContext.csproj" />
   </ItemGroup>

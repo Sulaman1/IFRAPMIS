@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IFRAPMIS.Controllers.SocialMobilization.Training
 {
-    public class CITrainigMemberController : Controller
+    public class CITrainingMemberController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public CITrainigMemberController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CITrainingMemberController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -41,13 +41,13 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             var Info = _context.CIMembers.Include(a => a.CICIG).Include(a => a.BeneficiaryVerified).Where(a => a.BeneficiaryVerified.CNIC == id /*&& a.BeneficiaryVerified.BeneficiaryTypeId == 1*/ && a.CICIG.IsVerified == true).FirstOrDefault();
             //if (currentUser.DistrictId > 1)
             //{
-                Info = Info.CICIG.District == currentUser.DistrictName ? Info : null;
+                //Info = Info.CICIG.District == currentUser.DistrictName ? Info : null;
             //}
-            if (Info == null)
-            {
+            //if (Info == null)
+            //{
 
-                return Json(new { isValid = false, Info, count = 0, message = "" });
-            }
+            //    return Json(new { isValid = false, Info, count = 0, message = "" });
+            //}
             var AnyOtherTraining = _context.CITrainingMembers.Include(a => a.CIMember.CICIG.Village.UnionCouncils.Tehsil).Include(a => a.CICIGTrainings.TrainingHead).Where(a => a.CIMember.CIMemberId == Info.CIMemberId).ToList();
             string abounttrainings = "";
             if (AnyOtherTraining.Count() > 0)
@@ -105,11 +105,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             return View(memberTrainingDetail);
         }
 
-        // GET: CITrainingMemberss/Create
+        // GET: CITrainingMembers/Create
         public IActionResult Create()
         {
-            ViewData["CIMemberId"] = new SelectList(_context.CIMembers, "CIMemberId", "CNIC");
-            ViewData["CICIGTrainingId"] = new SelectList(_context.CICIGTrainings, "CICIGTrainingId", "CICIGTrainingId");
+            var ciMembers = _context.CIMembers.Include(cim => cim.BeneficiaryVerified);
+            ViewData["CIMemberId"] = new SelectList(ciMembers, "CIMemberId", "BeneficiaryVerified.CNIC");
+            ViewData["CICIGTrainingsId"] = new SelectList(_context.CICIGTrainings, "CICIGTrainingsId", "CICIGTrainingsId");
             return View();
         }
 
@@ -118,7 +119,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CITrainingMembersId,CICIGTrainingId,CIMemberId,CreatedOn")] CITrainingMember memberTrainingDetail)
+        public async Task<IActionResult> Create([Bind("CITrainingMembersId,CICIGTrainingId,CIMemberId")] CITrainingMember memberTrainingDetail)
         {
             if (ModelState.IsValid)
             {
@@ -126,8 +127,9 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CIMemberId"] = new SelectList(_context.CIMembers, "CIMemberId", "CNIC", memberTrainingDetail.CIMemberId);
-            ViewData["CICIGTrainingId"] = new SelectList(_context.CICIGTrainings, "CICIGTrainingId", "CICIGTrainingId", memberTrainingDetail.CICIGTrainingsId);
+            var ciMembers = _context.CIMembers.Include(cim => cim.BeneficiaryVerified);
+            ViewData["CIMemberId"] = new SelectList(ciMembers, "CIMemberId", "BeneficiaryVerified.CNIC", memberTrainingDetail.CIMemberId);
+            ViewData["CICIGTrainingsId"] = new SelectList(_context.CICIGTrainings, "CICIGTrainingsId", "CICIGTrainingsId", memberTrainingDetail.CICIGTrainingsId);
             return View(memberTrainingDetail);
         }
 
@@ -144,8 +146,9 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             {
                 return NotFound();
             }
-            ViewData["CIMemberId"] = new SelectList(_context.CIMembers, "CIMemberId", "CNIC", memberTrainingDetail.CIMemberId);
-            ViewData["CICIGTrainingId"] = new SelectList(_context.CICIGTrainings, "CICIGTrainingId", "CICIGTrainingId", memberTrainingDetail.CICIGTrainingsId);
+            var ciMembers = _context.CIMembers.Include(cim => cim.BeneficiaryVerified);
+            ViewData["CIMemberId"] = new SelectList(ciMembers, "CIMemberId", "BeneficiaryVerified.CNIC", memberTrainingDetail.CIMemberId);
+            ViewData["CICIGTrainingsId"] = new SelectList(_context.CICIGTrainings, "CICIGTrainingsId", "CICIGTrainingsId", memberTrainingDetail.CICIGTrainingsId);
             return View(memberTrainingDetail);
         }
 
@@ -154,7 +157,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CITrainingMembersId,CICIGTrainingId,CIMemberId,CreatedOn")] CITrainingMember memberTrainingDetail)
+        public async Task<IActionResult> Edit(int id, [Bind("CITrainingMemberId,CICIGTrainingsId,CIMemberId")] CITrainingMember memberTrainingDetail)
         {
             if (id != memberTrainingDetail.CITrainingMemberId)
             {
@@ -181,7 +184,8 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CIMemberId"] = new SelectList(_context.CIMembers, "CIMemberId", "CNIC", memberTrainingDetail.CIMemberId);
+            var ciMembers = _context.CIMembers.Include(cim => cim.BeneficiaryVerified);
+            ViewData["CIMemberId"] = new SelectList(ciMembers, "CIMemberId", "BeneficiaryVerified.CNIC", memberTrainingDetail.CIMemberId);
             ViewData["CICIGTrainingId"] = new SelectList(_context.CICIGTrainings, "CICIGTrainingId", "CICIGTrainingId", memberTrainingDetail.CICIGTrainingsId);
             return View(memberTrainingDetail);
         }

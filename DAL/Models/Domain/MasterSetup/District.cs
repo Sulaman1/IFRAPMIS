@@ -31,5 +31,8 @@ namespace DAL.Models.Domain.MasterSetup
 
         //Collections
         public ICollection<Tehsil>? Tehsils { get; set; }
+
+        //Navigation
+        public Trainer? Trainer { get; set; }
     }
 }

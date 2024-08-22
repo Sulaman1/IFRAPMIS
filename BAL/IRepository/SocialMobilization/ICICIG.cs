@@ -25,31 +25,31 @@ namespace BAL.IRepository.SocialMobilization
 
         Task<List<Village>> GetAllVillageByUCId(int ucId);
 
-        //Task<List<CommunityType>> GetCommunityTypes();
+        Task<List<CommunityType>> GetCommunityTypes();
 
         Task<List<District>> GetDistricts(ClaimsPrincipal user);
 
         Task<List<District>> GetAllDistrict();
 
-        //Task<List<CICIG>> GetAllSubmittedForReview(int id, ClaimsPrincipal user);
+        Task<List<CICIG>> GetAllSubmittedForReview(int id, ClaimsPrincipal user);
 
-        //Task<List<CICIG>> GetAllSubmittedForVerify(int id, ClaimsPrincipal user);
+        Task<List<CICIG>> GetAllSubmittedForVerify(int id, ClaimsPrincipal user);
 
         Task<List<CICIG>> GetAllVerified(int id, ClaimsPrincipal user);
 
         Task<CICIG> GetById(int? Id);
 
-        //Task<CICIG> GetByIdSubmittedDetails(int? Id);
+        Task<CICIG> GetByIdSubmittedDetails(int? Id);
 
         Task<CICIG> GetByIdVerifiedDetails(int? Id);
 
-        //Task<bool> CISubmitForReviewRequest(int Id, string name);
+        Task<bool> CISubmitForReviewRequest(int Id, string name);
 
         Task<bool> CIApprovalRequest(int Id, int val, string name, string description);
 
         Task<bool> CISubmitForApprovalRequest(int Id, int val, string name, string description);
 
-        Task Insert(CICIG communityInstitution, string DistrictName, int TehsilId);
+        Task Insert(CICIG communityInstitution);
 
         void Update(CICIG communityInstitution);
 

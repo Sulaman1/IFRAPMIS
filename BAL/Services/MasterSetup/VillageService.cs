@@ -40,7 +40,7 @@ namespace BAL.Services.MasterSetup
 
         public async Task<List<Tehsil>> GetAllTehsil(ClaimsPrincipal user)
         {
-            List<Tehsil> applicationDbContext = await this._context.Teshsils.ToListAsync<Tehsil>();
+            List<Tehsil> applicationDbContext = await this._context.Tehsils.ToListAsync<Tehsil>();
             ApplicationUser currentuser = await this._userManager.GetUserAsync(user);
             //if (currentuser.DistrictId > 1)
                 //applicationDbContext = applicationDbContext.Where<Tehsil>((Func<Tehsil, bool>)(a => a.DistrictId == currentuser.DistrictId)).ToList<Tehsil>();

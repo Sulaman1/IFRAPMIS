@@ -38,10 +38,19 @@ namespace BAL.Services.SocialMobilization
         public async Task<List<CICIG>> GetAll(int id, ClaimsPrincipal user)
         {
             //List<CICIG> applicationDbContext = await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.CommunityTypeId == id && a.IsSubmittedForReview == false)).ToListAsync<CICIG>();
-            List<CICIG> applicationDbContext = await _context.CICIGs.ToListAsync();
+            //List<CICIG> applicationDbContext = await _context.CICIGs.Include(c => c.Village).ToListAsync();
+            List<CICIG> applicationDbContext = await _context.CICIGs
+                .Include(c => c.Village)
+                    .ThenInclude(v => v.UnionCouncils)
+                        .ThenInclude(uc => uc.Tehsil)
+                            .ThenInclude(t => t.District)
+                .ToListAsync();
+
+
+
             //ApplicationUser currentuser = await _userManager.GetUserAsync(user);
             //if (currentuser.DistrictId > 1)
-                //applicationDbContext = applicationDbContext.Where<CICIG>((Func<CICIG, bool>)(a => a.DistrictId == currentuser.DistrictId)).ToList<CICIG>();
+            //applicationDbContext = applicationDbContext.Where<CICIG>((Func<CICIG, bool>)(a => a.DistrictId == currentuser.DistrictId)).ToList<CICIG>();
             //List<CICIG> all = applicationDbContext;
             //applicationDbContext = (List<CICIG>)null;
             return applicationDbContext;
@@ -50,15 +59,15 @@ namespace BAL.Services.SocialMobilization
         //public async Task<List<Tehsil>> GetAllTehsil(int districtId) => await _context.Tehsil.Where<Tehsil>((Expression<Func<Tehsil, bool>>)(a => a.DistrictId == districtId)).ToListAsync<Tehsil>();
         public async Task<List<Tehsil>> GetAllTehsilByDistrictId(int districtId)
         {
-            return await _context.Teshsils
+            return await _context.Tehsils
             .Include(t => t.District) // Eagerly load the related District entity
             .Where(d => d.DistrictId == districtId)
             .ToListAsync();           
         }
-        //public async Task<List<Tehsil>> GetAllTehsilName(string districtName) => await _context.Tehsil.Include<Tehsil, District>((Expression<Func<Tehsil, District>>)(a => a.District)).Where<Tehsil>((Expression<Func<Tehsil, bool>>)(a => a.District.Name == districtName)).ToListAsync<Tehsil>();
+        public async Task<List<Tehsil>> GetAllTehsilName(string districtName) => await _context.Tehsils.Include<Tehsil, District>((Expression<Func<Tehsil, District>>)(a => a.District)).Where<Tehsil>((Expression<Func<Tehsil, bool>>)(a => a.District.DistrictName == districtName)).ToListAsync<Tehsil>();
         public async Task<List<Tehsil>> GetAllTehsilByDistrictName(string districtName)
         {
-            return await _context.Teshsils
+            return await _context.Tehsils
             .Include(t => t.District) // Eagerly load the related District entity
             .Where(d => d.District.DistrictName == districtName)
             .ToListAsync();
@@ -77,7 +86,7 @@ namespace BAL.Services.SocialMobilization
 
         public async Task<ApplicationUser> GetCurrentUser(ClaimsPrincipal user) => await _userManager.GetUserAsync(user);
 
-        //public async Task<List<UnionCouncil>> GetAllUC(int tehsilId) => await _context.UnionCouncil.Where<UnionCouncil>((Expression<Func<UnionCouncil, bool>>)(a => a.TehsilId == tehsilId)).ToListAsync<UnionCouncil>();
+        public async Task<List<UnionCouncil>> GetAllUC(int tehsilId) => await _context.UnionCouncils.Where<UnionCouncil>((Expression<Func<UnionCouncil, bool>>)(a => a.TehsilId == tehsilId)).ToListAsync<UnionCouncil>();
         public async Task<List<UnionCouncil>> GetAllUCByTehsilId(int tehsilId)
         {
             return await _context.UnionCouncils
@@ -95,33 +104,37 @@ namespace BAL.Services.SocialMobilization
 
         public async Task<List<District>> GetAllDistrict() => await _context.Districts.ToListAsync<District>();
 
-        //public async Task<List<CommunityType>> GetCommunityTypes() => await _context.CommunityType.Where<CommunityType>((Expression<Func<CommunityType, bool>>)(a => a.CommunityTypeId < 3)).ToListAsync<CommunityType>();
+        public async Task<List<CommunityType>> GetCommunityTypes()
+        {
+            return await _context.CommunityTypes.ToListAsync();  
+            //return await _context.CommunityTypes.Where<CommunityType>((Expression<Func<CommunityType, bool>>)(a => a.CommunityTypeId < 3)).ToListAsync<CommunityType>();
+        }
 
-        //public async Task<List<CICIG>> GetAllSubmittedForReview(
-        //  int id,
-        //  ClaimsPrincipal user)
-        //{
-        //    List<CICIG> applicationDbContext = await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncil.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.CommunityTypeId == id && a.IsSubmittedForReview == true && a.IsReviewed == false)).ToListAsync<CICIG>();           
-        //    ApplicationUser currentuser = await _userManager.GetUserAsync(user);
-        //    if (currentuser.DistrictId > 1)
-        //        applicationDbContext = applicationDbContext.Where<CICIG>((Func<CICIG, bool>)(a => a.DistrictId == currentuser.DistrictId)).ToList<CICIG>();
-        //    List<CICIG> submittedForReview = applicationDbContext;
-        //    applicationDbContext = (List<CICIG>)null;
-        //    return submittedForReview;
-        //}
+        public async Task<List<CICIG>> GetAllSubmittedForReview(
+          int id,
+          ClaimsPrincipal user)
+        {
+            List<CICIG> applicationDbContext = await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.CommunityTypeId == id && a.IsSubmittedForReview == true && a.IsReviewed == false)).ToListAsync<CICIG>();
+            ApplicationUser currentuser = await _userManager.GetUserAsync(user);
+            if (currentuser.DistrictName == "All")
+                applicationDbContext = applicationDbContext.Where<CICIG>((Func<CICIG, bool>)(a => a.Village.UnionCouncils.Tehsil.District.DistrictName == currentuser.DistrictName)).ToList<CICIG>();
+            List<CICIG> submittedForReview = applicationDbContext;
+            applicationDbContext = (List<CICIG>)null;
+            return submittedForReview;
+        }
 
-        //public async Task<List<CICIG>> GetAllSubmittedForVerify(
-        //  int id,
-        //  ClaimsPrincipal user)
-        //{
-        //    List<CICIG> applicationDbContext = await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncil.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.CommunityTypeId == id && a.IsReviewed == true && a.IsVerified == false)).ToListAsync<CICIG>();
-        //    ApplicationUser currentuser = await _userManager.GetUserAsync(user);
-        //    if (currentuser.DistrictId > 1)
-        //        applicationDbContext = applicationDbContext.Where<CICIG>((Func<CICIG, bool>)(a => a.DistrictId == currentuser.DistrictId)).ToList<CICIG>();
-        //    List<CICIG> submittedForVerify = applicationDbContext;
-        //    applicationDbContext = (List<CICIG>)null;
-        //    return submittedForVerify;
-        //}
+        public async Task<List<CICIG>> GetAllSubmittedForVerify(
+          int id,
+          ClaimsPrincipal user)
+        {
+            List<CICIG> applicationDbContext = await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.CommunityTypeId == id && a.IsReviewed == true && a.IsVerified == false)).ToListAsync<CICIG>();
+            ApplicationUser currentuser = await _userManager.GetUserAsync(user);
+            if (currentuser.DistrictName == "All")
+                applicationDbContext = applicationDbContext.Where<CICIG>((Func<CICIG, bool>)(a => a.Village.UnionCouncils.Tehsil.District.DistrictName == currentuser.DistrictName)).ToList<CICIG>();
+            List<CICIG> submittedForVerify = applicationDbContext;
+            applicationDbContext = (List<CICIG>)null;
+            return submittedForVerify;
+        }
 
         public async Task<List<CICIG>> GetAllVerified(int id, ClaimsPrincipal user)
         {
@@ -137,7 +150,7 @@ namespace BAL.Services.SocialMobilization
             return applicationDbContext;
         }
 
-        //public async Task<CICIG> GetById(int? Id) => await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncil.Tehsil.District)).FirstOrDefaultAsync<CICIG>((Expression<Func<CICIG, bool>>)(m => (int?)m.CICIGId == Id));
+        //public async Task<CICIG> GetById(int? Id) => await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District)).FirstOrDefaultAsync<CICIG>((Expression<Func<CICIG, bool>>)(m => (int?)m.CICIGId == Id));
 
         public async Task<CICIG> GetById(int? Id)
         {
@@ -146,7 +159,7 @@ namespace BAL.Services.SocialMobilization
                 .FirstOrDefaultAsync();
         }
 
-        //public async Task<CICIG> GetByIdSubmittedDetails(int? Id) => await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncil.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.IsSubmittedForReview == true && a.IsVerified == false)).FirstOrDefaultAsync<CICIG>((Expression<Func<CICIG, bool>>)(m => (int?)m.CICIGId == Id));
+        public async Task<CICIG> GetByIdSubmittedDetails(int? Id) => await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.IsSubmittedForReview == true && a.IsVerified == false)).FirstOrDefaultAsync<CICIG>((Expression<Func<CICIG, bool>>)(m => (int?)m.CICIGId == Id));
 
         //public async Task<CICIG> GetByIdVerifiedDetails(int? Id) => await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncil.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.IsReviewed == true && a.IsSubmittedForReview == true)).FirstOrDefaultAsync<CICIG>((Expression<Func<CICIG, bool>>)(m => (int?)m.CICIGId == Id));
 
@@ -157,18 +170,18 @@ namespace BAL.Services.SocialMobilization
                 .FirstOrDefaultAsync();
         }
 
-        //public async Task<bool> CISubmitForReviewRequest(int Id, string name)
-        //{
-        //    CICIG async = await _context.CICIGs.FindAsync((object)Id);
-        //    if (async == null)
-        //        return false;
-        //    async.IsSubmittedForReview = true;
-        //    async.SubmittedForReviewOnDate = new DateTime?(DateTime.Now);
-        //    async.SubmittedForReviewBy = name;
-        //    Update(async);
-        //    Save();
-        //    return true;
-        //}
+        public async Task<bool> CISubmitForReviewRequest(int Id, string name)
+        {
+            CICIG async = await _context.CICIGs.FindAsync((object)Id);
+            if (async == null)
+                return false;
+            async.IsSubmittedForReview = true;
+            async.SubmittedForReviewDate = new DateTime?(DateTime.Now);
+            async.SubmittedForReviewBy = name;
+            Update(async);
+            Save();
+            return true;
+        }
 
         public async Task<bool> CIApprovalRequest(int Id, int val, string name, string description)
         {
@@ -220,14 +233,11 @@ namespace BAL.Services.SocialMobilization
             return true;
         }
 
-        public async Task Insert(
-          CICIG communityInstitution,
-          string DistrictName,
-          int TehsilId)
+        public async Task Insert(CICIG communityInstitution)
         {
-            int num = CountByDistrictName(DistrictName) + 1;
+            int num = CountByDistrictName(communityInstitution.District) + 1;
 
-            string districtCodeById = GetDistrictCodeByName(DistrictName);
+            string districtCodeById = GetDistrictCodeByName(communityInstitution.District);
             string str1 = num.ToString("D3");
             communityInstitution.Code = districtCodeById + "-" + str1;
             while (true)
@@ -256,7 +266,13 @@ namespace BAL.Services.SocialMobilization
         }
         public string GetDistrictCodeByName(string districtName)
         {
-            return _context.Districts.Find(districtName).Code;
+            var district = _context.Districts.FirstOrDefault(d => d.DistrictName == districtName);
+            if (district == null)
+            {
+                // Handle the case where the district is not found
+                throw new Exception("District not found.");
+            }
+            return district.Code;            
         }
 
         public async Task Save()

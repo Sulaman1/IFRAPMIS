@@ -4,6 +4,7 @@ using IFRAPMIS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBContext.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240820095127_CICIGTrainingV2")]
+    partial class CICIGTrainingV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -533,6 +536,9 @@ namespace DBContext.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CICIGTrainingsId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CNIC")
                         .HasColumnType("nvarchar(max)");
 
@@ -560,6 +566,8 @@ namespace DBContext.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TrainerId");
+
+                    b.HasIndex("CICIGTrainingsId");
 
                     b.HasIndex("DistrictId")
                         .IsUnique()
@@ -665,21 +673,6 @@ namespace DBContext.Migrations
                     b.HasIndex("UnionCouncilId");
 
                     b.ToTable("Villages");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.ResolveManyToMany.CICIGTrainingTrainer", b =>
-                {
-                    b.Property<int>("CICIGTrainingsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CICIGTrainingsId", "TrainerId");
-
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("CICIGTrainingTrainer");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CICIG", b =>
@@ -910,6 +903,9 @@ namespace DBContext.Migrations
 
                     b.Property<int?>("TotalNumberMale")
                         .HasColumnType("int");
+
+                    b.Property<string>("TrainerIds")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TrainingCode")
                         .HasColumnType("nvarchar(max)");
@@ -1398,6 +1394,10 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Trainer", b =>
                 {
+                    b.HasOne("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", "CICIGTrainings")
+                        .WithMany("Trainer")
+                        .HasForeignKey("CICIGTrainingsId");
+
                     b.HasOne("DAL.Models.Domain.MasterSetup.District", "District")
                         .WithOne("Trainer")
                         .HasForeignKey("DAL.Models.Domain.MasterSetup.Trainer", "DistrictId");
@@ -1407,6 +1407,8 @@ namespace DBContext.Migrations
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CICIGTrainings");
 
                     b.Navigation("District");
 
@@ -1440,25 +1442,6 @@ namespace DBContext.Migrations
                         .IsRequired();
 
                     b.Navigation("UnionCouncils");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.ResolveManyToMany.CICIGTrainingTrainer", b =>
-                {
-                    b.HasOne("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", "CICIGTrainings")
-                        .WithMany("CICIGTrainingTrainers")
-                        .HasForeignKey("CICIGTrainingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Models.Domain.MasterSetup.Trainer", "Trainer")
-                        .WithMany("CICIGTrainingTrainers")
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CICIGTrainings");
-
-                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CICIG", b =>
@@ -1689,11 +1672,6 @@ namespace DBContext.Migrations
                     b.Navigation("UnionCouncils");
                 });
 
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Trainer", b =>
-                {
-                    b.Navigation("CICIGTrainingTrainers");
-                });
-
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingHead", b =>
                 {
                     b.Navigation("CICIGTrainings");
@@ -1740,11 +1718,11 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", b =>
                 {
-                    b.Navigation("CICIGTrainingTrainers");
-
                     b.Navigation("CITrainingParticipation");
 
                     b.Navigation("Members");
+
+                    b.Navigation("Trainer");
                 });
 #pragma warning restore 612, 618
         }

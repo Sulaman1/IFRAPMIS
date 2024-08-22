@@ -105,12 +105,12 @@
             $("#dynamicContentContainer").html(content);                
         });
         }
-        function fetch() {            
+        function fetch() {                    
             var id = $("#txtbox").val();
             $('#fetchspinner').show();
             $.ajax({
                 type: "POST",
-                url: "/CITrainingMemberId/AjaxMemberInformation",
+                url: "/CITrainingMember/AjaxMemberInformation",
                 data: { id: id },
                 dataType: "json",
                 success: function (response) {

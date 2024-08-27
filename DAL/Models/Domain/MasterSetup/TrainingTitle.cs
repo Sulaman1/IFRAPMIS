@@ -23,5 +23,6 @@ namespace DAL.Models.Domain.MasterSetup
 
         //Collections
         public ICollection<CICIGTrainings>? CICIGTrainings { get; set; }
+
     }
 }

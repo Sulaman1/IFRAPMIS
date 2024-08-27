@@ -45,11 +45,12 @@ namespace DAL.Models.Domain.SocialMobilization.Training
 
         //Connections
         public int VillageId { get; set; }
-        public Village? Village { get; set; }       
-        public int? TrainingHeadId { get; set; }
-        public TrainingHead? TrainingHead { get; set; }
+        public Village? Village { get; set; }
+        //public int? TrainingHeadId { get; set; }
+        //public TrainingHead? TrainingHead { get; set; }
         public int? TrainingTitleId { get; set; }
         public TrainingTitle? TrainingTitle { get; set; }
+
 
         //Connection
         public int? PhaseId { get; set; }

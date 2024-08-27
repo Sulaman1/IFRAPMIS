@@ -1,8 +1,8 @@
-﻿@* @model DAL.Models.Domain.Training.MemberTrainingCICIG
+﻿@model DAL.Models.Domain.SocialMobilization.Training.CITrainingParticipation
 
 @{
     ViewData["Title"] = "Delete";
-    Layout = "~/Views/_Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Delete</h1>
@@ -13,17 +13,16 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CommunityInstitution.Name)
+            @Html.DisplayNameFor(model => model.CICIG.Name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CommunityInstitution.Name)
+            @Html.DisplayFor(model => model.CICIG.Name)
         </dd>
        
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="MemberTrainingCICIGId" />
+        <input type="hidden" asp-for="CITrainingParticipationId" />
         <input type="submit" value="Delete" class="btn btn-danger" />
     </form>
 </div>
- *@

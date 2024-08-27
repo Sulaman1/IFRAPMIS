@@ -15,9 +15,11 @@ namespace DAL.Models.Domain.MasterSetup
         public int PhaseId { get; set; }
         [Required]
         public required string Name { get; set; }
+        
+        //Collections
+        public ICollection<CICIGTrainings>? CICIGTrainings { get; set; }
+        public ICollection<CICIG>? CICIG { get; set; }
 
         //Navigations
-        public CICIGTrainings? CICIGTrainings { get; set; }
-        public CICIG? CICIG { get; set; }
     }
 }

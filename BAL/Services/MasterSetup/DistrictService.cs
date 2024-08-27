@@ -16,15 +16,15 @@ namespace BAL.Services.MasterSetup
     {
         private readonly ApplicationDbContext _context;
 
-        public DistrictService(ApplicationDbContext context) => this._context = context;
+        public DistrictService(ApplicationDbContext context) => _context = context;
 
         public void Remove(District district)
         {
-            this._context.Remove<District>(district);
-            this._context.SaveChanges();
+            _context.Remove<District>(district);
+            _context.SaveChanges();
         }
 
-        //public async Task<List<District>> GetAll() => await this._context.Districts.Include<District, Division>((Expression<Func<District, Division>>)(a => a.Division)).ToListAsync<District>();
+        //public async Task<List<District>> GetAll() => await _context.Districts.Include<District, Division>((Expression<Func<District, Division>>)(a => a.Division)).ToListAsync<District>();
 
         public async Task<List<District>> GetAll()
         {
@@ -33,7 +33,7 @@ namespace BAL.Services.MasterSetup
 
         public List<Division> GetAllDivision() => _context.Divisions.ToList<Division>();
 
-        //public async Task<District> GetById(int? Id) => await this._context.District.Include<District, Division>((Expression<Func<District, Division>>)(d => d.Division)).FirstOrDefaultAsync<District>((Expression<Func<District, bool>>)(m => (int?)m.DistrictId == Id));
+        //public async Task<District> GetById(int? Id) => await _context.District.Include<District, Division>((Expression<Func<District, Division>>)(d => d.Division)).FirstOrDefaultAsync<District>((Expression<Func<District, bool>>)(m => (int?)m.DistrictId == Id));
 
         public async Task<District> GetById(int? Id)
         {
@@ -42,13 +42,13 @@ namespace BAL.Services.MasterSetup
 
         public void Insert(District district)
         {
-            this._context.Add<District>(district);
-            this._context.SaveChanges();
+            _context.Add<District>(district);
+            _context.SaveChanges();
         }
 
         public async Task Save()
         {
-            int num = await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
         public bool Exist(int Id)
         {
@@ -57,8 +57,8 @@ namespace BAL.Services.MasterSetup
 
         public void Update(District district)
         {
-            this._context.Update<District>(district);
-            this._context.SaveChanges();
+            _context.Update<District>(district);
+            _context.SaveChanges();
         }
 
         public int Count(string name)

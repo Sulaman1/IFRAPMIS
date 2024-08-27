@@ -21,8 +21,5 @@ namespace DAL.Models.Domain.MasterSetup
 
         //Collection
         public ICollection<TrainingTitle>? TrainingTitle { get; set; }
-
-        //Navigations
-        public CICIGTrainings? CICIGTrainings { get; set; }
     }
 }

@@ -24,10 +24,10 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = await _context.CICIGTrainings.Include(m => m.Village)
-                                                                    .Include(m=>m.Phase)
+                                                                    .Include(m => m.Phase)
                                                                     .Include(m => m.CICIGTrainingTrainers)
-                                                                    .Include(m => m.TrainingHead)
                                                                     .Include(m => m.TrainingTitle)
+                                                                        .ThenInclude(tt => tt.TrainingHead)
                                                                     .ToListAsync();
 
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -49,7 +49,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             var cicigTraining = await _context.CICIGTrainings
                 .Include(m => m.CICIGTrainingTrainers)
                 .Include(a => a.Village.UnionCouncils.Tehsil.District)
-                .Include(m => m.TrainingHead)
+                .Include(m => m.TrainingTitle.TrainingHead)
                 .FirstOrDefaultAsync(m => m.CICIGTrainingsId == id);
             if (cicigTraining == null)
             {
@@ -84,7 +84,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             var THead = _context.TrainingHeads;
             ViewData["TrainingHeadId"] = new SelectList(THead, "TrainingHeadId", "TrainingHeadName");
             ViewData["TrainerId"] = new SelectList(_context.Trainers/*.Where(a => a.SectionId == 2)*/, "TrainerId", "TrainerName");
-            var districtAccess = _context.Districts.Where(a => a.DistrictId > 1);
+            var districtAccess = _context.Districts.Where(a => a.DistrictId > 0);
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             if (currentUser.DistrictName == "All")
             {
@@ -102,12 +102,19 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         // POST: CICIGTrainingss/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        //[Bind("CICIGTrainingsId, CommunityTypeId, EntryBy, DateOfCreation, District, Tehsil, UnionCouncil, VillageId, PhaseId, Name, HouseHoldNumber, HouseHoldParticipated, Venue, Lat, Long, Gender")] 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CICIGTrainingsId, CommunityTypeId, EntryBy, DateOfCreation, District, Tehsil, UnionCouncil, VillageId, PhaseId, Name, HouseHoldNumber, HouseHoldParticipated, Venue, Lat, Long, Gender")] CICIGTrainings cicigTraining, int TrainingHeadId, IFormFile AttendanceAttachment, IFormFile ReportAttachment, IFormFile SessionPlanAttachment, IFormFile PictureAttachment1, IFormFile PictureAttachment2, IFormFile PictureAttachment3, IFormFile PictureAttachment4)
+        public async Task<IActionResult> Create(CICIGTrainings cicigTraining, int TrainingHeadId, IFormFile AttendanceAttachment, IFormFile ReportAttachment, IFormFile SessionPlanAttachment, IFormFile PictureAttachment1, IFormFile PictureAttachment2, IFormFile PictureAttachment3, IFormFile PictureAttachment4)
         {
             if (ModelState.IsValid)
             {
+                /**
+                 * If trainingHead is present dont enter data
+                 * If trainingTitle is present dont enter data
+                 */
+
                 var TrainingCount = _context.CICIGTrainings.Count(a => a.TrainingTitleId == cicigTraining.TrainingTitleId) + 1;
                 var TrainingTypeInfo = _context.TrainingTitles.Find(cicigTraining.TrainingTitleId);
                 //var DistrictCode = _context.Districts.Find(cicigTraining.District).Code;
@@ -284,31 +291,42 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 return NotFound();
             }
 
-            var cicigTraining = await _context.CICIGTrainings.Include(a => a.Village.UnionCouncils.Tehsil)
-                                                             .Where(a => a.CICIGTrainingsId == id)
-                                                             .FirstOrDefaultAsync();
+            //var cicigTraining = await _context.CICIGTrainings.Include(a => a.Village.UnionCouncils.Tehsil)
+            //                                                 .Where(a => a.CICIGTrainingsId == id)
+            //                                                 .FirstOrDefaultAsync();
+            var cicigTraining = _context.CICIGTrainings
+                                 .Include(ct => ct.Phase)
+                                 .Include(ct => ct.CICIGTrainingTrainers)
+                                 .ThenInclude(tt => tt.Trainer)
+                                 .Include(ct => ct.Village)
+                                 .ThenInclude(v => v.UnionCouncils)
+                                 .ThenInclude(uc => uc.Tehsil)
+                                 .ThenInclude(t => t.District)
+                                 .FirstOrDefault(ct => ct.CICIGTrainingsId == id);
             if (cicigTraining == null)
             {
                 return NotFound();
             }
             int? TrainingHeadId = _context.TrainingTitles.Find(cicigTraining.TrainingTitleId).TrainingHeadId;
 
-            ViewData["TrainingById"] = new MultiSelectList(_context.Sections/*.Where(a => a.SectionId == 2)*/, "SectionId", "Name", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));
-            //ViewData["TrainingById"] = new MultiSelectList(_context.Sections/*.Where(a => a.SectionId == 2)*/, "SectionId", "Name", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));
-            //ViewData["TrainingById"] = new MultiSelectList(_context.Sections.Where(a => a.SectionId == 2), "SectionId", "Name", cicigTraining.Trainer.Select(t => t.TrainerId));
-            //ViewData["TrainingById"] = new SelectList(_context.Sections.Where(a => a.SectionId == 2), "SectionId", "Name", cicigTraining.TrainerId);
+            
+            ViewData["SectionId"] = new MultiSelectList(_context.Sections, "SectionId", "Name", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));
+            //ViewData["SectionId"] = new MultiSelectList(_context.Sections/*.Where(a => a.SectionId == 2)*/, "SectionId", "Name", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));
+            //ViewData["SectionId"] = new MultiSelectList(_context.Sections.Where(a => a.SectionId == 2), "SectionId", "Name", cicigTraining.Trainer.Select(t => t.TrainerId));
+            //ViewData["SectionId"] = new SelectList(_context.Sections.Where(a => a.SectionId == 2), "SectionId", "Name", cicigTraining.TrainerId);
 
             ViewData["TrainerId"] = new MultiSelectList(_context.Trainers/*.Where(a => a.SectionId == 2)*/, "TrainerId", "TrainerName", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));  // Pre-selected TrainerIds);
             //ViewData["TrainerId"] = new SelectList(_context.Trainers.Where(a => a.SectionId == 2), "TrainerId", "TrainerName", cicigTraining.TrainerId);
 
             ViewData["TrainingHeadId"] = new SelectList(_context.TrainingHeads, "TrainingHeadId", "TrainingHeadName", TrainingHeadId);
-            ViewData["TrainingTitleId"] = new SelectList(_context.TrainingTitles.Where(a => a.TrainingHeadId == TrainingHeadId), "TrainingTitleId", "TrainingTypeName", TrainingHeadId);
+            ViewData["TrainingTitleId"] = new SelectList(_context.TrainingTitles.Where(a => a.TrainingHeadId == TrainingHeadId), "TitleId", "TrainingName", TrainingHeadId);
             var districtAccess = _context.Districts.Where(a => a.DistrictName == cicigTraining.District);
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            ViewData["DistrictId"] = new SelectList(districtAccess, "DistrictId", "DistrictName");
-            ViewData["TehsilId"] = new SelectList(_context.Tehsils.Where(a => a.District.DistrictName == cicigTraining.District), "Tehsilid", "TehsilName", cicigTraining.Village.UnionCouncils.TehsilId);
+            var tehsilAccess = _context.Tehsils.Where(a => a.District.DistrictName.Equals(cicigTraining.District));
+            //var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            ViewData["DistrictId"] = new SelectList(districtAccess, "DistrictName", "DistrictName");
+            ViewData["TehsilId"] = new SelectList(tehsilAccess, "TehsilId", "TehsilName", cicigTraining.Village.UnionCouncils.TehsilId);
             ViewData["UnionCouncilId"] = new SelectList(_context.UnionCouncils.Where(a => a.TehsilId == cicigTraining.Village.UnionCouncils.TehsilId), "UnionCouncilId", "UnionCouncilName", cicigTraining.Village.UnionCouncilId);
-            ViewData["VillageId"] = new SelectList(_context.Villages.Where(a => a.UnionCouncilId == cicigTraining.Village.UnionCouncilId), "VillageId", "Name", cicigTraining.VillageId);
+            ViewData["VillageId"] = new SelectList(_context.Villages.Where(a => a.UnionCouncilId == cicigTraining.Village.UnionCouncilId), "VillageId", "VillageName", cicigTraining.VillageId);
             ViewData["PhaseId"] = new SelectList(_context.Phases, "PhaseId", "Name", cicigTraining.Phase);
             ViewBag.IsAllow = true;
             //var currentuser = await _userManager.GetUserAsync(User);
@@ -503,8 +521,8 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["TrainingById"] = new MultiSelectList(_context.Sections/*.Where(a => a.SectionId == 2)*/, "SectionId", "Name");
-            //ViewData["TrainingById"] = new SelectList(_context.Sections.Where(a => a.SectionId == 2), "SectionId", "Name");
+            ViewData["SectionId"] = new MultiSelectList(_context.Sections/*.Where(a => a.SectionId == 2)*/, "SectionId", "Name");
+            //ViewData["SectionId"] = new SelectList(_context.Sections.Where(a => a.SectionId == 2), "SectionId", "Name");
             ViewData["TrainerId"] = new MultiSelectList(_context.Trainers/*.Where(a => a.SectionId == 2)*/, "TrainerId", "TrainerName", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));
             //ViewData["TrainerId"] = new SelectList(_context.Trainers.Where(a => a.SectionId == 2), "TrainerId", "TrainerName", cicigTraining.TrainerId);
             ViewData["TrainingHeadId"] = new SelectList(_context.TrainingHeads, "TrainingHeadId", "TrainingHeadName", TrainingHeadId);
@@ -565,7 +583,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             var cicigTraining = await _context.CICIGTrainings.FindAsync(id);
             if (cicigTraining != null)
             {
-                _context.Database.ExecuteSqlRaw("delete [Training].[CITrainingMember] where CICIGTrainingsId=" + cicigTraining.CICIGTrainingsId);
+                //_context.Database.ExecuteSqlRaw("delete [Training].[CITrainingMember] where CICIGTrainingsId=" + cicigTraining.CICIGTrainingsId);
                 _context.CICIGTrainings.Remove(cicigTraining);
                 await _context.SaveChangesAsync();
             }

@@ -1,19 +1,22 @@
-﻿@* @model IEnumerable<DAL.Models.Domain.Training.MemberTrainingCICIG>
+﻿@model IEnumerable<DAL.Models.Domain.SocialMobilization.Training.CITrainingParticipation>
 @using Microsoft.AspNetCore.Authorization
+@using PermissionPro.PreDefined
 @inject IAuthorizationService AuthorizationService
-@using Constant.Constants
+@* @using Constant.Constants *@
+
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                             <tr>                                              
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.CommunityInstitution.CICode)
+                                                    @Html.DisplayNameFor(model => model.CICIG.Code)
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.CommunityInstitution.Name)
+                                                    @Html.DisplayNameFor(model => model.CICIG.Name)
                                                 </th>
-                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Delete)).Result.Succeeded)
+                                                @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Delete)).Result.Succeeded
+
                                                 {
                                                     <th>
                                                         Action
@@ -26,15 +29,16 @@
                                             {
                                                 <tr>                                                    
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.CommunityInstitution.CICode)
+                                                        @Html.DisplayFor(modelItem => item.CICIG.Code)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.CommunityInstitution.Name)
-                                                    </td>                                                    
-                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Delete)).Result.Succeeded)
+                                                        @Html.DisplayFor(modelItem => item.CICIG.Name)
+                                                    </td>
+                                                    @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Delete)).Result.Succeeded
                                                     {
                                                         <td>
-                                                            <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.MemberTrainingCICIGId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                                                            <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.CITrainingParticipationId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+
                                                         </td>
                                                     }                                                    
                                                   
@@ -43,6 +47,4 @@
                                         </tbody>
                                     </table>
                                 </div>
-       
-
- *@
+      

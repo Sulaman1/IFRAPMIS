@@ -27,7 +27,10 @@ namespace BAL.Services.MasterSetup
             
         public async Task<List<UnionCouncil>> GetAll()
         {
-            return await _context.UnionCouncils.ToListAsync();
+            var ucs = await _context.UnionCouncils.Include(uc => uc.Tehsil)
+                                                  .ThenInclude(uc => uc.District)
+                                                  .ToListAsync();
+            return ucs; 
         }
 
        public async Task<List<Tehsil>> GetAllTehsil() => await this._context.Tehsils.ToListAsync<Tehsil>();

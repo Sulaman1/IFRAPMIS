@@ -129,7 +129,7 @@ else
     <script>
         $(document).ready(function () {            
             $("#DistrictId").change(function () {                                
-                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                $.get("/CICIG/GetTehsils", { districtName: $("#DistrictId").val() }, function (data) {                    
                     $("#TehsilId").empty();                   
                     $("#TehsilId").append('<option value="">Select...</option>');
                     console.log(data);

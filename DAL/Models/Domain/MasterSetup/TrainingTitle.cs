@@ -21,7 +21,8 @@ namespace DAL.Models.Domain.MasterSetup
         public int? TrainingHeadId { get; set; }
         public TrainingHead? TrainingHead { get; set; }
 
-        //Navigations
-        public CICIGTrainings? CICIGTrainings { get; set; }
+        //Collections
+        public ICollection<CICIGTrainings>? CICIGTrainings { get; set; }
+
     }
 }

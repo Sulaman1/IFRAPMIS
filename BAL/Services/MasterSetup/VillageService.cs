@@ -35,7 +35,10 @@ namespace BAL.Services.MasterSetup
 
         public async Task<List<Village>> GetAll()
         {
-            return await _context.Villages.ToListAsync();
+            return await _context.Villages
+                                 .Include(v => v.UnionCouncils)
+                                 .ThenInclude(v => v.Tehsil)
+                                 .ToListAsync();
         }
 
         public async Task<List<Tehsil>> GetAllTehsil(ClaimsPrincipal user)

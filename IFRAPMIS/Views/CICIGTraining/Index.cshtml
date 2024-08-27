@@ -46,10 +46,12 @@
                                         <thead>
                                             <tr>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.Phase.Name)
+
+                                                    @Html.DisplayNameFor(model => model.Phase)
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.TrainingHead.TrainingHeadName)
+                                                    @Html.DisplayNameFor(model => model.TrainingTitle.TrainingHead.TrainingHeadName)
+
                                                 </th>
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.TrainingTitle.TrainingName)
@@ -85,7 +87,9 @@
                                                         @Html.DisplayFor(modelItem => item.Phase.Name)
                                                     </td>
                                                      <td>
-                                                        @Html.DisplayFor(modelItem => item.TrainingHead.TrainingHeadName)
+
+                                                        @Html.DisplayFor(modelItem => item.TrainingTitle.TrainingHead.TrainingHeadName)
+
                                                     </td>
                                                    <td>
                                                         @Html.DisplayFor(modelItem => item.TrainingTitle.TrainingName)
@@ -101,19 +105,25 @@
                                                     </td>  
                                                      <td>
                                                         <a asp-action="details" asp-route-id="@item.CICIGTrainingsId">Detail</a> |
-                                                        <a asp-action="Create" asp-controller="CICIGTrainings" asp-route-id="@item.CICIGTrainingsId">View CI/CIG</a>
+
+                                                        <a asp-action="Create" asp-controller="CITrainingParticipatoin" asp-route-id="@item.CICIGTrainingsId">View CI/CIG</a>
+
                                                     </td>
                                                     @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Edit)).Result.Succeeded
                                                     {
                                                         <td>
-                                                            <a asp-action="Edit" asp-route-id="@item.CICIGTrainingsId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+
+                                                            <a asp-action="Edit" asp-route-id="@item.CICIGTrainingsId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i>Edit</a>
+
                                                         </td>
                                                     }
 
                                                     @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Delete)).Result.Succeeded
                                                     {
                                                         <td>
-                                                            <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.CICIGTrainingsId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+
+                                                            <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.CICIGTrainingsId"> <i class="mdi mdi-trash-can font-size-18"></i>Delete</a>
+
                                                         </td>
                                                     }
                                                 </tr>

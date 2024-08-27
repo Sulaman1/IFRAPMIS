@@ -136,7 +136,7 @@ namespace IFRAPMIS.Controllers.MasterSetup
         {
             var provience = await _context.GetById(id);
             _context.Remove(provience);
-            _context.Save();
+            await _context.Save();
             return RedirectToAction(nameof(Index));
         }
 

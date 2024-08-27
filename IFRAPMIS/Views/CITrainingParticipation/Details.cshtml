@@ -1,4 +1,6 @@
+
 ﻿@model DAL.Models.Domain.SocialMobilization.Training.CITrainingParticipation
+
 
 @{
     ViewData["Title"] = "Details";
@@ -11,14 +13,18 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
+
             @Html.DisplayNameFor(model => model.CICIG.Name)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CICIG.Name)
+
         </dd>
        
     </dl>
 </div>
 <div>
+
     <a asp-action="Edit" asp-route-id="@Model.CITrainingParticipationId">Edit</a> 
 </div>
+

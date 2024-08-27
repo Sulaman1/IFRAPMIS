@@ -50,8 +50,6 @@ namespace DAL.Models.Domain.SocialMobilization.Training
         //public TrainingHead? TrainingHead { get; set; }
         public int? TrainingTitleId { get; set; }
         public TrainingTitle? TrainingTitle { get; set; }
-
-
         //Connection
         public int? PhaseId { get; set; }
         public Phase? Phase { get; set; }

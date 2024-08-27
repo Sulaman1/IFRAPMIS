@@ -4,6 +4,7 @@
 @inject IAuthorizationService AuthorizationService
 @* @using Constant.Constants *@
 
+
                                 <div class="table-responsive">
                                     <table class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
@@ -15,6 +16,7 @@
                                                     @Html.DisplayNameFor(model => model.CICIG.Name)
                                                 </th>
                                                 @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Delete)).Result.Succeeded
+
                                                 {
                                                     <th>
                                                         Action
@@ -36,6 +38,7 @@
                                                     {
                                                         <td>
                                                             <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.CITrainingParticipationId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+
                                                         </td>
                                                     }                                                    
                                                   
@@ -44,5 +47,4 @@
                                         </tbody>
                                     </table>
                                 </div>
-       
-
+      

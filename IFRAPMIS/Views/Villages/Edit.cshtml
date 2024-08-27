@@ -1,7 +1,6 @@
 ﻿@model DAL.Models.Domain.MasterSetup.Village
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
-@* @using Constant.Constants *@
 
 @{
     ViewData["Title"] = "Edit";
@@ -62,7 +61,7 @@
                                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                             <input type="hidden" asp-for="VillageId"/>
                                             <div class="form-group">
-                                                <label class="control-label">District</label>
+                                                <label class="control-label">Tehsil</label>
                                                 <select required id="TehsilId" name="TehsilId" asp-items="ViewBag.TehsilId" class="form-control">
                                                     <option value=""> - - Select - -</option>
                                                 </select>
@@ -130,7 +129,7 @@ else
     <script>
         $(document).ready(function () {            
             $("#TehsilId").change(function () {                                
-                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                $.get("/CICIG/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
                     $("#UnionCouncilId").empty();
                     $("#UnionCouncilId").append('<option value="">Select...</option>');
                     console.log(data);

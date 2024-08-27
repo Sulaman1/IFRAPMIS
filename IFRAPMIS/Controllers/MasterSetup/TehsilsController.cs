@@ -97,7 +97,7 @@ namespace IFRAPMIS.Controllers.MasterSetup
             {
                 return NotFound();
             }
-            ViewData["District"] = new SelectList(_context.GetAllDistrict().Result.Where(a => a.DistrictId > 1), "DistrictName", "DistrictName", tehsil.DistrictId);
+            ViewData["District"] = new SelectList(_context.GetAllDistrict().Result.Where(a => a.DistrictId > 1), "DistrictId", "DistrictName", tehsil.DistrictId);
             //ViewData["DistrictId"] = new SelectList(_context.GetAllDistrict(), "DistrictId", "Name");
             return View(tehsil);
         }

@@ -17,7 +17,10 @@ namespace BAL.Services.MasterSetup
 
         public DivisionService(ApplicationDbContext context) => this._context = context;
 
-        public void Remove(Division division) => this._context.Remove<Division>(division);
+        public void Remove(Division division)
+        {
+            _context.Remove<Division>(division);            
+        }
 
         public async Task<List<Division>> GetAll() => await _context.Divisions.ToListAsync<Division>();
         public List<Provience> GetAllProvience() => this._context.Proviences.ToList<Provience>();    
@@ -28,7 +31,7 @@ namespace BAL.Services.MasterSetup
 
         public async Task Save()
         {
-            int num = await this._context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public bool Exist(int Id)

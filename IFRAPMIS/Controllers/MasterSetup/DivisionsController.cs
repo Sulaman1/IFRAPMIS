@@ -102,14 +102,14 @@ namespace IFRAPMIS.Controllers.MasterSetup
             {
                 try
                 {
-                    var IsExist = _context.Count(division.Name);
-                    if (IsExist > 0)
-                    {
-                        ModelState.AddModelError(nameof(division.Name), "Already exist with same name!");
-                        return BadRequest(ModelState);
-                    }
+                    //var IsExist = _context.Count(division.Name);
+                    //if (IsExist > 0)
+                    //{
+                    //    ModelState.AddModelError(nameof(division.Name), "Already exist with same name!");
+                    //    return BadRequest(ModelState);
+                    //}
                     _context.Update(division);
-                    _context.Save();
+                    await _context.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -152,7 +152,7 @@ namespace IFRAPMIS.Controllers.MasterSetup
         {
             var division = await _context.GetById(id);
             _context.Remove(division);
-            _context.Save();
+            await _context.Save();
             return RedirectToAction(nameof(Index));
         }
 

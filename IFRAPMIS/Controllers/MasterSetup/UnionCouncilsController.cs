@@ -42,7 +42,7 @@ namespace IFRAPMIS.Controllers.MasterSetup
         {
             var allDistricts = await _context.GetAllDistrict();            
             
-            ViewData["DistrictId"] = new SelectList(allDistricts, "DistrictId", "DistrictName");
+            ViewData["DistrictId"] = new SelectList(allDistricts, "DistrictName", "DistrictName");
             return View();
         }
 
@@ -51,7 +51,7 @@ namespace IFRAPMIS.Controllers.MasterSetup
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UnionCouncilId,UnionCouncilName,TehsilId")] UnionCouncil unionCouncil, int DistrictId)
+        public async Task<IActionResult> Create([Bind("UnionCouncilId,UnionCouncilName,TehsilId")] UnionCouncil unionCouncil, string DistrictId)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +64,7 @@ namespace IFRAPMIS.Controllers.MasterSetup
                 _context.Insert(unionCouncil);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DistrictId"] = new SelectList(_context.GetAllDistrict().Result.Where(a => a.DistrictId > 1), "DistrictId", "Name", DistrictId);
+            ViewData["DistrictId"] = new SelectList(_context.GetAllDistrict().Result.Where(a => a.DistrictId > 1), "DistrictName", "DistrictName");
             return View(unionCouncil);
         }
 
@@ -81,7 +81,7 @@ namespace IFRAPMIS.Controllers.MasterSetup
             {
                 return NotFound();
             }
-            ViewData["DistrictId"] = new SelectList(_context.GetAllDistrict().Result.Where(a => a.DistrictId > 1), "DistrictId", "Name", unionCouncil.TehsilId);
+            ViewData["DistrictId"] = new SelectList(_context.GetAllDistrict().Result.Where(a => a.DistrictId > 1), "DistrictName", "DistrictName", unionCouncil.TehsilId);
             return View(unionCouncil);
         }
 
@@ -90,7 +90,7 @@ namespace IFRAPMIS.Controllers.MasterSetup
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UnionCouncilId,UnionCouncilName,TehsilId")] UnionCouncil unionCouncil, int DistrictId)
+        public async Task<IActionResult> Edit(int id, [Bind("UnionCouncilId,UnionCouncilName,TehsilId")] UnionCouncil unionCouncil/*, string DistrictId*/)
         {
             if (id != unionCouncil.UnionCouncilId)
             {
@@ -122,7 +122,7 @@ namespace IFRAPMIS.Controllers.MasterSetup
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DistrictId"] = new SelectList(_context.GetAllDistrict().Result.Where(a => a.DistrictId > 1), "DistrictId", "Name", DistrictId);
+            ViewData["DistrictId"] = new SelectList(_context.GetAllDistrict().Result.Where(a => a.DistrictId > 1), "DistrictName", "DistrictName"/*, DistrictId*/);
             return View(unionCouncil);
         }
 

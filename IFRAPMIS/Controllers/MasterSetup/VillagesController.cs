@@ -82,7 +82,8 @@ namespace IFRAPMIS.Controllers.MasterSetup
             {
                 return NotFound();
             }
-            ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllTehsil(User), "UnionCouncilId", "UnionCouncilName", village.UnionCouncilId);
+            ViewData["TehsilId"] = new SelectList(await _context.GetAllTehsil(User), "TehsilId", "TehsilName");
+            //ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllTehsil(User), "UnionCouncilId", "UnionCouncilName", village.UnionCouncilId);
             return View(village);
         }
 
@@ -100,12 +101,12 @@ namespace IFRAPMIS.Controllers.MasterSetup
 
             if (ModelState.IsValid)
             {
-                var result = _context.Count(village.VillageName);
-                if (result > 0)
-                {
-                    ModelState.AddModelError(nameof(village.VillageName), "Village already exist!");
-                    return View(village);
-                }
+                //var result = _context.Count(village.VillageName);
+                //if (result > 0)
+                //{
+                //    ModelState.AddModelError(nameof(village.VillageName), "Village already exist!");
+                 //   return View(village);
+                //}
                 try
                 {
                     _context.Update(village);

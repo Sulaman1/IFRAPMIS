@@ -11,7 +11,7 @@ namespace DAL.Models.Domain.SocialMobilization.Training
     public class CITrainingParticipation
     {
         [Key]
-        public int CIIrainingParticipationId { get; set; }
+        public int CITrainingParticipationId { get; set; }
         public int CICIGId { get; set; }
         [ForeignKey("CICIGId")]
         public CICIG? CICIG { get; set; }

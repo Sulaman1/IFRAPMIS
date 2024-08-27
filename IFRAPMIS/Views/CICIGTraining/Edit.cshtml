@@ -13,6 +13,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var sectionId = ViewData["SectionId"] as MultiSelectList;
+
     var trainerId = ViewData["TrainerId"] as MultiSelectList;
 }
 
@@ -41,7 +42,9 @@
         <div class="row">
             <div class="col-lg-2">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
                     <a class="nav-link" asp-action="Index" asp-controller="CICIGTraining" aria-selected="true">
+
                         <i class="bx bxs-grid-alt check-nav-icon mt-4 mb-2"></i>
                         <p class="font-weight-bold mb-4">List of Training Conducted</p>
                     </a>
@@ -85,6 +88,7 @@
                                                 <label class="control-label">District</label>
                                                 <select required asp-for="District" name="District" id="DistrictId" asp-items="ViewBag.DistrictId" class="form-control">                                                    
                                                 <option value=""> - - Select - -</option>
+
                                                 </select>
                                             </div>  
                                         </div>
@@ -93,6 +97,7 @@
                                                 <label class="control-label">Tehsil</label>
                                                 <select required id="Tehsil" asp-items="ViewBag.TehsilId" class="form-control">
                                                 <option value=""> - - Select - -</option>
+
                                                 </select>
                                             </div>
                                         </div>
@@ -101,6 +106,7 @@
                                                 <label class="control-label">Union Council</label>
                                                 <select required id="UnionCouncil" asp-items="ViewBag.UnionCouncilId" class="form-control">                                                    
                                                 <option value=""> - - Select - -</option>
+
                                                 </select>
                                             </div>
                                         </div>
@@ -109,22 +115,27 @@
                                                 <label class="control-label">Village</label>
                                                 <select required asp-for="VillageId" id="VillageId" asp-items="ViewBag.VillageId" class="form-control">                                                    
                                                 <option value=""> - - Select - -</option>
+
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
+
                                                 <label asp-for="PhaseId" class="control-label"></label>
                                                 <select required asp-for="PhaseId" asp-items="ViewBag.PhaseId" class="form-control">
                                                 <option value=""> - - Select - -</option>
+
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>                                            
                                            <div class="form-group">
+
                                                 <label asp-for="TrainingHeadName" class="control-label"></label>
                                                 <select name="TrainingHeadName" id="TrainingHeadId" class ="form-control" asp-items="ViewBag.TrainingHeadId" required>
+
                                                     <option value=""> - - Select - -</option>
                                                 </select>
                                             </div>
@@ -133,6 +144,7 @@
                                            <div class="form-group">
                                                 <label asp-for="TrainingTitleName" class="control-label"></label>
                                                 <select asp-for="TrainingTitleName" asp-items="ViewBag.TrainingTitleId" class ="form-control" required>
+
                                                     <option value=""> - - Select - -</option>
                                                 </select>
                                             </div>
@@ -194,10 +206,12 @@
                                          @* <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="control-label">Trained By</label>
+
                                                 <select id="SectionId" class ="form-control" asp-items="ViewBag.SectionId"></select>
                                             </div>
                                         </div> *@
                                        
+
 
                                         <div class="col-md-3">
                                             <div class="form-group">
@@ -216,7 +230,9 @@
 
                                         <div class="col-md-3">
                                             <label asp-for="CICIGTrainingTrainers" class="control-label">Select Trainers</label>
+
                                             <select asp-for="CICIGTrainingTrainers" id="CICIGTrainingTrainers" asp-items="trainerId" class="form-control" multiple="multiple">
+
                                             </select>
                                         </div>
 
@@ -505,6 +521,7 @@ else
     <script>
         $(document).ready(function () {            
             $("#TrainingHeadId").change(function () {                                
+
                 $.get("/CICIGTraining/GetTrainingTypes", { trainingHeadId: $("#TrainingHeadId").val() }, function (data) {
                     $("#SectionId").empty();                   
                     $("#SectionId").append('<option>Select...</option>');
@@ -512,6 +529,7 @@ else
                     $.each(data, function (index, row) {
                         console.log(row);
                         $("#SectionId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+
                     });
                 });
                 return false;
@@ -524,6 +542,7 @@ else
                     $.each(data, function (index, row) {
                         console.log(row);
                         $("#CICIGTrainingTrainers").append("<option value='" + row.value + "'>" + row.text + "</option>")
+
                     });
                 });
                 return false;
@@ -538,6 +557,7 @@ else
                     $.each(data, function (index, row) {
                         console.log(row);
                         $("#Tehsil").append("<option value='" + row.value + "'>" + row.text + "</option>")
+
                     });
                 });
                 return false;
@@ -550,12 +570,14 @@ else
                     $.each(data, function (index, row) {
                         console.log(row);
                         $("#UnionCouncil").append("<option value='" + row.value + "'>" + row.text + "</option>")
+
                     });
                 });
                 return false;
             });
             $("#UnionCouncil").change(function () {                
                 $.get("/CICIG/GetVillages", { ucId: $("#UnionCouncil").val() }, function (data) {
+
                     $("#VillageId").empty();
                     $("#VillageId").append('<option>Select...</option>');
                     console.log(data);
@@ -568,11 +590,13 @@ else
             });
         });
          function createModal(url) {
+
              debugger;
             $("#pdfFile").attr("src", url);
         }
         function createModal2(url) {
             debugger;
+
             $("#imageFile").attr("src", url);
         }
     </script>

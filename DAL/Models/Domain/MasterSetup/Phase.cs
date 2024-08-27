@@ -21,5 +21,6 @@ namespace DAL.Models.Domain.MasterSetup
         public ICollection<CICIG>? CICIG { get; set; }
 
         //Navigations
+
     }
 }

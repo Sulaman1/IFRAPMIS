@@ -48,7 +48,8 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
 
             //    return Json(new { isValid = false, Info, count = 0, message = "" });
             //}
-            var AnyOtherTraining = _context.CITrainingMembers.Include(a => a.CIMember.CICIG.Village.UnionCouncils.Tehsil).Include(a => a.CICIGTrainings.TrainingHead).Where(a => a.CIMember.CIMemberId == Info.CIMemberId).ToList();
+            var AnyOtherTraining = _context.CITrainingMembers.Include(a => a.CIMember.CICIG.Village.UnionCouncils.Tehsil).Include(a => a.CICIGTrainings.TrainingTitle.TrainingHead).Where(a => a.CIMember.CIMemberId == Info.CIMemberId).ToList();
+
             string abounttrainings = "";
             if (AnyOtherTraining.Count() > 0)
             {
@@ -56,7 +57,8 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 int counter = 1;
                 foreach (var a in AnyOtherTraining)
                 {
-                    abounttrainings += "(" + counter++ + ") Tehsil: " + a.CIMember.CICIG.Village.UnionCouncils.Tehsil.TehsilName + ", UC: " + a.CIMember.CICIG.Village.UnionCouncils.UnionCouncilName + ", Training Head: " + a.CICIGTrainings.TrainingHead.TrainingHeadName + ", Training Type: " + a.CICIGTrainings.TrainingTitle + ", Training Title: " + a.CICIGTrainings.TrainingName + ". ";
+                    abounttrainings += "(" + counter++ + ") Tehsil: " + a.CIMember.CICIG.Village.UnionCouncils.Tehsil.TehsilName + ", UC: " + a.CIMember.CICIG.Village.UnionCouncils.UnionCouncilName + ", Training Head: " + a.CICIGTrainings.TrainingTitle.TrainingHead.TrainingHeadName + ", Training Type: " + a.CICIGTrainings.TrainingTitle + ", Training Title: " + a.CICIGTrainings.TrainingName + ". ";
+
                 }
             }
             return Json(new { isValid = true, Info, count = AnyOtherTraining.Count(), message = abounttrainings });

@@ -12,20 +12,36 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBContext.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240815051053_MasterSetupV8")]
-    partial class MasterSetupV8
+    [Migration("20240826120429_Init2")]
+    partial class Init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DAL.Models.DamageAssessmentLivestock", b =>
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamageAssessmentHTS", b =>
+                {
+                    b.Property<int>("DamageAssessmentHTSId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DamageAssessmentHTSId"));
+
+                    b.Property<string>("DamageAssessmentHTSType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DamageAssessmentHTSId");
+
+                    b.ToTable("DamageAssessmentHTSs");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamageAssessmentLivestock", b =>
                 {
                     b.Property<int>("DamageAssessmentLivestockId")
                         .ValueGeneratedOnAdd()
@@ -41,7 +57,7 @@ namespace DBContext.Migrations
                     b.ToTable("DamageAssessmentLivestocks");
                 });
 
-            modelBuilder.Entity("DAL.Models.DamageIP", b =>
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamageIP", b =>
                 {
                     b.Property<int>("DamageIPId")
                         .ValueGeneratedOnAdd()
@@ -78,7 +94,7 @@ namespace DBContext.Migrations
                     b.ToTable("DamageIPs");
                 });
 
-            modelBuilder.Entity("DAL.Models.DamagePDMA", b =>
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamagePDMA", b =>
                 {
                     b.Property<int>("DamagePDMAId")
                         .ValueGeneratedOnAdd()
@@ -115,7 +131,7 @@ namespace DBContext.Migrations
                     b.ToTable("DamagePDMAs");
                 });
 
-            modelBuilder.Entity("DAL.Models.DamageVerified", b =>
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamageVerified", b =>
                 {
                     b.Property<int>("DamageVerifiedId")
                         .ValueGeneratedOnAdd()
@@ -152,22 +168,6 @@ namespace DBContext.Migrations
                     b.ToTable("DamageVerifieds");
                 });
 
-            modelBuilder.Entity("DAL.Models.Domain.HTS.DamageAssessmentHTS", b =>
-                {
-                    b.Property<int>("DamageAssessmentHTSId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DamageAssessmentHTSId"));
-
-                    b.Property<string>("DamageAssessmentHTSType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DamageAssessmentHTSId");
-
-                    b.ToTable("DamageAssessmentHTSs");
-                });
-
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryIP", b =>
                 {
                     b.Property<int>("BeneficiaryIPId")
@@ -191,20 +191,26 @@ namespace DBContext.Migrations
                     b.Property<string>("CNICAttachment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DisabilityType")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsDisable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsRefugee")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MaritialStatus")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Tehsil")
                         .HasColumnType("nvarchar(max)");
@@ -245,20 +251,26 @@ namespace DBContext.Migrations
                     b.Property<string>("CNICAttachment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DisabilityType")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsDisable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsRefugee")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MaritialStatus")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Tehsil")
                         .HasColumnType("nvarchar(max)");
@@ -290,8 +302,14 @@ namespace DBContext.Migrations
                     b.Property<string>("BeneficiaryFather")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("BeneficiaryIPId")
+                        .HasColumnType("int");
+
                     b.Property<string>("BeneficiaryName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("BeneficiaryPDMAId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CIMemberId")
                         .HasColumnType("int");
@@ -302,14 +320,17 @@ namespace DBContext.Migrations
                     b.Property<string>("CNICAttachment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DisabilityType")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDisable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsRefugee")
+                        .HasColumnType("bit");
 
                     b.Property<string>("MaritialStatus")
                         .HasColumnType("nvarchar(max)");
@@ -331,6 +352,14 @@ namespace DBContext.Migrations
 
                     b.HasKey("BeneficiaryVerifiedId");
 
+                    b.HasIndex("BeneficiaryIPId")
+                        .IsUnique()
+                        .HasFilter("[BeneficiaryIPId] IS NOT NULL");
+
+                    b.HasIndex("BeneficiaryPDMAId")
+                        .IsUnique()
+                        .HasFilter("[BeneficiaryPDMAId] IS NOT NULL");
+
                     b.HasIndex("CIMemberId")
                         .IsUnique();
 
@@ -339,244 +368,26 @@ namespace DBContext.Migrations
                     b.ToTable("BeneficiaryVerifieds");
                 });
 
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CICIG", b =>
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CommunityType", b =>
                 {
-                    b.Property<int>("CICIGId")
+                    b.Property<int>("CommunityTypeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CICIGId"));
-
-                    b.Property<string>("ApprovalComments")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ApprovalDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ApprovedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Attachement1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Attachement2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Attachement3")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommunityTypeId"));
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("District")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EntryBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("HouseHoldNumber")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsVerified")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Lat")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Long")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tehsil")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("CommunityTypeId");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnionCouncil")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Venue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VerificationComments")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("VerificationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("VerifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VillageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CICIGId");
-
-                    b.HasIndex("VillageId");
-
-                    b.ToTable("CICIGs");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CICIGTrainings", b =>
-                {
-                    b.Property<int>("CICIGTrainingsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CICIGTrainingsId"));
-
-                    b.Property<string>("Attachment1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Attachment2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Attachment3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("District")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Ended")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lat")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Long")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Started")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Tehsil")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TotalMembersParticipated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TotalNumberFemale")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TotalNumberMale")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrainingCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TrainingHeadId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TrainingHeadName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrainingName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrainingTitleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnionCouncil")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Venue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VillageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CICIGTrainingsId");
-
-                    b.HasIndex("TrainingHeadId");
-
-                    b.HasIndex("VillageId");
-
-                    b.ToTable("CICIGTrainings");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CIMember", b =>
-                {
-                    b.Property<int>("CIMemberId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CIMemberId"));
-
-                    b.Property<int>("CICIGId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Designation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MemberCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CIMemberId");
-
-                    b.HasIndex("CICIGId");
-
-                    b.ToTable("CIMembers");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CITrainingMember", b =>
-                {
-                    b.Property<int>("CITrainingMemberId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CITrainingMemberId"));
-
-                    b.Property<int>("CICIGTrainingsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CITrainingMemberId");
-
-                    b.HasIndex("CICIGTrainingsId");
-
-                    b.ToTable("CITrainingMembers");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CITrainingParticipation", b =>
-                {
-                    b.Property<int>("CIIrainingParticipationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CIIrainingParticipationId"));
-
-                    b.Property<int>("CICIGId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CICIGTrainingsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CIIrainingParticipationId");
-
-                    b.HasIndex("CICIGId")
-                        .IsUnique();
-
-                    b.HasIndex("CICIGTrainingsId")
-                        .IsUnique();
-
-                    b.ToTable("CITrainingParticipations");
+                    b.ToTable("CommunityTypes");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.District", b =>
@@ -636,6 +447,23 @@ namespace DBContext.Migrations
                     b.ToTable("Divisions");
                 });
 
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Phase", b =>
+                {
+                    b.Property<int>("PhaseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PhaseId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PhaseId");
+
+                    b.ToTable("Phases");
+                });
+
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Provience", b =>
                 {
                     b.Property<int>("ProvienceId")
@@ -658,6 +486,23 @@ namespace DBContext.Migrations
                     b.ToTable("Proviences");
                 });
 
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Section", b =>
+                {
+                    b.Property<int>("SectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SectionId");
+
+                    b.ToTable("Sections");
+                });
+
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Tehsil", b =>
                 {
                     b.Property<int>("TehsilId")
@@ -676,7 +521,56 @@ namespace DBContext.Migrations
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("Teshsils");
+                    b.ToTable("Tehsils");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Trainer", b =>
+                {
+                    b.Property<int>("TrainerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainerId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CNIC")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Designation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DistrictId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FatherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TrainerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TrainerId");
+
+                    b.HasIndex("DistrictId")
+                        .IsUnique()
+                        .HasFilter("[DistrictId] IS NOT NULL");
+
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("Trainers");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingHead", b =>
@@ -695,6 +589,10 @@ namespace DBContext.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TrainingIntervention")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("TrainingHeadId");
 
                     b.ToTable("TrainingHeads");
@@ -708,18 +606,26 @@ namespace DBContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TitleId"));
 
-                    b.Property<int>("CICIGTrainingsId")
+                    b.Property<int?>("TrainingHeadId")
                         .HasColumnType("int");
 
+                    b.Property<string>("TrainingIntervention")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TrainingName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrainingTitleCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TitleId");
 
-                    b.HasIndex("CICIGTrainingsId")
-                        .IsUnique();
+                    b.HasIndex("TrainingHeadId");
 
-                    b.ToTable("TrainingTitle");
+                    b.ToTable("TrainingTitles");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.UnionCouncil", b =>
@@ -762,6 +668,333 @@ namespace DBContext.Migrations
                     b.HasIndex("UnionCouncilId");
 
                     b.ToTable("Villages");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.ResolveManyToMany.CICIGTrainingTrainer", b =>
+                {
+                    b.Property<int>("CICIGTrainingsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrainerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CICIGTrainingsId", "TrainerId");
+
+                    b.HasIndex("TrainerId");
+
+                    b.ToTable("CICIGTrainingTrainer");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CICIG", b =>
+                {
+                    b.Property<int>("CICIGId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CICIGId"));
+
+                    b.Property<string>("ApprovalComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ApprovalDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CommunityTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("District")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EntryBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HouseHoldNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HouseHoldParticipated")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsRejected")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsReviewed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsSubmittedForReview")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Lat")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Long")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PhaseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RejectedComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReviewedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ReviewedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SelectionFormAttachment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubmittedForReviewBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("SubmittedForReviewDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TOPAttachment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tehsil")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnionCouncil")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Venue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VerificationComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("VerificationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("VerifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VillageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VillageProfileAttachment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CICIGId");
+
+                    b.HasIndex("CommunityTypeId")
+                        .IsUnique()
+                        .HasFilter("[CommunityTypeId] IS NOT NULL");
+
+                    b.HasIndex("PhaseId")
+                        .IsUnique()
+                        .HasFilter("[PhaseId] IS NOT NULL");
+
+                    b.HasIndex("VillageId");
+
+                    b.ToTable("CICIGs");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CIMember", b =>
+                {
+                    b.Property<int>("CIMemberId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CIMemberId"));
+
+                    b.Property<int>("CICIGId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MemberCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CIMemberId");
+
+                    b.HasIndex("CICIGId");
+
+                    b.ToTable("CIMembers");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", b =>
+                {
+                    b.Property<int>("CICIGTrainingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CICIGTrainingsId"));
+
+                    b.Property<string>("AttendanceAttachment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("District")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Ended")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Lat")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Long")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PhaseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PictureAttachment1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PictureAttachment2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PictureAttachment3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PictureAttachment4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportAttachment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SessionPlanAttachment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Started")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Tehsil")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TotalClasses")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TotalDays")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TotalMembersParticipated")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TotalNumberFemale")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TotalNumberMale")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TrainingCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrainingHeadName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrainingName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TrainingTitleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TrainingTitleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnionCouncil")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Venue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VillageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CICIGTrainingsId");
+
+                    b.HasIndex("PhaseId");
+
+                    b.HasIndex("TrainingTitleId");
+
+                    b.HasIndex("VillageId");
+
+                    b.ToTable("CICIGTrainings");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.Training.CITrainingMember", b =>
+                {
+                    b.Property<int>("CITrainingMemberId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CITrainingMemberId"));
+
+                    b.Property<int>("CICIGTrainingsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CIMemberId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CITrainingMemberId");
+
+                    b.HasIndex("CICIGTrainingsId");
+
+                    b.HasIndex("CIMemberId")
+                        .IsUnique();
+
+                    b.ToTable("CITrainingMembers");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.Training.CITrainingParticipation", b =>
+                {
+                    b.Property<int>("CIIrainingParticipationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CIIrainingParticipationId"));
+
+                    b.Property<int>("CICIGId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CICIGTrainingsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CIIrainingParticipationId");
+
+                    b.HasIndex("CICIGId")
+                        .IsUnique();
+
+                    b.HasIndex("CICIGTrainingsId");
+
+                    b.ToTable("CITrainingParticipations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -975,8 +1208,8 @@ namespace DBContext.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<int>("DistrictId")
-                        .HasColumnType("int");
+                    b.Property<string>("DistrictName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
@@ -1000,7 +1233,7 @@ namespace DBContext.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("DAL.Models.DamageIP", b =>
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamageIP", b =>
                 {
                     b.HasOne("DAL.Models.Domain.MasterSetup.BeneficiaryIP", "BeneficiaryIP")
                         .WithMany("DamageIPs")
@@ -1008,13 +1241,13 @@ namespace DBContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Models.Domain.HTS.DamageAssessmentHTS", "DamageAssessmentHTS")
+                    b.HasOne("DAL.Models.Domain.Damage.DamageAssessmentHTS", "DamageAssessmentHTS")
                         .WithMany("DamageIPs")
                         .HasForeignKey("DamageAssessmentHTSId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Models.DamageAssessmentLivestock", "DamageAssessmentLivestock")
+                    b.HasOne("DAL.Models.Domain.Damage.DamageAssessmentLivestock", "DamageAssessmentLivestock")
                         .WithMany("DamageIPs")
                         .HasForeignKey("DamageAssessmentLivestockId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1027,7 +1260,7 @@ namespace DBContext.Migrations
                     b.Navigation("DamageAssessmentLivestock");
                 });
 
-            modelBuilder.Entity("DAL.Models.DamagePDMA", b =>
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamagePDMA", b =>
                 {
                     b.HasOne("DAL.Models.Domain.MasterSetup.BeneficiaryPDMA", "BeneficiaryPDMA")
                         .WithMany("DamagePDMAs")
@@ -1035,13 +1268,13 @@ namespace DBContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Models.Domain.HTS.DamageAssessmentHTS", "DamageAssessmentHTS")
+                    b.HasOne("DAL.Models.Domain.Damage.DamageAssessmentHTS", "DamageAssessmentHTS")
                         .WithMany("DamagePDMAs")
                         .HasForeignKey("DamageAssessmentHTSId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Models.DamageAssessmentLivestock", "DamageAssessmentLivestock")
+                    b.HasOne("DAL.Models.Domain.Damage.DamageAssessmentLivestock", "DamageAssessmentLivestock")
                         .WithMany("DamagePDMAs")
                         .HasForeignKey("DamageAssessmentLivestockId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1054,7 +1287,7 @@ namespace DBContext.Migrations
                     b.Navigation("DamageAssessmentLivestock");
                 });
 
-            modelBuilder.Entity("DAL.Models.DamageVerified", b =>
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamageVerified", b =>
                 {
                     b.HasOne("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "BeneficiaryVerified")
                         .WithMany("DamageVerifieds")
@@ -1062,13 +1295,13 @@ namespace DBContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Models.Domain.HTS.DamageAssessmentHTS", "DamageAssessmentHTS")
+                    b.HasOne("DAL.Models.Domain.Damage.DamageAssessmentHTS", "DamageAssessmentHTS")
                         .WithMany("DamageVerifieds")
                         .HasForeignKey("DamageAssessmentHTSId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Models.DamageAssessmentLivestock", "DamageAssessmentLivestock")
+                    b.HasOne("DAL.Models.Domain.Damage.DamageAssessmentLivestock", "DamageAssessmentLivestock")
                         .WithMany("DamageVerifieds")
                         .HasForeignKey("DamageAssessmentLivestockId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1097,7 +1330,15 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", b =>
                 {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.CIMember", "CIMember")
+                    b.HasOne("DAL.Models.Domain.MasterSetup.BeneficiaryIP", "BeneficiaryIP")
+                        .WithOne("BeneficiaryVerified")
+                        .HasForeignKey("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "BeneficiaryIPId");
+
+                    b.HasOne("DAL.Models.Domain.MasterSetup.BeneficiaryPDMA", "BeneficiaryPDMA")
+                        .WithOne("BeneficiaryVerified")
+                        .HasForeignKey("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "BeneficiaryPDMAId");
+
+                    b.HasOne("DAL.Models.Domain.SocialMobilization.CIMember", "CIMember")
                         .WithOne("BeneficiaryVerified")
                         .HasForeignKey("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "CIMemberId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1107,76 +1348,11 @@ namespace DBContext.Migrations
                         .WithMany("BeneficiaryVerifieds")
                         .HasForeignKey("VillageId");
 
+                    b.Navigation("BeneficiaryIP");
+
+                    b.Navigation("BeneficiaryPDMA");
+
                     b.Navigation("CIMember");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CICIG", b =>
-                {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.Village", "Village")
-                        .WithMany("CICIGs")
-                        .HasForeignKey("VillageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Village");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CICIGTrainings", b =>
-                {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.TrainingHead", "TrainingHead")
-                        .WithMany()
-                        .HasForeignKey("TrainingHeadId");
-
-                    b.HasOne("DAL.Models.Domain.MasterSetup.Village", "Village")
-                        .WithMany("CICIGTrainings")
-                        .HasForeignKey("VillageId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("TrainingHead");
-
-                    b.Navigation("Village");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CIMember", b =>
-                {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.CICIG", "CICIG")
-                        .WithMany("CICIGMember")
-                        .HasForeignKey("CICIGId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CICIG");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CITrainingMember", b =>
-                {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.CICIGTrainings", "CICIGTrainings")
-                        .WithMany("Members")
-                        .HasForeignKey("CICIGTrainingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CICIGTrainings");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CITrainingParticipation", b =>
-                {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.CICIG", "CICIG")
-                        .WithOne("CITrainingParticipation")
-                        .HasForeignKey("DAL.Models.Domain.MasterSetup.CITrainingParticipation", "CICIGId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Models.Domain.MasterSetup.CICIGTrainings", "CICIGTrainings")
-                        .WithOne("CITrainingParticipation")
-                        .HasForeignKey("DAL.Models.Domain.MasterSetup.CITrainingParticipation", "CICIGTrainingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CICIG");
-
-                    b.Navigation("CICIGTrainings");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.District", b =>
@@ -1212,15 +1388,30 @@ namespace DBContext.Migrations
                     b.Navigation("District");
                 });
 
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingTitle", b =>
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Trainer", b =>
                 {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.CICIGTrainings", "CICIGTrainings")
-                        .WithOne("TrainingTitle")
-                        .HasForeignKey("DAL.Models.Domain.MasterSetup.TrainingTitle", "CICIGTrainingsId")
+                    b.HasOne("DAL.Models.Domain.MasterSetup.District", "District")
+                        .WithOne("Trainer")
+                        .HasForeignKey("DAL.Models.Domain.MasterSetup.Trainer", "DistrictId");
+
+                    b.HasOne("DAL.Models.Domain.MasterSetup.Section", "Section")
+                        .WithMany("Trainers")
+                        .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CICIGTrainings");
+                    b.Navigation("District");
+
+                    b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingTitle", b =>
+                {
+                    b.HasOne("DAL.Models.Domain.MasterSetup.TrainingHead", "TrainingHead")
+                        .WithMany("TrainingTitle")
+                        .HasForeignKey("TrainingHeadId");
+
+                    b.Navigation("TrainingHead");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.UnionCouncil", b =>
@@ -1243,6 +1434,120 @@ namespace DBContext.Migrations
                         .IsRequired();
 
                     b.Navigation("UnionCouncils");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.ResolveManyToMany.CICIGTrainingTrainer", b =>
+                {
+                    b.HasOne("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", "CICIGTrainings")
+                        .WithMany("CICIGTrainingTrainers")
+                        .HasForeignKey("CICIGTrainingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Domain.MasterSetup.Trainer", "Trainer")
+                        .WithMany("CICIGTrainingTrainers")
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CICIGTrainings");
+
+                    b.Navigation("Trainer");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CICIG", b =>
+                {
+                    b.HasOne("DAL.Models.Domain.MasterSetup.CommunityType", "CommunityType")
+                        .WithOne("CICIG")
+                        .HasForeignKey("DAL.Models.Domain.SocialMobilization.CICIG", "CommunityTypeId");
+
+                    b.HasOne("DAL.Models.Domain.MasterSetup.Phase", "Phase")
+                        .WithOne("CICIG")
+                        .HasForeignKey("DAL.Models.Domain.SocialMobilization.CICIG", "PhaseId");
+
+                    b.HasOne("DAL.Models.Domain.MasterSetup.Village", "Village")
+                        .WithMany("CICIGs")
+                        .HasForeignKey("VillageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CommunityType");
+
+                    b.Navigation("Phase");
+
+                    b.Navigation("Village");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CIMember", b =>
+                {
+                    b.HasOne("DAL.Models.Domain.SocialMobilization.CICIG", "CICIG")
+                        .WithMany("CICIGMember")
+                        .HasForeignKey("CICIGId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CICIG");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", b =>
+                {
+                    b.HasOne("DAL.Models.Domain.MasterSetup.Phase", "Phase")
+                        .WithMany("CICIGTrainings")
+                        .HasForeignKey("PhaseId");
+
+                    b.HasOne("DAL.Models.Domain.MasterSetup.TrainingTitle", "TrainingTitle")
+                        .WithMany("CICIGTrainings")
+                        .HasForeignKey("TrainingTitleId");
+
+                    b.HasOne("DAL.Models.Domain.MasterSetup.Village", "Village")
+                        .WithMany("CICIGTrainings")
+                        .HasForeignKey("VillageId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Phase");
+
+                    b.Navigation("TrainingTitle");
+
+                    b.Navigation("Village");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.Training.CITrainingMember", b =>
+                {
+                    b.HasOne("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", "CICIGTrainings")
+                        .WithMany("Members")
+                        .HasForeignKey("CICIGTrainingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Domain.SocialMobilization.CIMember", "CIMember")
+                        .WithOne("CITrainingMember")
+                        .HasForeignKey("DAL.Models.Domain.SocialMobilization.Training.CITrainingMember", "CIMemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CICIGTrainings");
+
+                    b.Navigation("CIMember");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.Training.CITrainingParticipation", b =>
+                {
+                    b.HasOne("DAL.Models.Domain.SocialMobilization.CICIG", "CICIG")
+                        .WithOne("CITrainingParticipation")
+                        .HasForeignKey("DAL.Models.Domain.SocialMobilization.Training.CITrainingParticipation", "CICIGId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", "CICIGTrainings")
+                        .WithMany("CITrainingParticipation")
+                        .HasForeignKey("CICIGTrainingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CICIG");
+
+                    b.Navigation("CICIGTrainings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1296,7 +1601,7 @@ namespace DBContext.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DAL.Models.DamageAssessmentLivestock", b =>
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamageAssessmentHTS", b =>
                 {
                     b.Navigation("DamageIPs");
 
@@ -1305,7 +1610,7 @@ namespace DBContext.Migrations
                     b.Navigation("DamageVerifieds");
                 });
 
-            modelBuilder.Entity("DAL.Models.Domain.HTS.DamageAssessmentHTS", b =>
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamageAssessmentLivestock", b =>
                 {
                     b.Navigation("DamageIPs");
 
@@ -1316,11 +1621,15 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryIP", b =>
                 {
+                    b.Navigation("BeneficiaryVerified");
+
                     b.Navigation("DamageIPs");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryPDMA", b =>
                 {
+                    b.Navigation("BeneficiaryVerified");
+
                     b.Navigation("DamagePDMAs");
                 });
 
@@ -1329,30 +1638,16 @@ namespace DBContext.Migrations
                     b.Navigation("DamageVerifieds");
                 });
 
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CICIG", b =>
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CommunityType", b =>
                 {
-                    b.Navigation("CICIGMember");
-
-                    b.Navigation("CITrainingParticipation");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CICIGTrainings", b =>
-                {
-                    b.Navigation("CITrainingParticipation");
-
-                    b.Navigation("Members");
-
-                    b.Navigation("TrainingTitle");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CIMember", b =>
-                {
-                    b.Navigation("BeneficiaryVerified");
+                    b.Navigation("CICIG");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.District", b =>
                 {
                     b.Navigation("Tehsils");
+
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Division", b =>
@@ -1360,14 +1655,41 @@ namespace DBContext.Migrations
                     b.Navigation("District");
                 });
 
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Phase", b =>
+                {
+                    b.Navigation("CICIG");
+
+                    b.Navigation("CICIGTrainings");
+                });
+
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Provience", b =>
                 {
                     b.Navigation("Division");
                 });
 
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Section", b =>
+                {
+                    b.Navigation("Trainers");
+                });
+
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Tehsil", b =>
                 {
                     b.Navigation("UnionCouncils");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Trainer", b =>
+                {
+                    b.Navigation("CICIGTrainingTrainers");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingHead", b =>
+                {
+                    b.Navigation("TrainingTitle");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingTitle", b =>
+                {
+                    b.Navigation("CICIGTrainings");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.UnionCouncil", b =>
@@ -1386,6 +1708,29 @@ namespace DBContext.Migrations
                     b.Navigation("CICIGTrainings");
 
                     b.Navigation("CICIGs");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CICIG", b =>
+                {
+                    b.Navigation("CICIGMember");
+
+                    b.Navigation("CITrainingParticipation");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CIMember", b =>
+                {
+                    b.Navigation("BeneficiaryVerified");
+
+                    b.Navigation("CITrainingMember");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", b =>
+                {
+                    b.Navigation("CICIGTrainingTrainers");
+
+                    b.Navigation("CITrainingParticipation");
+
+                    b.Navigation("Members");
                 });
 #pragma warning restore 612, 618
         }

@@ -22,7 +22,9 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         public async Task<IActionResult> _Index(int id)
         {
             ViewBag.Id = id;
-            var applicationDbContext = _context.CITrainingParticipations.Include(j => j.CICIG).Where(a => a.CICIGId == id);
+            var applicationDbContext = _context.CITrainingParticipations
+                                                .Include(j => j.CICIG)
+                                                .Where(a => a.CICIGTrainingsId == id);
             return PartialView(await applicationDbContext.ToListAsync());
         }
         // GET: CITrainingParticipations/Details/5
@@ -48,8 +50,8 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         public IActionResult Create(int id)
         {
             CITrainingParticipation obj = new CITrainingParticipation();
-            obj.CICIGId = id;
-            ViewData["DistrictId"] = new SelectList(_context.Districts.Where(a => a.DistrictId > 1), "DistrictId", "Name");
+            obj.CICIGTrainingsId = id;
+            ViewData["DistrictId"] = new SelectList(_context.Districts/*.Where(a => a.DistrictId > 1)*/, "DistrictName", "DistrictName");
             return View(obj);
         }
 
@@ -58,10 +60,13 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CITrainingParticipation ciTrainingParticipation, int DistrictId)
+        public async Task<IActionResult> Create([Bind("CITrainingParticipationId, CICIGId, CICIGTrainingsId")] CITrainingParticipation ciTrainingParticipation, string DistrictId)
         {
             if (ModelState.IsValid)
             {
+                /**
+                 * if CI is assigned to Training it cant be added to another training
+                 */
                 _context.Add(ciTrainingParticipation);
                 await _context.SaveChangesAsync();
                 var MemberList = _context.CIMembers.Where(a => a.CICIGId == ciTrainingParticipation.CICIGId).ToList();
@@ -77,9 +82,9 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 {
                     await _context.SaveChangesAsync();
                 }
-                return RedirectToAction(nameof(Index), "MemberTrainings", new { id = ciTrainingParticipation.CICIGId });
+                return RedirectToAction(nameof(Details), "CICIGTraining", new { id = ciTrainingParticipation.CICIGTrainingsId });
             }
-            ViewData["DistrictId"] = new SelectList(_context.Districts.Where(a => a.DistrictId > 1), "DistrictId", "Name", DistrictId);
+            ViewData["DistrictId"] = new SelectList(_context.Districts/*.Where(a => a.DistrictId > 1)*/, "DistrictName", "DistrictName"/*, DistrictId*/);
             ViewData["CICIGId"] = new SelectList(_context.CICIGs, "CICIGId", "Name", ciTrainingParticipation.CICIGId);
             return View(ciTrainingParticipation);
         }
@@ -172,7 +177,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), "MemberTrainings", new { id = ciTrainingParticipation.CICIGId });
+            return RedirectToAction(nameof(Details), "CICIGTraining", new { id = ciTrainingParticipation.CICIGTrainingsId });
         }
 
         private bool CITrainingParticipationExists(int id)
@@ -189,6 +194,16 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 Value = m.CICIGId.ToString(),
             });
             return Json(CIList);
+        }
+        public async Task<JsonResult> GetCITrainingsByDistrictName(string districtName)
+        {
+            List<CICIGTrainings> ciTrainings = await _context.CICIGTrainings.Where(a => a.District == districtName).ToListAsync();
+            var ciTrainingsList = ciTrainings.Select(m => new SelectListItem()
+            {
+                Text = m.TrainingCode + " - " + m.TrainingName,
+                Value = m.CICIGTrainingsId.ToString(),
+            });
+            return Json(ciTrainingsList);
         }
     }
 }

@@ -199,6 +199,7 @@ namespace DBContext.Migrations
 
                     b.Property<bool?>("IsRefugee")
                         .HasColumnType("bit");
+
                     b.Property<string>("MaritialStatus")
                         .HasColumnType("nvarchar(max)");
 
@@ -246,6 +247,7 @@ namespace DBContext.Migrations
 
                     b.Property<string>("CNICAttachment")
                         .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
 
@@ -306,9 +308,6 @@ namespace DBContext.Migrations
                     b.Property<int?>("BeneficiaryPDMAId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CIMemberId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CNIC")
                         .HasColumnType("nvarchar(max)");
 
@@ -354,9 +353,6 @@ namespace DBContext.Migrations
                     b.HasIndex("BeneficiaryPDMAId")
                         .IsUnique()
                         .HasFilter("[BeneficiaryPDMAId] IS NOT NULL");
-
-                    b.HasIndex("CIMemberId")
-                        .IsUnique();
 
                     b.HasIndex("VillageId");
 
@@ -518,6 +514,7 @@ namespace DBContext.Migrations
 
                     b.ToTable("Tehsils");
                 });
+
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Trainer", b =>
                 {
                     b.Property<int>("TrainerId")
@@ -543,6 +540,7 @@ namespace DBContext.Migrations
 
                     b.Property<int?>("DistrictId")
                         .HasColumnType("int");
+
                     b.Property<string>("FatherName")
                         .HasColumnType("nvarchar(max)");
 
@@ -619,7 +617,6 @@ namespace DBContext.Migrations
                     b.HasIndex("TrainingHeadId");
 
                     b.ToTable("TrainingTitles");
-
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.UnionCouncil", b =>
@@ -731,6 +728,7 @@ namespace DBContext.Migrations
 
                     b.Property<bool?>("IsSubmittedForReview")
                         .HasColumnType("bit");
+
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
@@ -766,6 +764,7 @@ namespace DBContext.Migrations
 
                     b.Property<string>("TOPAttachment")
                         .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Tehsil")
                         .HasColumnType("nvarchar(max)");
 
@@ -789,8 +788,6 @@ namespace DBContext.Migrations
 
                     b.Property<int>("VillageId")
                         .HasColumnType("int");
-                    b.Property<string>("VillageProfileAttachment")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VillageProfileAttachment")
                         .HasColumnType("nvarchar(max)");
@@ -802,7 +799,6 @@ namespace DBContext.Migrations
                         .HasFilter("[CommunityTypeId] IS NOT NULL");
 
                     b.HasIndex("PhaseId");
-
 
                     b.HasIndex("VillageId");
 
@@ -817,6 +813,9 @@ namespace DBContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CIMemberId"));
 
+                    b.Property<int?>("BeneficiaryVerifiedId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CICIGId")
                         .HasColumnType("int");
 
@@ -827,6 +826,10 @@ namespace DBContext.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CIMemberId");
+
+                    b.HasIndex("BeneficiaryVerifiedId")
+                        .IsUnique()
+                        .HasFilter("[BeneficiaryVerifiedId] IS NOT NULL");
 
                     b.HasIndex("CICIGId");
 
@@ -842,7 +845,6 @@ namespace DBContext.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CICIGTrainingsId"));
 
                     b.Property<string>("AttendanceAttachment")
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateOfCreation")
@@ -882,7 +884,6 @@ namespace DBContext.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportAttachment")
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SessionPlanAttachment")
@@ -936,7 +937,6 @@ namespace DBContext.Migrations
                     b.HasKey("CICIGTrainingsId");
 
                     b.HasIndex("PhaseId");
-
 
                     b.HasIndex("TrainingTitleId");
 
@@ -1334,12 +1334,6 @@ namespace DBContext.Migrations
                         .WithOne("BeneficiaryVerified")
                         .HasForeignKey("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "BeneficiaryPDMAId");
 
-                    b.HasOne("DAL.Models.Domain.SocialMobilization.CIMember", "CIMember")
-                        .WithOne("BeneficiaryVerified")
-                        .HasForeignKey("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "CIMemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DAL.Models.Domain.MasterSetup.Village", null)
                         .WithMany("BeneficiaryVerifieds")
                         .HasForeignKey("VillageId");
@@ -1347,8 +1341,6 @@ namespace DBContext.Migrations
                     b.Navigation("BeneficiaryIP");
 
                     b.Navigation("BeneficiaryPDMA");
-
-                    b.Navigation("CIMember");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.District", b =>
@@ -1403,18 +1395,15 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingTitle", b =>
                 {
-
                     b.HasOne("DAL.Models.Domain.MasterSetup.TrainingHead", "TrainingHead")
                         .WithMany("TrainingTitle")
                         .HasForeignKey("TrainingHeadId");
 
                     b.Navigation("TrainingHead");
-
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.UnionCouncil", b =>
                 {
-
                     b.HasOne("DAL.Models.Domain.MasterSetup.Tehsil", "Tehsil")
                         .WithMany("UnionCouncils")
                         .HasForeignKey("TehsilId")
@@ -1461,10 +1450,8 @@ namespace DBContext.Migrations
                         .HasForeignKey("DAL.Models.Domain.SocialMobilization.CICIG", "CommunityTypeId");
 
                     b.HasOne("DAL.Models.Domain.MasterSetup.Phase", "Phase")
-
                         .WithMany("CICIG")
                         .HasForeignKey("PhaseId");
-
 
                     b.HasOne("DAL.Models.Domain.MasterSetup.Village", "Village")
                         .WithMany("CICIGs")
@@ -1481,22 +1468,26 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CIMember", b =>
                 {
+                    b.HasOne("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "BeneficiaryVerified")
+                        .WithOne("CIMember")
+                        .HasForeignKey("DAL.Models.Domain.SocialMobilization.CIMember", "BeneficiaryVerifiedId");
+
                     b.HasOne("DAL.Models.Domain.SocialMobilization.CICIG", "CICIG")
                         .WithMany("CICIGMember")
                         .HasForeignKey("CICIGId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("BeneficiaryVerified");
+
                     b.Navigation("CICIG");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", b =>
                 {
-
                     b.HasOne("DAL.Models.Domain.MasterSetup.Phase", "Phase")
                         .WithMany("CICIGTrainings")
                         .HasForeignKey("PhaseId");
-
 
                     b.HasOne("DAL.Models.Domain.MasterSetup.TrainingTitle", "TrainingTitle")
                         .WithMany("CICIGTrainings")
@@ -1638,39 +1629,8 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", b =>
                 {
-                    b.Navigation("DamageVerifieds");
-                });
+                    b.Navigation("CIMember");
 
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CommunityType", b =>
-                {
-                    b.Navigation("CICIG");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.District", b =>
-                {
-                    b.Navigation("DamageIPs");
-
-                    b.Navigation("DamagePDMAs");
-
-                    b.Navigation("DamageVerifieds");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryIP", b =>
-                {
-                    b.Navigation("BeneficiaryVerified");
-
-                    b.Navigation("DamageIPs");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryPDMA", b =>
-                {
-                    b.Navigation("BeneficiaryVerified");
-
-                    b.Navigation("DamagePDMAs");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", b =>
-                {
                     b.Navigation("DamageVerifieds");
                 });
 
@@ -1721,7 +1681,6 @@ namespace DBContext.Migrations
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingHead", b =>
                 {
                     b.Navigation("TrainingTitle");
-
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingTitle", b =>
@@ -1756,8 +1715,6 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CIMember", b =>
                 {
-                    b.Navigation("BeneficiaryVerified");
-
                     b.Navigation("CITrainingMember");
                 });
 

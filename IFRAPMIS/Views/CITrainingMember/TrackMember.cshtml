@@ -4,6 +4,28 @@
     ViewBag.pageTitle = "SBeneficiarytock";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    /* Custom Modal Styles */
+    .custom-modal {
+        display: none;
+        position: fixed;
+        z-index: 1050;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .custom-modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+</style>
 
 <link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
 <link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
@@ -80,6 +102,15 @@
         <div id="dynamicContentContainer"></div>
     </div>
 </div>
+<!-- Custom Modal HTML -->
+<div id="confirmationModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <h4>Are you sure?</h4>
+        <p>You want to add member in selected training as a trainer!</p>
+        <button id="cancelButton" class="btn btn-secondary">Cancel</button>
+        <button id="confirmButton" class="btn btn-primary">Yes, Add it!</button>
+    </div>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
@@ -114,30 +145,37 @@
                 data: { id: id },
                 dataType: "json",
                 success: function (response) {
-                    debugger;                    
+                                        
                     if (response.isValid) {
+                        $('#fetchspinner').hide();
                         $('.applicantinformation').show();
-                        $('#MemberName').val(response.info.member.memberName);
-                        $('#FatherName').val(response.info.member.fatherName);
-                        $('#CNIC').val(response.info.member.cnic);
-                        $('#CDMId').val(response.info.communityInstituteMemberId);
-                        $('#CellNo').val(response.info.member.cellNo);
-                        $('#Gender').val(response.info.member.gender);
-                        $('#MISCode').val(response.info.misCode);
+                        $('#CDMId').val(response.info.ciMemberId);
+                        $('#MISCode').val(response.info.memberCode);
+                        $('#CNIC').val(response.info.beneficiaryVerified.cnic);
+                        $('#MemberName').val(response.info.beneficiaryVerified.beneficiaryName);
+                        $('#FatherName').val(response.info.beneficiaryVerified.beneficiaryFather);
+                        $('#CellNo').val(response.info.beneficiaryVerified.mobile);
+                        $('#Gender').val(response.info.beneficiaryVerified.gender);
                         notificationme('Fetch data successfully!',1);
+                        $('#fetchspinner').hide();
                         if (response.count > 0) {
                             alert(response.message);
                         }
                     } else {
+                        $('#fetchspinner').hide();
                         $('.applicantinformation').hide();
                         notificationme('Beneficiary data not found!',0);
                     }
                     $('#fetchspinner').hide();
                 },
                 failure: function (response) {
+                    
+                    $('#fetchspinner').hide();
                     alert(response.responseText);
                 },
                 error: function (response) {
+                    
+                    $('#fetchspinner').hide();
                     alert(response.responseText);
                 }
             });
@@ -166,44 +204,49 @@
                 toastr.error(message);
             }         
         }
-        
+
         function AddBeneficiaryInTraining() {
-            var CDMId = $("#CDMId").val();
-            var MTId = '@ViewBag.MTId';
-            Swal.fire({
-                title: "Are you sure?",
-                text: 'You want to add member in selected training as a trainer!"',
-                type: "success",
-                showCancelButton: !0, confirmButtonColor: "#34c38f",
-                cancelButtonColor: "#f46a6a",
-                confirmButtonText: "Yes, Add it!"
-            }).then(function (t) {
-                if (t.value == true) {
-                    $.ajax({
-                        type: "POST",
-                        url: "/CITrainingMemberId/AddBeneficiaryInTraining",
-                        data: { CDMId: CDMId, MTId :  MTId},
-                        dataType: "json",
-                        success: function (response) {
-                            if (response != null) {
-                                if (response.isValid) {
-                                    Swal.fire("Back", response.message, "success");   
-                                    $('.applicantinformation').hide();
-                                    UpdateRecord();
-                                } else {
-                                    notificationme(response.message);
-                                }
+            $("#confirmationModal").fadeIn();
+
+            // Unbind any previous click event handlers before binding a new one
+            $("#confirmButton").off('click').on('click', function () {
+               
+                var CDMId = $("#CDMId").val();
+                var MTId = '@ViewBag.MTId';
+
+                console.log("CDMId:", CDMId, "MTId:", MTId); // Values should be correct here
+
+                $("#confirmationModal").fadeOut();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/CITrainingMember/AddBeneficiaryInTraining",
+                    data: { CDMId: CDMId, MTId: MTId },
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response) {
+                            if (response.isValid) {
+                                alert(response.message);
+                                $('.applicantinformation').hide();
+                                UpdateRecord();
+                            } else {
+                                alert(response.message);
                             }
-                        },
-                        failure: function (response) {
-                            alert(response.responseText);
-                        },
-                        error: function (response) {
-                            alert(response.responseText);
                         }
-                    });
-                }
-            })
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error:", status, error);
+                        alert('An error occurred while processing your request.');
+                    }
+                });
+            });
+
+            $("#cancelButton").off('click').on('click', function () {
+                $("#confirmationModal").fadeOut();
+            });
         }
+
+                
     </script>
 }

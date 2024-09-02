@@ -19,9 +19,8 @@ namespace DAL.Models.Domain.SocialMobilization
         public int CICIGId { get; set; }
         public CICIG? CICIG { get; set; }
 
-        //public int BeneficiaryVerifiedId {  get; set; }        
-        //[ForeignKey("CIMemberId")]
-        //[InverseProperty("CIMember")]
+        //Connections
+        public int? BeneficiaryVerifiedId { get; set; }
         public BeneficiaryVerified? BeneficiaryVerified { get; set; }
 
         //Navigations

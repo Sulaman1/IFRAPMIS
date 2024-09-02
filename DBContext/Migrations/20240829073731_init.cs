@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DBContext.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -139,6 +139,21 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TrainingHeads",
+                columns: table => new
+                {
+                    TrainingHeadId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TrainingHeadName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingHeadCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingIntervention = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrainingHeads", x => x.TrainingHeadId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -264,6 +279,27 @@ namespace DBContext.Migrations
                         principalTable: "Proviences",
                         principalColumn: "ProvienceId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TrainingTitles",
+                columns: table => new
+                {
+                    TitleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TrainingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingTitleCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingIntervention = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingHeadId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrainingTitles", x => x.TitleId);
+                    table.ForeignKey(
+                        name: "FK_TrainingTitles_TrainingHeads_TrainingHeadId",
+                        column: x => x.TrainingHeadId,
+                        principalTable: "TrainingHeads",
+                        principalColumn: "TrainingHeadId");
                 });
 
             migrationBuilder.CreateTable(
@@ -508,186 +544,6 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DamageIPs",
-                columns: table => new
-                {
-                    DamageIPId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DamageType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Percentage = table.Column<int>(type: "int", nullable: false),
-                    Attachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeneficiaryIPId = table.Column<int>(type: "int", nullable: false),
-                    DamageAssessmentHTSId = table.Column<int>(type: "int", nullable: false),
-                    DamageAssessmentLivestockId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DamageIPs", x => x.DamageIPId);
-                    table.ForeignKey(
-                        name: "FK_DamageIPs_BeneficiaryIPs_BeneficiaryIPId",
-                        column: x => x.BeneficiaryIPId,
-                        principalTable: "BeneficiaryIPs",
-                        principalColumn: "BeneficiaryIPId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DamageIPs_DamageAssessmentHTSs_DamageAssessmentHTSId",
-                        column: x => x.DamageAssessmentHTSId,
-                        principalTable: "DamageAssessmentHTSs",
-                        principalColumn: "DamageAssessmentHTSId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DamageIPs_DamageAssessmentLivestocks_DamageAssessmentLivestockId",
-                        column: x => x.DamageAssessmentLivestockId,
-                        principalTable: "DamageAssessmentLivestocks",
-                        principalColumn: "DamageAssessmentLivestockId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DamagePDMAs",
-                columns: table => new
-                {
-                    DamagePDMAId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DamageType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Percentage = table.Column<int>(type: "int", nullable: false),
-                    Attachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeneficiaryPDMAId = table.Column<int>(type: "int", nullable: false),
-                    DamageAssessmentHTSId = table.Column<int>(type: "int", nullable: false),
-                    DamageAssessmentLivestockId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DamagePDMAs", x => x.DamagePDMAId);
-                    table.ForeignKey(
-                        name: "FK_DamagePDMAs_BeneficiaryPDMAs_BeneficiaryPDMAId",
-                        column: x => x.BeneficiaryPDMAId,
-                        principalTable: "BeneficiaryPDMAs",
-                        principalColumn: "BeneficiaryPDMAId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DamagePDMAs_DamageAssessmentHTSs_DamageAssessmentHTSId",
-                        column: x => x.DamageAssessmentHTSId,
-                        principalTable: "DamageAssessmentHTSs",
-                        principalColumn: "DamageAssessmentHTSId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DamagePDMAs_DamageAssessmentLivestocks_DamageAssessmentLivestockId",
-                        column: x => x.DamageAssessmentLivestockId,
-                        principalTable: "DamageAssessmentLivestocks",
-                        principalColumn: "DamageAssessmentLivestockId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CIMembers",
-                columns: table => new
-                {
-                    CIMemberId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MemberCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CICIGId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CIMembers", x => x.CIMemberId);
-                    table.ForeignKey(
-                        name: "FK_CIMembers_CICIGs_CICIGId",
-                        column: x => x.CICIGId,
-                        principalTable: "CICIGs",
-                        principalColumn: "CICIGId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BeneficiaryVerifieds",
-                columns: table => new
-                {
-                    BeneficiaryVerifiedId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BeneficiaryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeneficiaryFather = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CNIC = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    MaritialStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDisable = table.Column<bool>(type: "bit", nullable: true),
-                    CNICAttachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsRefugee = table.Column<bool>(type: "bit", nullable: true),
-                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tehsil = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UnionCouncil = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CIMemberId = table.Column<int>(type: "int", nullable: false),
-                    BeneficiaryIPId = table.Column<int>(type: "int", nullable: true),
-                    BeneficiaryPDMAId = table.Column<int>(type: "int", nullable: true),
-                    VillageId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BeneficiaryVerifieds", x => x.BeneficiaryVerifiedId);
-                    table.ForeignKey(
-                        name: "FK_BeneficiaryVerifieds_BeneficiaryIPs_BeneficiaryIPId",
-                        column: x => x.BeneficiaryIPId,
-                        principalTable: "BeneficiaryIPs",
-                        principalColumn: "BeneficiaryIPId");
-                    table.ForeignKey(
-                        name: "FK_BeneficiaryVerifieds_BeneficiaryPDMAs_BeneficiaryPDMAId",
-                        column: x => x.BeneficiaryPDMAId,
-                        principalTable: "BeneficiaryPDMAs",
-                        principalColumn: "BeneficiaryPDMAId");
-                    table.ForeignKey(
-                        name: "FK_BeneficiaryVerifieds_CIMembers_CIMemberId",
-                        column: x => x.CIMemberId,
-                        principalTable: "CIMembers",
-                        principalColumn: "CIMemberId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BeneficiaryVerifieds_Villages_VillageId",
-                        column: x => x.VillageId,
-                        principalTable: "Villages",
-                        principalColumn: "VillageId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DamageVerifieds",
-                columns: table => new
-                {
-                    DamageVerifiedId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DamageType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Percentage = table.Column<int>(type: "int", nullable: false),
-                    Attachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeneficiaryVerifiedId = table.Column<int>(type: "int", nullable: false),
-                    DamageAssessmentHTSId = table.Column<int>(type: "int", nullable: false),
-                    DamageAssessmentLivestockId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DamageVerifieds", x => x.DamageVerifiedId);
-                    table.ForeignKey(
-                        name: "FK_DamageVerifieds_BeneficiaryVerifieds_BeneficiaryVerifiedId",
-                        column: x => x.BeneficiaryVerifiedId,
-                        principalTable: "BeneficiaryVerifieds",
-                        principalColumn: "BeneficiaryVerifiedId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DamageVerifieds_DamageAssessmentHTSs_DamageAssessmentHTSId",
-                        column: x => x.DamageAssessmentHTSId,
-                        principalTable: "DamageAssessmentHTSs",
-                        principalColumn: "DamageAssessmentHTSId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DamageVerifieds_DamageAssessmentLivestocks_DamageAssessmentLivestockId",
-                        column: x => x.DamageAssessmentLivestockId,
-                        principalTable: "DamageAssessmentLivestocks",
-                        principalColumn: "DamageAssessmentLivestockId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CICIGTrainings",
                 columns: table => new
                 {
@@ -733,10 +589,131 @@ namespace DBContext.Migrations
                         principalTable: "Phases",
                         principalColumn: "PhaseId");
                     table.ForeignKey(
+                        name: "FK_CICIGTrainings_TrainingTitles_TrainingTitleId",
+                        column: x => x.TrainingTitleId,
+                        principalTable: "TrainingTitles",
+                        principalColumn: "TitleId");
+                    table.ForeignKey(
                         name: "FK_CICIGTrainings_Villages_VillageId",
                         column: x => x.VillageId,
                         principalTable: "Villages",
                         principalColumn: "VillageId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DamageIPs",
+                columns: table => new
+                {
+                    DamageIPId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DamageType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Percentage = table.Column<int>(type: "int", nullable: false),
+                    Attachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeneficiaryIPId = table.Column<int>(type: "int", nullable: false),
+                    DamageAssessmentHTSId = table.Column<int>(type: "int", nullable: false),
+                    DamageAssessmentLivestockId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DamageIPs", x => x.DamageIPId);
+                    table.ForeignKey(
+                        name: "FK_DamageIPs_BeneficiaryIPs_BeneficiaryIPId",
+                        column: x => x.BeneficiaryIPId,
+                        principalTable: "BeneficiaryIPs",
+                        principalColumn: "BeneficiaryIPId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DamageIPs_DamageAssessmentHTSs_DamageAssessmentHTSId",
+                        column: x => x.DamageAssessmentHTSId,
+                        principalTable: "DamageAssessmentHTSs",
+                        principalColumn: "DamageAssessmentHTSId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DamageIPs_DamageAssessmentLivestocks_DamageAssessmentLivestockId",
+                        column: x => x.DamageAssessmentLivestockId,
+                        principalTable: "DamageAssessmentLivestocks",
+                        principalColumn: "DamageAssessmentLivestockId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BeneficiaryVerifieds",
+                columns: table => new
+                {
+                    BeneficiaryVerifiedId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BeneficiaryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeneficiaryFather = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CNIC = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Age = table.Column<int>(type: "int", nullable: false),
+                    MaritialStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDisable = table.Column<bool>(type: "bit", nullable: true),
+                    CNICAttachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsRefugee = table.Column<bool>(type: "bit", nullable: true),
+                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tehsil = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UnionCouncil = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeneficiaryIPId = table.Column<int>(type: "int", nullable: true),
+                    BeneficiaryPDMAId = table.Column<int>(type: "int", nullable: true),
+                    VillageId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BeneficiaryVerifieds", x => x.BeneficiaryVerifiedId);
+                    table.ForeignKey(
+                        name: "FK_BeneficiaryVerifieds_BeneficiaryIPs_BeneficiaryIPId",
+                        column: x => x.BeneficiaryIPId,
+                        principalTable: "BeneficiaryIPs",
+                        principalColumn: "BeneficiaryIPId");
+                    table.ForeignKey(
+                        name: "FK_BeneficiaryVerifieds_BeneficiaryPDMAs_BeneficiaryPDMAId",
+                        column: x => x.BeneficiaryPDMAId,
+                        principalTable: "BeneficiaryPDMAs",
+                        principalColumn: "BeneficiaryPDMAId");
+                    table.ForeignKey(
+                        name: "FK_BeneficiaryVerifieds_Villages_VillageId",
+                        column: x => x.VillageId,
+                        principalTable: "Villages",
+                        principalColumn: "VillageId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DamagePDMAs",
+                columns: table => new
+                {
+                    DamagePDMAId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DamageType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Percentage = table.Column<int>(type: "int", nullable: false),
+                    Attachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeneficiaryPDMAId = table.Column<int>(type: "int", nullable: false),
+                    DamageAssessmentHTSId = table.Column<int>(type: "int", nullable: false),
+                    DamageAssessmentLivestockId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DamagePDMAs", x => x.DamagePDMAId);
+                    table.ForeignKey(
+                        name: "FK_DamagePDMAs_BeneficiaryPDMAs_BeneficiaryPDMAId",
+                        column: x => x.BeneficiaryPDMAId,
+                        principalTable: "BeneficiaryPDMAs",
+                        principalColumn: "BeneficiaryPDMAId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DamagePDMAs_DamageAssessmentHTSs_DamageAssessmentHTSId",
+                        column: x => x.DamageAssessmentHTSId,
+                        principalTable: "DamageAssessmentHTSs",
+                        principalColumn: "DamageAssessmentHTSId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DamagePDMAs_DamageAssessmentLivestocks_DamageAssessmentLivestockId",
+                        column: x => x.DamageAssessmentLivestockId,
+                        principalTable: "DamageAssessmentLivestocks",
+                        principalColumn: "DamageAssessmentLivestockId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -764,6 +741,95 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CITrainingParticipations",
+                columns: table => new
+                {
+                    CITrainingParticipationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CICIGId = table.Column<int>(type: "int", nullable: false),
+                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CITrainingParticipations", x => x.CITrainingParticipationId);
+                    table.ForeignKey(
+                        name: "FK_CITrainingParticipations_CICIGTrainings_CICIGTrainingsId",
+                        column: x => x.CICIGTrainingsId,
+                        principalTable: "CICIGTrainings",
+                        principalColumn: "CICIGTrainingsId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CITrainingParticipations_CICIGs_CICIGId",
+                        column: x => x.CICIGId,
+                        principalTable: "CICIGs",
+                        principalColumn: "CICIGId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CIMembers",
+                columns: table => new
+                {
+                    CIMemberId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MemberCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CICIGId = table.Column<int>(type: "int", nullable: false),
+                    BeneficiaryVerifiedId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CIMembers", x => x.CIMemberId);
+                    table.ForeignKey(
+                        name: "FK_CIMembers_BeneficiaryVerifieds_BeneficiaryVerifiedId",
+                        column: x => x.BeneficiaryVerifiedId,
+                        principalTable: "BeneficiaryVerifieds",
+                        principalColumn: "BeneficiaryVerifiedId");
+                    table.ForeignKey(
+                        name: "FK_CIMembers_CICIGs_CICIGId",
+                        column: x => x.CICIGId,
+                        principalTable: "CICIGs",
+                        principalColumn: "CICIGId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DamageVerifieds",
+                columns: table => new
+                {
+                    DamageVerifiedId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DamageType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Percentage = table.Column<int>(type: "int", nullable: false),
+                    Attachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BeneficiaryVerifiedId = table.Column<int>(type: "int", nullable: false),
+                    DamageAssessmentHTSId = table.Column<int>(type: "int", nullable: false),
+                    DamageAssessmentLivestockId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DamageVerifieds", x => x.DamageVerifiedId);
+                    table.ForeignKey(
+                        name: "FK_DamageVerifieds_BeneficiaryVerifieds_BeneficiaryVerifiedId",
+                        column: x => x.BeneficiaryVerifiedId,
+                        principalTable: "BeneficiaryVerifieds",
+                        principalColumn: "BeneficiaryVerifiedId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DamageVerifieds_DamageAssessmentHTSs_DamageAssessmentHTSId",
+                        column: x => x.DamageAssessmentHTSId,
+                        principalTable: "DamageAssessmentHTSs",
+                        principalColumn: "DamageAssessmentHTSId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DamageVerifieds_DamageAssessmentLivestocks_DamageAssessmentLivestockId",
+                        column: x => x.DamageAssessmentLivestockId,
+                        principalTable: "DamageAssessmentLivestocks",
+                        principalColumn: "DamageAssessmentLivestockId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CITrainingMembers",
                 columns: table => new
                 {
@@ -787,74 +853,6 @@ namespace DBContext.Migrations
                         principalTable: "CIMembers",
                         principalColumn: "CIMemberId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CITrainingParticipations",
-                columns: table => new
-                {
-                    CIIrainingParticipationId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CICIGId = table.Column<int>(type: "int", nullable: false),
-                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CITrainingParticipations", x => x.CIIrainingParticipationId);
-                    table.ForeignKey(
-                        name: "FK_CITrainingParticipations_CICIGTrainings_CICIGTrainingsId",
-                        column: x => x.CICIGTrainingsId,
-                        principalTable: "CICIGTrainings",
-                        principalColumn: "CICIGTrainingsId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CITrainingParticipations_CICIGs_CICIGId",
-                        column: x => x.CICIGId,
-                        principalTable: "CICIGs",
-                        principalColumn: "CICIGId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TrainingHeads",
-                columns: table => new
-                {
-                    TrainingHeadId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TrainingHeadName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingHeadCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingIntervention = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingHeads", x => x.TrainingHeadId);
-                    table.ForeignKey(
-                        name: "FK_TrainingHeads_CICIGTrainings_CICIGTrainingsId",
-                        column: x => x.CICIGTrainingsId,
-                        principalTable: "CICIGTrainings",
-                        principalColumn: "CICIGTrainingsId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TrainingTitles",
-                columns: table => new
-                {
-                    TitleId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TrainingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingTitleCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingIntervention = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingHeadId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingTitles", x => x.TitleId);
-                    table.ForeignKey(
-                        name: "FK_TrainingTitles_TrainingHeads_TrainingHeadId",
-                        column: x => x.TrainingHeadId,
-                        principalTable: "TrainingHeads",
-                        principalColumn: "TrainingHeadId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -921,12 +919,6 @@ namespace DBContext.Migrations
                 filter: "[BeneficiaryPDMAId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BeneficiaryVerifieds_CIMemberId",
-                table: "BeneficiaryVerifieds",
-                column: "CIMemberId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_BeneficiaryVerifieds_VillageId",
                 table: "BeneficiaryVerifieds",
                 column: "VillageId");
@@ -941,9 +933,7 @@ namespace DBContext.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGs_PhaseId",
                 table: "CICIGs",
-                column: "PhaseId",
-                unique: true,
-                filter: "[PhaseId] IS NOT NULL");
+                column: "PhaseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGs_VillageId",
@@ -953,16 +943,12 @@ namespace DBContext.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGTrainings_PhaseId",
                 table: "CICIGTrainings",
-                column: "PhaseId",
-                unique: true,
-                filter: "[PhaseId] IS NOT NULL");
+                column: "PhaseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGTrainings_TrainingTitleId",
                 table: "CICIGTrainings",
-                column: "TrainingTitleId",
-                unique: true,
-                filter: "[TrainingTitleId] IS NOT NULL");
+                column: "TrainingTitleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGTrainings_VillageId",
@@ -973,6 +959,13 @@ namespace DBContext.Migrations
                 name: "IX_CICIGTrainingTrainer_TrainerId",
                 table: "CICIGTrainingTrainer",
                 column: "TrainerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CIMembers_BeneficiaryVerifiedId",
+                table: "CIMembers",
+                column: "BeneficiaryVerifiedId",
+                unique: true,
+                filter: "[BeneficiaryVerifiedId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CIMembers_CICIGId",
@@ -1074,11 +1067,6 @@ namespace DBContext.Migrations
                 column: "SectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrainingHeads_CICIGTrainingsId",
-                table: "TrainingHeads",
-                column: "CICIGTrainingsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TrainingTitles_TrainingHeadId",
                 table: "TrainingTitles",
                 column: "TrainingHeadId");
@@ -1092,30 +1080,11 @@ namespace DBContext.Migrations
                 name: "IX_Villages_UnionCouncilId",
                 table: "Villages",
                 column: "UnionCouncilId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_CICIGTrainings_TrainingTitles_TrainingTitleId",
-                table: "CICIGTrainings",
-                column: "TrainingTitleId",
-                principalTable: "TrainingTitles",
-                principalColumn: "TitleId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_CICIGTrainings_Villages_VillageId",
-                table: "CICIGTrainings");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_CICIGTrainings_Phases_PhaseId",
-                table: "CICIGTrainings");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_CICIGTrainings_TrainingTitles_TrainingTitleId",
-                table: "CICIGTrainings");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -1159,7 +1128,10 @@ namespace DBContext.Migrations
                 name: "Trainers");
 
             migrationBuilder.DropTable(
-                name: "BeneficiaryVerifieds");
+                name: "CIMembers");
+
+            migrationBuilder.DropTable(
+                name: "CICIGTrainings");
 
             migrationBuilder.DropTable(
                 name: "DamageAssessmentHTSs");
@@ -1171,19 +1143,28 @@ namespace DBContext.Migrations
                 name: "Sections");
 
             migrationBuilder.DropTable(
+                name: "BeneficiaryVerifieds");
+
+            migrationBuilder.DropTable(
+                name: "CICIGs");
+
+            migrationBuilder.DropTable(
+                name: "TrainingTitles");
+
+            migrationBuilder.DropTable(
                 name: "BeneficiaryIPs");
 
             migrationBuilder.DropTable(
                 name: "BeneficiaryPDMAs");
 
             migrationBuilder.DropTable(
-                name: "CIMembers");
-
-            migrationBuilder.DropTable(
-                name: "CICIGs");
-
-            migrationBuilder.DropTable(
                 name: "CommunityTypes");
+
+            migrationBuilder.DropTable(
+                name: "Phases");
+
+            migrationBuilder.DropTable(
+                name: "TrainingHeads");
 
             migrationBuilder.DropTable(
                 name: "Villages");
@@ -1202,18 +1183,6 @@ namespace DBContext.Migrations
 
             migrationBuilder.DropTable(
                 name: "Proviences");
-
-            migrationBuilder.DropTable(
-                name: "Phases");
-
-            migrationBuilder.DropTable(
-                name: "TrainingTitles");
-
-            migrationBuilder.DropTable(
-                name: "TrainingHeads");
-
-            migrationBuilder.DropTable(
-                name: "CICIGTrainings");
         }
     }
 }

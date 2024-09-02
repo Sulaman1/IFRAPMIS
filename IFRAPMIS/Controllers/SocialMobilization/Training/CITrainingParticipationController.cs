@@ -22,9 +22,11 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         public async Task<IActionResult> _Index(int id)
         {
             ViewBag.Id = id;
+
             var applicationDbContext = _context.CITrainingParticipations
                                                 .Include(j => j.CICIG)
                                                 .Where(a => a.CICIGTrainingsId == id);
+
             return PartialView(await applicationDbContext.ToListAsync());
         }
         // GET: CITrainingParticipations/Details/5
@@ -50,8 +52,10 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         public IActionResult Create(int id)
         {
             CITrainingParticipation obj = new CITrainingParticipation();
+
             obj.CICIGTrainingsId = id;
             ViewData["DistrictId"] = new SelectList(_context.Districts/*.Where(a => a.DistrictId > 1)*/, "DistrictName", "DistrictName");
+
             return View(obj);
         }
 
@@ -60,6 +64,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Create([Bind("CITrainingParticipationId, CICIGId, CICIGTrainingsId")] CITrainingParticipation ciTrainingParticipation, string DistrictId)
         {
             if (ModelState.IsValid)
@@ -67,6 +72,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 /**
                  * if CI is assigned to Training it cant be added to another training
                  */
+
                 _context.Add(ciTrainingParticipation);
                 await _context.SaveChangesAsync();
                 var MemberList = _context.CIMembers.Where(a => a.CICIGId == ciTrainingParticipation.CICIGId).ToList();
@@ -85,6 +91,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 return RedirectToAction(nameof(Details), "CICIGTraining", new { id = ciTrainingParticipation.CICIGTrainingsId });
             }
             ViewData["DistrictId"] = new SelectList(_context.Districts/*.Where(a => a.DistrictId > 1)*/, "DistrictName", "DistrictName"/*, DistrictId*/);
+
             ViewData["CICIGId"] = new SelectList(_context.CICIGs, "CICIGId", "Name", ciTrainingParticipation.CICIGId);
             return View(ciTrainingParticipation);
         }
@@ -177,7 +184,9 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             }
 
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Details), "CICIGTraining", new { id = ciTrainingParticipation.CICIGTrainingsId });
+
         }
 
         private bool CITrainingParticipationExists(int id)
@@ -195,6 +204,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             });
             return Json(CIList);
         }
+
         public async Task<JsonResult> GetCITrainingsByDistrictName(string districtName)
         {
             List<CICIGTrainings> ciTrainings = await _context.CICIGTrainings.Where(a => a.District == districtName).ToListAsync();
@@ -205,5 +215,6 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             });
             return Json(ciTrainingsList);
         }
+
     }
 }

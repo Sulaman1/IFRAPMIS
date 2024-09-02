@@ -88,6 +88,7 @@ namespace IFRAPMIS
                 options.JsonSerializerOptions.MaxDepth = 64; // Increase depth if needed
             });
 
+
             var app = builder.Build();
 
 

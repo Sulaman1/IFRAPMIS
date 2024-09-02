@@ -329,6 +329,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             ViewData["SectionId"] = new MultiSelectList(_context.Sections, "SectionId", "Name", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));            
             ViewData["TrainerId"] = new MultiSelectList(_context.Trainers/*.Where(a => a.SectionId == 2)*/, "TrainerId", "TrainerName", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));  // Pre-selected TrainerIds);            
             ViewData["TrainingHeadId"] = new SelectList(_context.TrainingHeads, "TrainingHeadId", "TrainingHeadName", TrainingHeadId);
+
             ViewData["TrainingTitleId"] = new SelectList(_context.TrainingTitles.Where(a => a.TrainingHeadId == TrainingHeadId), "TitleId", "TrainingName", TrainingHeadId);
             var districtAccess = _context.Districts.Where(a => a.DistrictName == cicigTraining.District);
             var tehsilAccess = _context.Tehsils.Where(a => a.District.DistrictName.Equals(cicigTraining.District));
@@ -545,6 +546,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
 
             ViewData["SectionId"] = new SelectList(_context.Sections/*.Where(a => a.SectionId == 2)*/, "SectionId", "Name");                        
             ViewData["TrainerId"] = new SelectList(_context.Trainers/*.Where(a => a.SectionId == 2)*/, "TrainerId", "TrainerName", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));            
+
             ViewData["TrainingHeadId"] = new SelectList(_context.TrainingHeads, "TrainingHeadId", "TrainingHeadName", TrainingHeadId);
             ViewData["TrainingTitleId"] = new SelectList(_context.TrainingTitles.Where(a => a.TrainingHeadId == TrainingHeadId), "TrainingTitleId", "TrainingTypeName", TrainingHeadId);
             ViewData["VillageId"] = new SelectList(_context.Villages.Where(a => a.UnionCouncilId == cicigTraining.Village.UnionCouncilId), "VillageId", "Name", cicigTraining.VillageId);
@@ -604,7 +606,9 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             if (cicigTraining != null)
             {
 
+
                 //_context.Database.ExecuteSqlRaw("delete [Training].[CITrainingMember] where CICIGTrainingsId=" + cicigTraining.CICIGTrainingsId);
+
 
                 _context.CICIGTrainings.Remove(cicigTraining);
                 await _context.SaveChangesAsync();

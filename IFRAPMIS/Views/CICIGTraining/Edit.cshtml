@@ -11,8 +11,10 @@
     ViewBag.pTitle = "Conducted";
 
     Layout = "~/Views/Shared/_Layout.cshtml";
+
     
     var sectionId = ViewData["SectionId"] as MultiSelectList;
+
     var trainerId = ViewData["TrainerId"] as MultiSelectList;
 }
 
@@ -94,7 +96,9 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="control-label">Tehsil</label>
+
                                                 <select required id="Tehsil" asp-for="Tehsil" name="Tehsil" asp-items="ViewBag.TehsilId" class="form-control">
+
                                                 <option value=""> - - Select - -</option>
 
                                                 </select>
@@ -103,7 +107,9 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="control-label">Union Council</label>
+
                                                 <select required id="UnionCouncil" asp-items="ViewBag.UnionCouncilId" asp-for="UnionCouncil" class="form-control">
+
                                                 <option value=""> - - Select - -</option>
 
                                                 </select>
@@ -141,8 +147,10 @@
                                         </div>
                                         <div class="col-md-3">                                            
                                            <div class="form-group">
+
                                                 <label asp-for="TrainingTitleId" class="control-label"></label>
                                                 <select asp-for="TrainingTitleId" asp-items="ViewBag.TrainingTitleId" class ="form-control" required>
+
 
                                                     <option value=""> - - Select - -</option>
                                                 </select>
@@ -210,6 +218,7 @@
                                             </div>
                                         </div> *@
                                        
+
 
                                         <div class="col-md-3">
                                             <div class="form-group">

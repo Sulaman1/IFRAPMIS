@@ -80,7 +80,13 @@ namespace IFRAPMIS
             .AddDefaultUI()
             .AddDefaultTokenProviders();
 
-            builder.Services.AddControllersWithViews();                                   
+            //builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                options.JsonSerializerOptions.MaxDepth = 64; // Increase depth if needed
+            });
 
             var app = builder.Build();
 

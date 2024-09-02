@@ -133,7 +133,7 @@ else
                     $("#TehsilId").empty();                   
                     $("#TehsilId").append('<option value="">Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });

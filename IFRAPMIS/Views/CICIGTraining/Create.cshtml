@@ -13,7 +13,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var sectionId = ViewData["TrainingById"] as MultiSelectList;
-    var trainingById = ViewData["TrainerId"] as MultiSelectList;
+    // var trainingById = ViewData["TrainerId"] as MultiSelectList;
 }
 
 @{
@@ -87,7 +87,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="control-label">Union Council</label>
-                                                <select required id="UnionCouncil" asp-for="UnionCouncil" asp-items="ViewBag.UnionCouncil" class="form-control">
+                                                <select required id="UnionCouncil" asp-items="ViewBag.UnionCouncil" asp-for="UnionCouncil" class="form-control">
                                                     <option value=""> - - Select - -</option>
                                                 </select>
                                             </div>
@@ -343,7 +343,7 @@ else
                     $("#TrainingTitleId").empty();
                     $("#TrainingTitleId").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#TrainingTitleId").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });
@@ -355,7 +355,7 @@ else
                     $("#CICIGTrainingTrainers").empty();                   
                     $("#CICIGTrainingTrainers").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#CICIGTrainingTrainers").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });
@@ -370,9 +370,17 @@ else
                     $("#VillageId").append('<option>Select...</option>');
                     $("#UnionCouncil").append('<option>Select...</option>');
                     $("#Tehsil").append('<option>Select...</option>');
-                    console.log(data);
-                    $.each(data, function (index, row) {
-                        console.log(row);
+                    console.log(data.$values);
+                    var newData = data.$values;
+                    $.each(newData, function (index, row) {
+                        // $.each(row, function (a, b) {
+                        //     console.log("A: ", a)
+                        //     console.log("B: ", b)
+
+                        // });
+                        console.log("ROW.value: ", row.value)
+                        console.log("ROW: ", row.text);
+                        
                         $("#Tehsil").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });
                 });
@@ -385,7 +393,7 @@ else
                     $("#UnionCouncil").append('<option>Select...</option>');
                     $("#VillageId").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#UnionCouncil").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });
@@ -397,7 +405,7 @@ else
                     $("#VillageId").empty();
                     $("#VillageId").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });

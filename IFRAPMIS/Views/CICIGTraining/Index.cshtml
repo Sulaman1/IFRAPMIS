@@ -47,7 +47,7 @@
                                             <tr>
                                                 <th>
 
-                                                    @Html.DisplayNameFor(model => model.Phase)
+                                                    @Html.DisplayNameFor(model => model.Phase.Name)
                                                 </th>
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.TrainingTitle.TrainingHead.TrainingHeadName)
@@ -104,9 +104,9 @@
                                                         @Html.DisplayFor(modelItem => item.District)
                                                     </td>  
                                                      <td>
-                                                        <a asp-action="details" asp-route-id="@item.CICIGTrainingsId">Detail</a> |
+                                                        <a asp-action="Details" asp-route-id="@item.CICIGTrainingsId">Detail</a> |
 
-                                                        <a asp-action="Create" asp-controller="CITrainingParticipatoin" asp-route-id="@item.CICIGTrainingsId">View CI/CIG</a>
+                                                        <a asp-action="Create" asp-controller="CITrainingParticipation" asp-route-id="@item.CICIGTrainingsId">View CI/CIG</a>
 
                                                     </td>
                                                     @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Edit)).Result.Succeeded

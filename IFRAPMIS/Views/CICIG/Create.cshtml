@@ -308,7 +308,7 @@ else
                     $("#UnionCouncil").append('<option>Select...</option>');
                     $("#Tehsil").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#Tehsil").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });
@@ -321,7 +321,7 @@ else
                     $("#UnionCouncil").empty();
                     $("#UnionCouncil").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#UnionCouncil").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });
@@ -334,7 +334,7 @@ else
                     $("#VillageId").empty();
                     $("#VillageId").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });

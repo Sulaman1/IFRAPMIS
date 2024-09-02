@@ -11,9 +11,8 @@
     ViewBag.pTitle = "Conducted";
 
     Layout = "~/Views/Shared/_Layout.cshtml";
-
+    
     var sectionId = ViewData["SectionId"] as MultiSelectList;
-
     var trainerId = ViewData["TrainerId"] as MultiSelectList;
 }
 
@@ -95,7 +94,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="control-label">Tehsil</label>
-                                                <select required id="Tehsil" asp-items="ViewBag.TehsilId" class="form-control">
+                                                <select required id="Tehsil" asp-for="Tehsil" name="Tehsil" asp-items="ViewBag.TehsilId" class="form-control">
                                                 <option value=""> - - Select - -</option>
 
                                                 </select>
@@ -104,7 +103,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="control-label">Union Council</label>
-                                                <select required id="UnionCouncil" asp-items="ViewBag.UnionCouncilId" class="form-control">                                                    
+                                                <select required id="UnionCouncil" asp-items="ViewBag.UnionCouncilId" asp-for="UnionCouncil" class="form-control">
                                                 <option value=""> - - Select - -</option>
 
                                                 </select>
@@ -142,8 +141,8 @@
                                         </div>
                                         <div class="col-md-3">                                            
                                            <div class="form-group">
-                                                <label asp-for="TrainingTitleName" class="control-label"></label>
-                                                <select asp-for="TrainingTitleName" asp-items="ViewBag.TrainingTitleId" class ="form-control" required>
+                                                <label asp-for="TrainingTitleId" class="control-label"></label>
+                                                <select asp-for="TrainingTitleId" asp-items="ViewBag.TrainingTitleId" class ="form-control" required>
 
                                                     <option value=""> - - Select - -</option>
                                                 </select>
@@ -212,11 +211,12 @@
                                         </div> *@
                                        
 
-
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                            <label class="control-label">Section</label>
-                                            <select id="SectionId" class="form-control" asp-items="sectionId"></select>
+                                                <label class="control-label">Section</label>
+                                                <select id="SectionId" class="form-control" asp-items="sectionId">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
                                             </div>
                                         </div>
 
@@ -228,12 +228,20 @@
                                             </div>
                                         </div> *@
 
-                                        <div class="col-md-3">
+@*                                         <div class="col-md-3">
                                             <label asp-for="CICIGTrainingTrainers" class="control-label">Select Trainers</label>
 
                                             <select asp-for="CICIGTrainingTrainers" id="CICIGTrainingTrainers" asp-items="trainerId" class="form-control" multiple="multiple">
 
                                             </select>
+                                        </div> *@
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Trainers</label>
+                                                <select id="CICIGTrainingTrainers" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                            </div>
                                         </div>
 
                                         <div class="col-md-3">
@@ -526,7 +534,7 @@ else
                     $("#SectionId").empty();                   
                     $("#SectionId").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#SectionId").append("<option value='" + row.value + "'>" + row.text + "</option>")
 
@@ -539,7 +547,7 @@ else
                     $("#CICIGTrainingTrainers").empty();                   
                     $("#CICIGTrainingTrainers").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#CICIGTrainingTrainers").append("<option value='" + row.value + "'>" + row.text + "</option>")
 
@@ -554,7 +562,7 @@ else
                     $("#UnionCouncil").append('<option>Select...</option>');
                     $("#Tehsil").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#Tehsil").append("<option value='" + row.value + "'>" + row.text + "</option>")
 
@@ -567,7 +575,7 @@ else
                     $("#UnionCouncil").empty();
                     $("#UnionCouncil").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#UnionCouncil").append("<option value='" + row.value + "'>" + row.text + "</option>")
 
@@ -581,7 +589,7 @@ else
                     $("#VillageId").empty();
                     $("#VillageId").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });

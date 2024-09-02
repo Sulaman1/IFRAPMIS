@@ -20,7 +20,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization
         }
         public async Task<IActionResult> CDSummaryView()
         {
-            ViewData["DistrictId"] = new SelectList(await _context.GetAllDistrict(), "DistrictId", "Name");
+            ViewData["DistrictId"] = new SelectList(await _context.GetAllDistrict(), "DistrictName", "DistrictName");
             ViewData["CommunityTypeId"] = new SelectList(await _context.GetCommunityTypes(), "CommunityTypeId", "Name");
             return View();
         }

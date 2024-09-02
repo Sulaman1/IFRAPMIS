@@ -113,6 +113,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             //}
             var AnyOtherTraining = _context.CITrainingMembers.Include(a => a.CIMember.CICIG.Village.UnionCouncils.Tehsil).Include(a => a.CICIGTrainings.TrainingTitle.TrainingHead).Where(a => a.CIMember.CIMemberId == info.CIMemberId).ToList();
 
+
             string abounttrainings = "";
             if (AnyOtherTraining.Count() > 0)
             {

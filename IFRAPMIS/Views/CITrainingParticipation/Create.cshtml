@@ -1,5 +1,6 @@
 @model DAL.Models.Domain.SocialMobilization.Training.CITrainingParticipation
 
+
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
 @* @using Constant.Constants *@
@@ -31,6 +32,7 @@
                                         <div class="col-sm-6">
                                             <h4 class="mt-2 card-title">Add CO</h4>
 
+
                                         </div>
 
                                         @*<div class="col-sm-6">
@@ -39,6 +41,7 @@
                                                 </div>
                                             </div>*@<!-- end col-->
                                     
+
                                         </div>
 
                                 </div>
@@ -57,8 +60,10 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>                                            
+
                                             <input type="hidden" asp-for="CITrainingParticipationId"/>
                                             <input type="hidden" asp-for="CICIGTrainingsId"/>                                                                                                                                  
+
                                             <div class="form-group">
                                                 <label asp-for="CICIGId" class="control-label"></label>
                                                 <select required asp-for="CICIGId" name="CICIGId" asp-items="ViewBag.CICIGId" class="form-control">
@@ -68,6 +73,7 @@
 
                                             </div>
                                             
+
                                         </div>                                        
                                     </div>
                                 </form>
@@ -139,6 +145,7 @@ else
                     <div class="text-center mb-5">
                         <h4 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h4>
                         <h4 class="text-uppercase">Sorry, page not found</h4>
+
                         @*<div class="mt-5 text-center">
                                 <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
                             </div>*@
@@ -178,6 +185,7 @@ else
                     $("#CICIGId").empty();
                     $("#CICIGId").append('<option>Select...</option>');                   
                     $.each(data.$values, function (index, row) {
+
                         console.log(row);
                         $("#CICIGId").append("<option value='" + row.value + "'>" + row.text + "</option>")
 

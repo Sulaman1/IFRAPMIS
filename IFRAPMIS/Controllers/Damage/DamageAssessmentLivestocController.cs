@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IFRAPMIS.Controllers.Damage
 {
-    public class DamageAssessmentLivestockController : Controller
+    public class DamageAssessmentLivestocController : Controller
     {
         private readonly IDamageAssessmentLivestock _context;
 
-        public DamageAssessmentLivestockController(IDamageAssessmentLivestock context)
+        public DamageAssessmentLivestocController(IDamageAssessmentLivestock context)
         {
             _context = context;
         }

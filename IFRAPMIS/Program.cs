@@ -48,7 +48,6 @@ namespace IFRAPMIS
             builder.Services.AddTransient<IDamageAssessmentHTS, DamageAssessmentHTSService>();
             builder.Services.AddTransient<IDamageIP, DamageIPService>();
 
-
             //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 

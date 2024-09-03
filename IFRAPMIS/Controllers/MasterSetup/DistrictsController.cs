@@ -96,7 +96,7 @@ namespace IFRAPMIS.Controllers.MasterSetup
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DistrictId,Name,Code,Description,DivisionId")] District district)
+        public async Task<IActionResult> Edit(int id, [Bind("DistrictId, DistrictName,Code,Description,DivisionId")] District district)
         {
             if (id != district.DistrictId)
             {

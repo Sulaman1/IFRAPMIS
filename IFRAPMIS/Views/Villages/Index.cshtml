@@ -79,12 +79,12 @@
                                                     </td>                                                    
                                                     <td>
                                                         @* @Html.DisplayFor(modelItem => item.UnionCouncils?.UnionCouncilName) *@
-                                                        @(item.UnionCouncils != null ? Html.DisplayFor(modelItem => item.UnionCouncils.UnionCouncilName).ToString() : "N/A")                                                  
+                                                        @(item.UnionCouncils != null ? Html.DisplayFor(modelItem => item.UnionCouncils.UnionCouncilName) : "N/A")                                                  
                                                     </td>                                                 
                                                     <td>
                                                         @* @Html.DisplayFor(modelItem => item.UnionCouncils.Tehsil.TehsilName) *@
                                                         @(item.UnionCouncils != null && item.UnionCouncils.Tehsil != null
-                                                            ? Html.DisplayFor(modelItem => item.UnionCouncils.Tehsil.TehsilName).ToString()
+                                                            ? Html.DisplayFor(modelItem => item.UnionCouncils.Tehsil.TehsilName)
                                                             : "N/A")
                                                     </td>
                                                     @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded

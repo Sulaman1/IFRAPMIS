@@ -5,12 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DBContext.Migrations
 {
-    /// <inheritdoc />
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-    public partial class NewDB : Migration
-========
+  
     public partial class init : Migration
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -581,10 +577,7 @@ namespace DBContext.Migrations
                     PictureAttachment3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PictureAttachment4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VillageId = table.Column<int>(type: "int", nullable: false),
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                     TrainingHeadId = table.Column<int>(type: "int", nullable: true),
-========
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                     TrainingTitleId = table.Column<int>(type: "int", nullable: true),
                     PhaseId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -597,14 +590,11 @@ namespace DBContext.Migrations
                         principalTable: "Phases",
                         principalColumn: "PhaseId");
                     table.ForeignKey(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                         name: "FK_CICIGTrainings_TrainingHeads_TrainingHeadId",
                         column: x => x.TrainingHeadId,
                         principalTable: "TrainingHeads",
                         principalColumn: "TrainingHeadId");
                     table.ForeignKey(
-========
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                         name: "FK_CICIGTrainings_TrainingTitles_TrainingTitleId",
                         column: x => x.TrainingTitleId,
                         principalTable: "TrainingTitles",
@@ -733,8 +723,6 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-========
                 name: "CICIGTrainingTrainer",
                 columns: table => new
                 {
@@ -785,7 +773,6 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "CIMembers",
                 columns: table => new
                 {
@@ -813,7 +800,6 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                 name: "CICIGTrainingTrainer",
                 columns: table => new
                 {
@@ -941,8 +927,6 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
-========
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "DamageVerifieds",
                 columns: table => new
                 {
@@ -1059,7 +1043,6 @@ namespace DBContext.Migrations
                 column: "BeneficiaryIPId",
                 unique: true,
                 filter: "[BeneficiaryIPId] IS NOT NULL");
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_BeneficiaryVerifieds_BeneficiaryPDMAId",
@@ -1067,9 +1050,6 @@ namespace DBContext.Migrations
                 column: "BeneficiaryPDMAId",
                 unique: true,
                 filter: "[BeneficiaryPDMAId] IS NOT NULL");
-========
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
-
             migrationBuilder.CreateIndex(
                 name: "IX_BeneficiaryVerifieds_BeneficiaryPDMAId",
                 table: "BeneficiaryVerifieds",
@@ -1092,13 +1072,9 @@ namespace DBContext.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGs_PhaseId",
                 table: "CICIGs",
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                 column: "PhaseId",
                 unique: true,
                 filter: "[PhaseId] IS NOT NULL");
-========
-                column: "PhaseId");
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGs_VillageId",
@@ -1108,7 +1084,6 @@ namespace DBContext.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGTrainings_PhaseId",
                 table: "CICIGTrainings",
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                 column: "PhaseId",
                 unique: true,
                 filter: "[PhaseId] IS NOT NULL");
@@ -1119,20 +1094,13 @@ namespace DBContext.Migrations
                 column: "TrainingHeadId",
                 unique: true,
                 filter: "[TrainingHeadId] IS NOT NULL");
-========
-                column: "PhaseId");
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGTrainings_TrainingTitleId",
                 table: "CICIGTrainings",
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                 column: "TrainingTitleId",
                 unique: true,
                 filter: "[TrainingTitleId] IS NOT NULL");
-========
-                column: "TrainingTitleId");
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGTrainings_VillageId",
@@ -1145,8 +1113,6 @@ namespace DBContext.Migrations
                 column: "TrainerId");
 
             migrationBuilder.CreateIndex(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-========
                 name: "IX_CIMembers_BeneficiaryVerifiedId",
                 table: "CIMembers",
                 column: "BeneficiaryVerifiedId",
@@ -1154,7 +1120,6 @@ namespace DBContext.Migrations
                 filter: "[BeneficiaryVerifiedId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "IX_CIMembers_CICIGId",
                 table: "CIMembers",
                 column: "CICIGId");
@@ -1315,21 +1280,18 @@ namespace DBContext.Migrations
                 name: "Trainers");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                 name: "CICIGTrainings");
 
             migrationBuilder.DropTable(
                 name: "BeneficiaryVerifieds");
 
             migrationBuilder.DropTable(
-========
                 name: "CIMembers");
 
             migrationBuilder.DropTable(
                 name: "CICIGTrainings");
 
             migrationBuilder.DropTable(
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "DamageAssessmentHTSs");
 
             migrationBuilder.DropTable(
@@ -1339,7 +1301,6 @@ namespace DBContext.Migrations
                 name: "Sections");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                 name: "TrainingTitles");
 
             migrationBuilder.DropTable(
@@ -1350,10 +1311,6 @@ namespace DBContext.Migrations
 
             migrationBuilder.DropTable(
                 name: "CIMembers");
-========
-                name: "BeneficiaryVerifieds");
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
-
             migrationBuilder.DropTable(
                 name: "TrainingHeads");
 
@@ -1361,8 +1318,6 @@ namespace DBContext.Migrations
                 name: "CICIGs");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-========
                 name: "TrainingTitles");
 
             migrationBuilder.DropTable(
@@ -1372,19 +1327,15 @@ namespace DBContext.Migrations
                 name: "BeneficiaryPDMAs");
 
             migrationBuilder.DropTable(
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "CommunityTypes");
 
             migrationBuilder.DropTable(
                 name: "Phases");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-========
                 name: "TrainingHeads");
 
             migrationBuilder.DropTable(
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "Villages");
 
             migrationBuilder.DropTable(

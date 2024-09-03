@@ -5,11 +5,36 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using DAL.Models.Domain.MasterSetup;
 
 namespace IFRAPMIS.Controllers.SocialMobilization.Training
 {
+
     public class CITrainingMemberController : Controller
     {
+        public class CIMemberDTO
+        {
+            public int CIMemberId { get; set; }
+            public string MemberCode { get; set; }
+
+            // Assuming BeneficiaryVerified is a related entity, create a DTO for it as well
+            public BeneficiaryVerifiedDTO BeneficiaryVerified { get; set; }
+
+            // Add other properties you need to expose
+        }
+        public class BeneficiaryVerifiedDTO
+        {
+            public string CNIC { get; set; }
+            public string BeneficiaryName { get; set; }
+            public string BeneficiaryFather { get; set; }
+            public string Mobile { get; set; }
+            public string Gender { get; set; }
+
+            // Add other properties from BeneficiaryVerified if needed
+        }
+
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         public CITrainingMemberController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
@@ -21,13 +46,25 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         // GET: CITrainingMembers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.CITrainingMembers.Include(m => m.CIMember).Include(m => m.CICIGTrainings);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = await _context.CITrainingMembers
+                                                .Include(m => m.CIMember)
+                                                    .ThenInclude(cim => cim.BeneficiaryVerified)
+                                                .Include(m => m.CICIGTrainings)
+                                                .ToListAsync();
+            return View(applicationDbContext);
         }
         public async Task<IActionResult> _Index(int id)
         {
-            var applicationDbContext = _context.CITrainingMembers.Include(m => m.CIMember.BeneficiaryVerified).Include(m => m.CICIGTrainings).Include(a => a.CIMember.Designation).Where(a => a.CICIGTrainingsId == id);
-            return PartialView(await applicationDbContext.ToListAsync());
+            var applicationDbContext = await _context.CITrainingMembers
+                                                .Include(m => m.CIMember)
+                                                    .ThenInclude(cim => cim.BeneficiaryVerified)
+                                                .Include(m => m.CICIGTrainings)
+                                                //.Include(a => a.CIMember.Designation)
+                                                .Where(a => a.CICIGTrainingsId == id)
+                                                .ToListAsync();
+
+            var ciTrainMember = applicationDbContext;
+            return PartialView(ciTrainMember);
         }
         public async Task<IActionResult> TrackMember(int id)
         {
@@ -38,17 +75,45 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         public async Task<JsonResult> AjaxMemberInformation(string id)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var Info = _context.CIMembers.Include(a => a.CICIG).Include(a => a.BeneficiaryVerified).Where(a => a.BeneficiaryVerified.CNIC == id /*&& a.BeneficiaryVerified.BeneficiaryTypeId == 1*/ && a.CICIG.IsVerified == true).FirstOrDefault();
-            //if (currentUser.DistrictId > 1)
+            /**
+             *  MemberId 1
+             *  CICIGId 3
+             *  
+             */
+            var info = _context.CIMembers
+                .Include(a => a.CICIG)
+                .Include(a => a.BeneficiaryVerified)
+                .Where(a => a.BeneficiaryVerified.CNIC == id /*&& a.BeneficiaryVerified.BeneficiaryTypeId == 1*/ && a.CICIG.IsVerified == true)
+                .FirstOrDefault();
+            if (info == null)
+            {
+                return new JsonResult(new { isValid = false, message = "No data found" });
+            }
+            var infoDto = new CIMemberDTO
+            {
+                CIMemberId = info.CIMemberId,
+                MemberCode = info.MemberCode,
+                BeneficiaryVerified = new BeneficiaryVerifiedDTO
+                {
+                    CNIC = info.BeneficiaryVerified.CNIC,
+                    BeneficiaryName = info.BeneficiaryVerified.BeneficiaryName,
+                    BeneficiaryFather = info.BeneficiaryVerified.BeneficiaryFather,
+                    Mobile = info.BeneficiaryVerified.Mobile,
+                    Gender = info.BeneficiaryVerified.Gender
+                }
+            };
+            //if (currentUser.DistrictId > 1)   
             //{
-                //Info = Info.CICIG.District == currentUser.DistrictName ? Info : null;
+            //Info = Info.CICIG.District == currentUser.DistrictName ? Info : null;
             //}
             //if (Info == null)
             //{
 
             //    return Json(new { isValid = false, Info, count = 0, message = "" });
             //}
-            var AnyOtherTraining = _context.CITrainingMembers.Include(a => a.CIMember.CICIG.Village.UnionCouncils.Tehsil).Include(a => a.CICIGTrainings.TrainingHead).Where(a => a.CIMember.CIMemberId == Info.CIMemberId).ToList();
+            var AnyOtherTraining = _context.CITrainingMembers.Include(a => a.CIMember.CICIG.Village.UnionCouncils.Tehsil).Include(a => a.CICIGTrainings.TrainingTitle.TrainingHead).Where(a => a.CIMember.CIMemberId == info.CIMemberId).ToList();
+
+
             string abounttrainings = "";
             if (AnyOtherTraining.Count() > 0)
             {
@@ -56,10 +121,27 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 int counter = 1;
                 foreach (var a in AnyOtherTraining)
                 {
-                    abounttrainings += "(" + counter++ + ") Tehsil: " + a.CIMember.CICIG.Village.UnionCouncils.Tehsil.TehsilName + ", UC: " + a.CIMember.CICIG.Village.UnionCouncils.UnionCouncilName + ", Training Head: " + a.CICIGTrainings.TrainingHead.TrainingHeadName + ", Training Type: " + a.CICIGTrainings.TrainingTitle + ", Training Title: " + a.CICIGTrainings.TrainingName + ". ";
+                    abounttrainings += "(" + counter++ + ") Tehsil: " + a.CIMember.CICIG.Village.UnionCouncils.Tehsil.TehsilName + ", UC: " + a.CIMember.CICIG.Village.UnionCouncils.UnionCouncilName + ", Training Head: " + a.CICIGTrainings.TrainingTitle.TrainingHead.TrainingHeadName + ", Training Type: " + a.CICIGTrainings.TrainingTitle + ", Training Title: " + a.CICIGTrainings.TrainingName + ". ";
+
                 }
             }
-            return Json(new { isValid = true, Info, count = AnyOtherTraining.Count(), message = abounttrainings });
+            /**
+             * BeneficiaryVerified.BeneficiaryName
+             * BeneficiaryVerified.BeneficiaryFather
+             * BeneficiaryVerified.cnic
+             * BeneficiaryVerified.membercode
+             * BeneficiaryVerified.mobile
+             * BeneficiaryVerified.gender
+             */
+            //var options = new JsonSerializerOptions
+            //{
+            //    ReferenceHandler = ReferenceHandler.Preserve,
+            //    // Other options if needed
+            //};
+            return new JsonResult(new { isValid = true, info = infoDto, count = AnyOtherTraining.Count(), message = abounttrainings });
+            //return Json(new { isValid = true, Info = infoDto, count = AnyOtherTraining.Count(), message = abounttrainings }, JsonRequestBehavior.AllowGet);
+            //return Json(new { isValid = true, Info = JsonSerializer.Serialize(infoDto, options), count = AnyOtherTraining.Count(), message = abounttrainings });
+            //return Json(new { isValid = true, Info, count = AnyOtherTraining.Count(), message = abounttrainings });
         }
         public async Task<JsonResult> AddBeneficiaryInTraining(int CDMId, int MTId)
         {

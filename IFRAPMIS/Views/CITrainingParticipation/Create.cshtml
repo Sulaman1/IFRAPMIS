@@ -1,7 +1,10 @@
-﻿@* @model DAL.Models.Domain.Training.MemberTrainingCICIG
+@model DAL.Models.Domain.SocialMobilization.Training.CITrainingParticipation
+
+
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
-@using Constant.Constants
+@* @using Constant.Constants *@
+
 
 @{
     ViewData["Title"] = "Create";
@@ -9,7 +12,8 @@
     ViewBag.Title = "Training";
     ViewBag.pTitle = "Training";
 
-    Layout = "~/Views/_Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 
@@ -27,11 +31,9 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <h4 class="mt-2 card-title">Add CO</h4>
-                                        </div> *@
 
 
-
-
+                                        </div>
 
                                         @*<div class="col-sm-6">
                                                 <div class="text-sm-right">
@@ -39,12 +41,9 @@
                                                 </div>
                                             </div>*@<!-- end col-->
                                     
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        @* </div>
+
+                                        </div>
+
                                 </div>
                                 <form asp-action="Create" enctype="multipart/form-data">
                                     <div class="row">
@@ -61,14 +60,20 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>                                            
-                                            <input type="hidden" asp-for="MemberTrainingId"/>                                                                                                                                  
+
+                                            <input type="hidden" asp-for="CITrainingParticipationId"/>
+                                            <input type="hidden" asp-for="CICIGTrainingsId"/>                                                                                                                                  
+
                                             <div class="form-group">
-                                                <label asp-for="CommunityInstitutionId" class="control-label"></label>
-                                                <select required asp-for="CommunityInstitutionId" name="CommunityInstitutionId" asp-items="ViewBag.CommunityInstitutionId" class="form-control">
+                                                <label asp-for="CICIGId" class="control-label"></label>
+                                                <select required asp-for="CICIGId" name="CICIGId" asp-items="ViewBag.CICIGId" class="form-control">
                                                     <option value=""> - - Select - -</option>
                                                 </select>
-                                                <span asp-validation-for="CommunityInstitutionId" class="text-danger"></span>
-                                            </div>                                           
+                                                <span asp-validation-for="CICIGId" class="text-danger"></span>
+
+                                            </div>
+                                            
+
                                         </div>                                        
                                     </div>
                                 </form>
@@ -139,22 +144,14 @@ else
                 <div class="col-lg-12">
                     <div class="text-center mb-5">
                         <h4 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h4>
-                        <h4 class="text-uppercase">Sorry, page not found</h4> *@
-
-
-
-
-
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
 
                         @*<div class="mt-5 text-center">
                                 <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
                             </div>*@
-                    
-                        
-                        
-                        
-                        
-                        @* </div>
+               
+                        </div>
+
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -176,23 +173,28 @@ else
     <script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-            $.get('@Url.Action("_Index", "MemberTrainingCICIGs", new { id = Model.MemberTrainingId })', function (content) {
+            $.get('@Url.Action("_Index", "CITrainingParticipation", new { id = Model.CITrainingParticipationId })', function (content) {
+
                 $("#dynamicContentContainer1").html(content);
                 notificationme('Fetch Record Successfully!');
                 /* $("#divLoading").hide();*/
             });
             $("#DistrictId").change(function () {
-                $.get("/MemberTrainingCICIGs/GetCIs", { districtId: $("#DistrictId").val() }, function (data) {
-                    $("#CommunityInstitutionId").empty();
-                    $("#CommunityInstitutionId").append('<option>Select...</option>');                   
-                    $.each(data, function (index, row) {
+
+                $.get("/CITrainingParticipation/GetCIsByDistrictName", { districtName: $("#DistrictId").val() }, function (data) {
+                    $("#CICIGId").empty();
+                    $("#CICIGId").append('<option>Select...</option>');                   
+                    $.each(data.$values, function (index, row) {
+
                         console.log(row);
-                        $("#CommunityInstitutionId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                        $("#CICIGId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+
                     });
-                });
+                });               
                 return false;
             });
     });
 
 </script>
-} *@
+}
+

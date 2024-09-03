@@ -32,8 +32,8 @@
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.CIMember.BeneficiaryVerified.ProfilePicture)
-                        </th>                        
-                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Delete).Result.Succeeded)
+                        </th>
+                        @if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Delete).Result.Succeeded
                         {
                             <th>Action</th>
                         }                        
@@ -69,8 +69,9 @@
                             </td>
                             <td>
                                 @if (item.CIMember.BeneficiaryVerified.ProfilePicture != null)
-                                {
-                                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="data:image/*;base64,@(Convert.ToBase64String(item.CIMember.BeneficiaryVerified.ProfilePicture))">
+                                {   
+                                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" 
+                                    src="data:image/*;base64,@(Convert.ToBase64String(item.CIMember.BeneficiaryVerified.ProfilePicture))">
                                 }
                                 else
                                 {

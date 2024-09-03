@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DBContext.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-    public partial class NewDB : Migration
-========
-    public partial class init : Migration
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -143,21 +139,6 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrainingHeads",
-                columns: table => new
-                {
-                    TrainingHeadId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TrainingHeadName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingHeadCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingIntervention = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingHeads", x => x.TrainingHeadId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -283,27 +264,6 @@ namespace DBContext.Migrations
                         principalTable: "Proviences",
                         principalColumn: "ProvienceId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TrainingTitles",
-                columns: table => new
-                {
-                    TitleId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TrainingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingTitleCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingIntervention = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingHeadId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingTitles", x => x.TitleId);
-                    table.ForeignKey(
-                        name: "FK_TrainingTitles_TrainingHeads_TrainingHeadId",
-                        column: x => x.TrainingHeadId,
-                        principalTable: "TrainingHeads",
-                        principalColumn: "TrainingHeadId");
                 });
 
             migrationBuilder.CreateTable(
@@ -548,75 +508,6 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CICIGTrainings",
-                columns: table => new
-                {
-                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TrainingName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TrainingCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tehsil = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UnionCouncil = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Lat = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Long = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TrainingTitleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TrainingHeadName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalMembersParticipated = table.Column<int>(type: "int", nullable: true),
-                    TotalNumberMale = table.Column<int>(type: "int", nullable: true),
-                    TotalNumberFemale = table.Column<int>(type: "int", nullable: true),
-                    Venue = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateOfCreation = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Started = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Ended = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalDays = table.Column<int>(type: "int", nullable: true),
-                    TotalClasses = table.Column<int>(type: "int", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AttendanceAttachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SessionPlanAttachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReportAttachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PictureAttachment1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PictureAttachment2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PictureAttachment3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PictureAttachment4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VillageId = table.Column<int>(type: "int", nullable: false),
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-                    TrainingHeadId = table.Column<int>(type: "int", nullable: true),
-========
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
-                    TrainingTitleId = table.Column<int>(type: "int", nullable: true),
-                    PhaseId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CICIGTrainings", x => x.CICIGTrainingsId);
-                    table.ForeignKey(
-                        name: "FK_CICIGTrainings_Phases_PhaseId",
-                        column: x => x.PhaseId,
-                        principalTable: "Phases",
-                        principalColumn: "PhaseId");
-                    table.ForeignKey(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-                        name: "FK_CICIGTrainings_TrainingHeads_TrainingHeadId",
-                        column: x => x.TrainingHeadId,
-                        principalTable: "TrainingHeads",
-                        principalColumn: "TrainingHeadId");
-                    table.ForeignKey(
-========
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
-                        name: "FK_CICIGTrainings_TrainingTitles_TrainingTitleId",
-                        column: x => x.TrainingTitleId,
-                        principalTable: "TrainingTitles",
-                        principalColumn: "TitleId");
-                    table.ForeignKey(
-                        name: "FK_CICIGTrainings_Villages_VillageId",
-                        column: x => x.VillageId,
-                        principalTable: "Villages",
-                        principalColumn: "VillageId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DamageIPs",
                 columns: table => new
                 {
@@ -650,50 +541,6 @@ namespace DBContext.Migrations
                         principalTable: "DamageAssessmentLivestocks",
                         principalColumn: "DamageAssessmentLivestockId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BeneficiaryVerifieds",
-                columns: table => new
-                {
-                    BeneficiaryVerifiedId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BeneficiaryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeneficiaryFather = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CNIC = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    MaritialStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDisable = table.Column<bool>(type: "bit", nullable: true),
-                    CNICAttachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsRefugee = table.Column<bool>(type: "bit", nullable: true),
-                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tehsil = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UnionCouncil = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BeneficiaryIPId = table.Column<int>(type: "int", nullable: true),
-                    BeneficiaryPDMAId = table.Column<int>(type: "int", nullable: true),
-                    VillageId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BeneficiaryVerifieds", x => x.BeneficiaryVerifiedId);
-                    table.ForeignKey(
-                        name: "FK_BeneficiaryVerifieds_BeneficiaryIPs_BeneficiaryIPId",
-                        column: x => x.BeneficiaryIPId,
-                        principalTable: "BeneficiaryIPs",
-                        principalColumn: "BeneficiaryIPId");
-                    table.ForeignKey(
-                        name: "FK_BeneficiaryVerifieds_BeneficiaryPDMAs_BeneficiaryPDMAId",
-                        column: x => x.BeneficiaryPDMAId,
-                        principalTable: "BeneficiaryPDMAs",
-                        principalColumn: "BeneficiaryPDMAId");
-                    table.ForeignKey(
-                        name: "FK_BeneficiaryVerifieds_Villages_VillageId",
-                        column: x => x.VillageId,
-                        principalTable: "Villages",
-                        principalColumn: "VillageId");
                 });
 
             migrationBuilder.CreateTable(
@@ -733,59 +580,6 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-========
-                name: "CICIGTrainingTrainer",
-                columns: table => new
-                {
-                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false),
-                    TrainerId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CICIGTrainingTrainer", x => new { x.CICIGTrainingsId, x.TrainerId });
-                    table.ForeignKey(
-                        name: "FK_CICIGTrainingTrainer_CICIGTrainings_CICIGTrainingsId",
-                        column: x => x.CICIGTrainingsId,
-                        principalTable: "CICIGTrainings",
-                        principalColumn: "CICIGTrainingsId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CICIGTrainingTrainer_Trainers_TrainerId",
-                        column: x => x.TrainerId,
-                        principalTable: "Trainers",
-                        principalColumn: "TrainerId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CITrainingParticipations",
-                columns: table => new
-                {
-                    CITrainingParticipationId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CICIGId = table.Column<int>(type: "int", nullable: false),
-                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CITrainingParticipations", x => x.CITrainingParticipationId);
-                    table.ForeignKey(
-                        name: "FK_CITrainingParticipations_CICIGTrainings_CICIGTrainingsId",
-                        column: x => x.CICIGTrainingsId,
-                        principalTable: "CICIGTrainings",
-                        principalColumn: "CICIGTrainingsId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CITrainingParticipations_CICIGs_CICIGId",
-                        column: x => x.CICIGId,
-                        principalTable: "CICIGs",
-                        principalColumn: "CICIGId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "CIMembers",
                 columns: table => new
                 {
@@ -793,70 +587,13 @@ namespace DBContext.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Designation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MemberCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CICIGId = table.Column<int>(type: "int", nullable: false),
-                    BeneficiaryVerifiedId = table.Column<int>(type: "int", nullable: true)
+                    CICIGId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CIMembers", x => x.CIMemberId);
                     table.ForeignKey(
-                        name: "FK_CIMembers_BeneficiaryVerifieds_BeneficiaryVerifiedId",
-                        column: x => x.BeneficiaryVerifiedId,
-                        principalTable: "BeneficiaryVerifieds",
-                        principalColumn: "BeneficiaryVerifiedId");
-                    table.ForeignKey(
                         name: "FK_CIMembers_CICIGs_CICIGId",
-                        column: x => x.CICIGId,
-                        principalTable: "CICIGs",
-                        principalColumn: "CICIGId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-                name: "CICIGTrainingTrainer",
-                columns: table => new
-                {
-                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false),
-                    TrainerId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CICIGTrainingTrainer", x => new { x.CICIGTrainingsId, x.TrainerId });
-                    table.ForeignKey(
-                        name: "FK_CICIGTrainingTrainer_CICIGTrainings_CICIGTrainingsId",
-                        column: x => x.CICIGTrainingsId,
-                        principalTable: "CICIGTrainings",
-                        principalColumn: "CICIGTrainingsId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CICIGTrainingTrainer_Trainers_TrainerId",
-                        column: x => x.TrainerId,
-                        principalTable: "Trainers",
-                        principalColumn: "TrainerId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CITrainingParticipations",
-                columns: table => new
-                {
-                    CIIrainingParticipationId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CICIGId = table.Column<int>(type: "int", nullable: false),
-                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CITrainingParticipations", x => x.CIIrainingParticipationId);
-                    table.ForeignKey(
-                        name: "FK_CITrainingParticipations_CICIGTrainings_CICIGTrainingsId",
-                        column: x => x.CICIGTrainingsId,
-                        principalTable: "CICIGTrainings",
-                        principalColumn: "CICIGTrainingsId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CITrainingParticipations_CICIGs_CICIGId",
                         column: x => x.CICIGId,
                         principalTable: "CICIGs",
                         principalColumn: "CICIGId",
@@ -915,34 +652,6 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CITrainingMembers",
-                columns: table => new
-                {
-                    CITrainingMemberId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CIMemberId = table.Column<int>(type: "int", nullable: false),
-                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CITrainingMembers", x => x.CITrainingMemberId);
-                    table.ForeignKey(
-                        name: "FK_CITrainingMembers_CICIGTrainings_CICIGTrainingsId",
-                        column: x => x.CICIGTrainingsId,
-                        principalTable: "CICIGTrainings",
-                        principalColumn: "CICIGTrainingsId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CITrainingMembers_CIMembers_CIMemberId",
-                        column: x => x.CIMemberId,
-                        principalTable: "CIMembers",
-                        principalColumn: "CIMemberId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-========
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "DamageVerifieds",
                 columns: table => new
                 {
@@ -979,6 +688,82 @@ namespace DBContext.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CICIGTrainings",
+                columns: table => new
+                {
+                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TrainingName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TrainingCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tehsil = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UnionCouncil = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Lat = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Long = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TrainingTitleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TrainingHeadName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalMembersParticipated = table.Column<int>(type: "int", nullable: true),
+                    TotalNumberMale = table.Column<int>(type: "int", nullable: true),
+                    TotalNumberFemale = table.Column<int>(type: "int", nullable: true),
+                    Venue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfCreation = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Started = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Ended = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalDays = table.Column<int>(type: "int", nullable: true),
+                    TotalClasses = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AttendanceAttachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SessionPlanAttachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReportAttachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureAttachment1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureAttachment2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureAttachment3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureAttachment4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VillageId = table.Column<int>(type: "int", nullable: false),
+                    TrainingTitleId = table.Column<int>(type: "int", nullable: true),
+                    PhaseId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CICIGTrainings", x => x.CICIGTrainingsId);
+                    table.ForeignKey(
+                        name: "FK_CICIGTrainings_Phases_PhaseId",
+                        column: x => x.PhaseId,
+                        principalTable: "Phases",
+                        principalColumn: "PhaseId");
+                    table.ForeignKey(
+                        name: "FK_CICIGTrainings_Villages_VillageId",
+                        column: x => x.VillageId,
+                        principalTable: "Villages",
+                        principalColumn: "VillageId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CICIGTrainingTrainer",
+                columns: table => new
+                {
+                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false),
+                    TrainerId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CICIGTrainingTrainer", x => new { x.CICIGTrainingsId, x.TrainerId });
+                    table.ForeignKey(
+                        name: "FK_CICIGTrainingTrainer_CICIGTrainings_CICIGTrainingsId",
+                        column: x => x.CICIGTrainingsId,
+                        principalTable: "CICIGTrainings",
+                        principalColumn: "CICIGTrainingsId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CICIGTrainingTrainer_Trainers_TrainerId",
+                        column: x => x.TrainerId,
+                        principalTable: "Trainers",
+                        principalColumn: "TrainerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CITrainingMembers",
                 columns: table => new
                 {
@@ -1002,6 +787,74 @@ namespace DBContext.Migrations
                         principalTable: "CIMembers",
                         principalColumn: "CIMemberId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CITrainingParticipations",
+                columns: table => new
+                {
+                    CIIrainingParticipationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CICIGId = table.Column<int>(type: "int", nullable: false),
+                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CITrainingParticipations", x => x.CIIrainingParticipationId);
+                    table.ForeignKey(
+                        name: "FK_CITrainingParticipations_CICIGTrainings_CICIGTrainingsId",
+                        column: x => x.CICIGTrainingsId,
+                        principalTable: "CICIGTrainings",
+                        principalColumn: "CICIGTrainingsId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CITrainingParticipations_CICIGs_CICIGId",
+                        column: x => x.CICIGId,
+                        principalTable: "CICIGs",
+                        principalColumn: "CICIGId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TrainingHeads",
+                columns: table => new
+                {
+                    TrainingHeadId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TrainingHeadName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingHeadCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingIntervention = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CICIGTrainingsId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrainingHeads", x => x.TrainingHeadId);
+                    table.ForeignKey(
+                        name: "FK_TrainingHeads_CICIGTrainings_CICIGTrainingsId",
+                        column: x => x.CICIGTrainingsId,
+                        principalTable: "CICIGTrainings",
+                        principalColumn: "CICIGTrainingsId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TrainingTitles",
+                columns: table => new
+                {
+                    TitleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TrainingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingTitleCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingIntervention = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrainingHeadId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrainingTitles", x => x.TitleId);
+                    table.ForeignKey(
+                        name: "FK_TrainingTitles_TrainingHeads_TrainingHeadId",
+                        column: x => x.TrainingHeadId,
+                        principalTable: "TrainingHeads",
+                        principalColumn: "TrainingHeadId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -1059,7 +912,6 @@ namespace DBContext.Migrations
                 column: "BeneficiaryIPId",
                 unique: true,
                 filter: "[BeneficiaryIPId] IS NOT NULL");
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_BeneficiaryVerifieds_BeneficiaryPDMAId",
@@ -1067,15 +919,12 @@ namespace DBContext.Migrations
                 column: "BeneficiaryPDMAId",
                 unique: true,
                 filter: "[BeneficiaryPDMAId] IS NOT NULL");
-========
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
 
             migrationBuilder.CreateIndex(
-                name: "IX_BeneficiaryVerifieds_BeneficiaryPDMAId",
+                name: "IX_BeneficiaryVerifieds_CIMemberId",
                 table: "BeneficiaryVerifieds",
-                column: "BeneficiaryPDMAId",
-                unique: true,
-                filter: "[BeneficiaryPDMAId] IS NOT NULL");
+                column: "CIMemberId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BeneficiaryVerifieds_VillageId",
@@ -1092,13 +941,9 @@ namespace DBContext.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGs_PhaseId",
                 table: "CICIGs",
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                 column: "PhaseId",
                 unique: true,
                 filter: "[PhaseId] IS NOT NULL");
-========
-                column: "PhaseId");
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGs_VillageId",
@@ -1108,31 +953,16 @@ namespace DBContext.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGTrainings_PhaseId",
                 table: "CICIGTrainings",
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                 column: "PhaseId",
                 unique: true,
                 filter: "[PhaseId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CICIGTrainings_TrainingHeadId",
-                table: "CICIGTrainings",
-                column: "TrainingHeadId",
-                unique: true,
-                filter: "[TrainingHeadId] IS NOT NULL");
-========
-                column: "PhaseId");
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CICIGTrainings_TrainingTitleId",
                 table: "CICIGTrainings",
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
                 column: "TrainingTitleId",
                 unique: true,
                 filter: "[TrainingTitleId] IS NOT NULL");
-========
-                column: "TrainingTitleId");
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_CICIGTrainings_VillageId",
@@ -1145,16 +975,6 @@ namespace DBContext.Migrations
                 column: "TrainerId");
 
             migrationBuilder.CreateIndex(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-========
-                name: "IX_CIMembers_BeneficiaryVerifiedId",
-                table: "CIMembers",
-                column: "BeneficiaryVerifiedId",
-                unique: true,
-                filter: "[BeneficiaryVerifiedId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "IX_CIMembers_CICIGId",
                 table: "CIMembers",
                 column: "CICIGId");
@@ -1254,6 +1074,11 @@ namespace DBContext.Migrations
                 column: "SectionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TrainingHeads_CICIGTrainingsId",
+                table: "TrainingHeads",
+                column: "CICIGTrainingsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TrainingTitles_TrainingHeadId",
                 table: "TrainingTitles",
                 column: "TrainingHeadId");
@@ -1267,11 +1092,30 @@ namespace DBContext.Migrations
                 name: "IX_Villages_UnionCouncilId",
                 table: "Villages",
                 column: "UnionCouncilId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CICIGTrainings_TrainingTitles_TrainingTitleId",
+                table: "CICIGTrainings",
+                column: "TrainingTitleId",
+                principalTable: "TrainingTitles",
+                principalColumn: "TitleId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_CICIGTrainings_Villages_VillageId",
+                table: "CICIGTrainings");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_CICIGTrainings_Phases_PhaseId",
+                table: "CICIGTrainings");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_CICIGTrainings_TrainingTitles_TrainingTitleId",
+                table: "CICIGTrainings");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -1315,21 +1159,9 @@ namespace DBContext.Migrations
                 name: "Trainers");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-                name: "CICIGTrainings");
-
-            migrationBuilder.DropTable(
                 name: "BeneficiaryVerifieds");
 
             migrationBuilder.DropTable(
-========
-                name: "CIMembers");
-
-            migrationBuilder.DropTable(
-                name: "CICIGTrainings");
-
-            migrationBuilder.DropTable(
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "DamageAssessmentHTSs");
 
             migrationBuilder.DropTable(
@@ -1339,10 +1171,6 @@ namespace DBContext.Migrations
                 name: "Sections");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-                name: "TrainingTitles");
-
-            migrationBuilder.DropTable(
                 name: "BeneficiaryIPs");
 
             migrationBuilder.DropTable(
@@ -1350,41 +1178,14 @@ namespace DBContext.Migrations
 
             migrationBuilder.DropTable(
                 name: "CIMembers");
-========
-                name: "BeneficiaryVerifieds");
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
-
-            migrationBuilder.DropTable(
-                name: "TrainingHeads");
 
             migrationBuilder.DropTable(
                 name: "CICIGs");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-========
-                name: "TrainingTitles");
-
-            migrationBuilder.DropTable(
-                name: "BeneficiaryIPs");
-
-            migrationBuilder.DropTable(
-                name: "BeneficiaryPDMAs");
-
-            migrationBuilder.DropTable(
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "CommunityTypes");
 
             migrationBuilder.DropTable(
-                name: "Phases");
-
-            migrationBuilder.DropTable(
-<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.cs
-========
-                name: "TrainingHeads");
-
-            migrationBuilder.DropTable(
->>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240829073731_init.cs
                 name: "Villages");
 
             migrationBuilder.DropTable(
@@ -1401,6 +1202,18 @@ namespace DBContext.Migrations
 
             migrationBuilder.DropTable(
                 name: "Proviences");
+
+            migrationBuilder.DropTable(
+                name: "Phases");
+
+            migrationBuilder.DropTable(
+                name: "TrainingTitles");
+
+            migrationBuilder.DropTable(
+                name: "TrainingHeads");
+
+            migrationBuilder.DropTable(
+                name: "CICIGTrainings");
         }
     }
 }

@@ -1,5 +1,9 @@
-
 .vs/
+
+IFRAPMIS/.env
+.env
+**/.env/
+
 
 /IFRAPMIS/wwwroot/
 /wwwroot/

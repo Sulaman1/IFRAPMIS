@@ -12,8 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBContext.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.Designer.cs
     [Migration("20240822122526_NewDB")]
     partial class NewDB
+========
+    [Migration("20240826120429_Init2")]
+    partial class Init2
+>>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240826120429_Init2.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -917,9 +922,12 @@ namespace DBContext.Migrations
                     b.Property<string>("TrainingCode")
                         .HasColumnType("nvarchar(max)");
 
+<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.Designer.cs
                     b.Property<int?>("TrainingHeadId")
                         .HasColumnType("int");
 
+========
+>>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240826120429_Init2.Designer.cs
                     b.Property<string>("TrainingHeadName")
                         .HasColumnType("nvarchar(max)");
 
@@ -943,6 +951,7 @@ namespace DBContext.Migrations
 
                     b.HasKey("CICIGTrainingsId");
 
+<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.Designer.cs
                     b.HasIndex("PhaseId")
                         .IsUnique()
                         .HasFilter("[PhaseId] IS NOT NULL");
@@ -954,6 +963,11 @@ namespace DBContext.Migrations
                     b.HasIndex("TrainingTitleId")
                         .IsUnique()
                         .HasFilter("[TrainingTitleId] IS NOT NULL");
+========
+                    b.HasIndex("PhaseId");
+
+                    b.HasIndex("TrainingTitleId");
+>>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240826120429_Init2.Designer.cs
 
                     b.HasIndex("VillageId");
 
@@ -1503,6 +1517,7 @@ namespace DBContext.Migrations
             modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", b =>
                 {
                     b.HasOne("DAL.Models.Domain.MasterSetup.Phase", "Phase")
+<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.Designer.cs
                         .WithOne("CICIGTrainings")
                         .HasForeignKey("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", "PhaseId");
 
@@ -1513,6 +1528,14 @@ namespace DBContext.Migrations
                     b.HasOne("DAL.Models.Domain.MasterSetup.TrainingTitle", "TrainingTitle")
                         .WithOne("CICIGTrainings")
                         .HasForeignKey("DAL.Models.Domain.SocialMobilization.Training.CICIGTrainings", "TrainingTitleId");
+========
+                        .WithMany("CICIGTrainings")
+                        .HasForeignKey("PhaseId");
+
+                    b.HasOne("DAL.Models.Domain.MasterSetup.TrainingTitle", "TrainingTitle")
+                        .WithMany("CICIGTrainings")
+                        .HasForeignKey("TrainingTitleId");
+>>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240826120429_Init2.Designer.cs
 
                     b.HasOne("DAL.Models.Domain.MasterSetup.Village", "Village")
                         .WithMany("CICIGTrainings")
@@ -1522,8 +1545,11 @@ namespace DBContext.Migrations
 
                     b.Navigation("Phase");
 
+<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.Designer.cs
                     b.Navigation("TrainingHead");
 
+========
+>>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240826120429_Init2.Designer.cs
                     b.Navigation("TrainingTitle");
 
                     b.Navigation("Village");
@@ -1701,8 +1727,11 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingHead", b =>
                 {
+<<<<<<<< HEAD:DBContext/Migrations/20240822122526_NewDB.Designer.cs
                     b.Navigation("CICIGTrainings");
 
+========
+>>>>>>>> f54bb4e5dacef0dc0c4664545589b8c6cdeea366:DBContext/Migrations/20240826120429_Init2.Designer.cs
                     b.Navigation("TrainingTitle");
                 });
 

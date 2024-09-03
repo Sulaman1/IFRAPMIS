@@ -129,11 +129,11 @@ else
     <script>
         $(document).ready(function () {            
             $("#DistrictId").change(function () {                                
-                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                $.get("/CICIG/GetTehsils", { districtName: $("#DistrictId").val() }, function (data) {                    
                     $("#TehsilId").empty();                   
                     $("#TehsilId").append('<option value="">Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });

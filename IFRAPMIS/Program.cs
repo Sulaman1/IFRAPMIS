@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using PermissionPro.Permission;
+using DotNetEnv;
 
 namespace IFRAPMIS
 {
@@ -22,14 +23,29 @@ namespace IFRAPMIS
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Load environment variables from .env file
+            Env.Load();
+
+            // Add environment variables to configuration
+            builder.Configuration.AddEnvironmentVariables();
 
             builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var envConnectionString = Environment.GetEnvironmentVariable("MY_CONNECTION_STRING")?.Trim(); ;
+            if (!string.IsNullOrEmpty(envConnectionString))
+            {
+                builder.Configuration["ConnectionStrings:DefaultConnection"] = envConnectionString;
+            }
+
+            // For debugging, print out the resolved connection string
+            var resolvedConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            Console.WriteLine($"Resolved Connection String: {resolvedConnectionString}");
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(resolvedConnectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddTransient<IVillage, VillageService>();
@@ -64,8 +80,15 @@ namespace IFRAPMIS
             .AddDefaultUI()
             .AddDefaultTokenProviders();
 
-            builder.Services.AddControllersWithViews();
-            
+            //builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                options.JsonSerializerOptions.MaxDepth = 64; // Increase depth if needed
+            });
+
+
             var app = builder.Build();
 
 

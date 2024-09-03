@@ -155,7 +155,7 @@ namespace BAL.Services.SocialMobilization
         public async Task<CICIG> GetById(int? Id)
         {
             return await _context.CICIGs
-                .Where(cicig => cicig.CICIGId != Id)
+                .Where(cicig => cicig.CICIGId == Id)
                 .FirstOrDefaultAsync();
         }
 

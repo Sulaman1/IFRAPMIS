@@ -30,11 +30,6 @@ namespace DAL.Models.Domain.MasterSetup
         public string? District { get; set; }
         public string? Tehsil { get; set; }
         public string? UnionCouncil { get; set; }
-
-        //Connections
-        public int CIMemberId { get; set; }
-        //[ForeignKey("CIMemberId")]        
-        public CIMember? CIMember { get; set; }
         public int? BeneficiaryIPId { get; set; }
         public BeneficiaryIP? BeneficiaryIP { get; set; }
         public int? BeneficiaryPDMAId { get; set; }
@@ -42,5 +37,8 @@ namespace DAL.Models.Domain.MasterSetup
         
         //Collections
         public ICollection<DamageVerified>? DamageVerifieds { get; set; }
+        
+        //Navigations      
+        public CIMember? CIMember { get; set; }
     }
 }

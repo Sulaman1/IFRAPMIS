@@ -20,5 +20,11 @@ namespace IFRAPMIS.Controllers
             var allUsersExceptCurrentUser = await _userManager.Users.Where(a => a.Id != currentUser.Id).ToListAsync();
             return View(allUsersExceptCurrentUser);
         }
+        public IActionResult List() => View();
+        public IActionResult ViewAccount() => View();
+        public IActionResult ViewBilling() => View();
+        public IActionResult ViewConnections() => View();
+        public IActionResult ViewNotifications() => View();
+        public IActionResult ViewSecurity() => View();
     }
 }

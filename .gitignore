@@ -4,12 +4,19 @@ IFRAPMIS/.env
 .env
 **/.env/
 
+
 /IFRAPMIS/wwwroot/
 /wwwroot/
 **/wwwroot/
 .wwwroot/
 
 # Ignore build directories
+**/node_modules/
+/node_modules
+node_modules
+IFRAPMIS/node_modules
+
+
 **/bin/
 **/obj/
 

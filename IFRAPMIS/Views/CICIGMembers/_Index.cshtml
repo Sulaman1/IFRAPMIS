@@ -1,0 +1,101 @@
+﻿@model IEnumerable<DAL.Models.Domain.SocialMobilization.CIMember>
+@using Microsoft.AspNetCore.Authorization
+@using PermissionPro.PreDefined
+@inject IAuthorizationService AuthorizationService
+@* @using Constant.Constants *@
+<div style="margin:5px">
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    S.No
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberCode)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.Designation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryVerified.BeneficiaryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryVerified.BeneficiaryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryVerified.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryVerified.CNIC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryVerified.Mobile)
+            </th> 
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryVerified.ProfilePicture)
+            </th>           
+            <th></th>
+                     
+                         
+        </tr>
+    </thead>
+    <tbody>
+            @{
+                int counter = 0;
+            }
+            @foreach (var item in Model) {
+        <tr>
+                    <td>
+                        @(counter =counter + 1)
+                    </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.MemberCode)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.Designation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeneficiaryVerified.BeneficiaryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeneficiaryVerified.BeneficiaryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeneficiaryVerified.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeneficiaryVerified.CNIC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeneficiaryVerified.Mobile)
+            </td>    
+            <td>
+               @if (item.BeneficiaryVerified.ProfilePicture != null)
+                {
+                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="data:image/*;base64,@(Convert.ToBase64String(item.BeneficiaryVerified.ProfilePicture))">
+                }
+                else
+                {
+                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="/assets/images/blep-v2.png">
+                }
+            </td>  
+            @{
+                if ((item.CICIG.IsSubmittedForReview == false) && true && item.CICIG.IsVerified == false)//AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Edit).Result.Succeeded
+                {               
+                <td>
+                <a asp-action="Edit" asp-route-id="@item.CIMemberId" asp-route-CIMId="@item.CIMemberId" asp-route-CIId="@item.CICIGId"><i class="mdi mdi-pencil font-size-18"></i></a>                                  
+                </td>
+                }
+                        if (item.CICIG.IsSubmittedForReview == false && true && item.CICIG.IsVerified == false)// AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Edit).Result.Succeeded
+                {               
+                <td>
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.CIMemberId">Drop</a>                                  
+                </td>
+                }
+                       
+            }           
+        </tr>
+}
+    </tbody>
+</table>
+</div>

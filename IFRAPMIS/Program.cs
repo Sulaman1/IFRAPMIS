@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using PermissionPro.Permission;
 using DotNetEnv;
+using IFRAPMIS.Services;
+using System.Configuration;
 
 namespace IFRAPMIS
 {
@@ -25,6 +27,24 @@ namespace IFRAPMIS
 
             // Load environment variables from .env file
             Env.Load();
+
+            // Add services to the container
+            builder.Services.AddDistributedMemoryCache();  // Adds a default in-memory cache for session
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout
+                options.Cookie.HttpOnly = true;  // Cookie can't be accessed via JavaScript
+                options.Cookie.IsEssential = true; // Required for GDPR compliance
+            });
+
+            string smtpServer = builder.Configuration.GetSection("MailSettings:Host").Value;
+            int.TryParse(builder.Configuration.GetSection("MailSettings:Port").Value, out int port);
+            string password = builder.Configuration.GetSection("MailSettings:Password").Value;
+            string displayName = builder.Configuration.GetSection("MailSettings:DisplayName").Value;
+            string email = builder.Configuration.GetSection("MailSettings:Mail").Value;
+
+            EmailSender emailSender = new EmailSender(smtpServer, port, password, displayName, email);
+            builder.Services.AddSingleton<IEmailSender>(emailSender);
 
             // Add environment variables to configuration
             builder.Configuration.AddEnvironmentVariables();
@@ -55,10 +75,13 @@ namespace IFRAPMIS
             builder.Services.AddTransient<ITehsil, TehsilService>();
             builder.Services.AddTransient<IUnionCouncil, UnionCouncilService>();
             builder.Services.AddTransient<ITrainingHead, TrainingHeadService>();
+            builder.Services.AddTransient<ITrainingTitle, TrainingTitleService>();
 
             builder.Services.AddTransient<IBeneficiaryIP, BeneficiaryIPService>();
             builder.Services.AddTransient<IBeneficiaryPDMA, BeneficiaryPDMAService>();
+            builder.Services.AddTransient<IBeneficiaryVerified, BeneficiaryVerifiedService>();
             builder.Services.AddTransient<ICICIG, CICIGService>();
+            builder.Services.AddTransient<ICICIGMember, CICIGMemberService>();
 
             builder.Services.AddTransient<IDamageAssessmentLivestock, DamageAssessmentLivestockService>();
             builder.Services.AddTransient<IDamageAssessmentHTS, DamageAssessmentHTSService>();
@@ -133,6 +156,8 @@ namespace IFRAPMIS
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

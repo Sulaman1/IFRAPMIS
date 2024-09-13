@@ -1,0 +1,51 @@
+﻿@model DAL.Models.Domain.SocialMobilization.CIMember
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Drop</h3>
+
+<h4>Are you sure you want to drop Community Based BeneficiaryVerified?</h4>
+<div>    
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BeneficiaryVerified.BeneficiaryName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BeneficiaryVerified.BeneficiaryName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BeneficiaryVerified.BeneficiaryFather)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BeneficiaryVerified.BeneficiaryFather)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BeneficiaryVerified.CNIC)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BeneficiaryVerified.CNIC)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BeneficiaryVerified.Mobile)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BeneficiaryVerified.Mobile)
+        </dd>       
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CICIG)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CICIG.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="CIMemberId" />
+        <input type="submit" value="Drop" class="btn btn-danger" />@* |
+        <a asp-action="Index">Back to List</a>*@
+    </form>
+</div>

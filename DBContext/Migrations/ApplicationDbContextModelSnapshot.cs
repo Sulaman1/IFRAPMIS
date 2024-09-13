@@ -539,6 +539,7 @@ namespace DBContext.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DistrictId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FatherName")
                         .HasColumnType("nvarchar(max)");
@@ -614,7 +615,6 @@ namespace DBContext.Migrations
                     b.HasKey("TitleId");
 
                     b.HasIndex("TrainingHeadId");
-
 
                     b.ToTable("TrainingTitles");
                 });
@@ -792,9 +792,6 @@ namespace DBContext.Migrations
                     b.Property<string>("VillageProfileAttachment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("VillageProfileAttachment")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("CICIGId");
 
                     b.HasIndex("CommunityTypeId")
@@ -802,7 +799,6 @@ namespace DBContext.Migrations
                         .HasFilter("[CommunityTypeId] IS NOT NULL");
 
                     b.HasIndex("PhaseId");
-
 
                     b.HasIndex("VillageId");
 
@@ -888,7 +884,6 @@ namespace DBContext.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportAttachment")
-
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SessionPlanAttachment")
@@ -942,7 +937,6 @@ namespace DBContext.Migrations
                     b.HasKey("CICIGTrainingsId");
 
                     b.HasIndex("PhaseId");
-
 
                     b.HasIndex("TrainingTitleId");
 
@@ -1401,13 +1395,11 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingTitle", b =>
                 {
-
                     b.HasOne("DAL.Models.Domain.MasterSetup.TrainingHead", "TrainingHead")
                         .WithMany("TrainingTitle")
                         .HasForeignKey("TrainingHeadId");
 
                     b.Navigation("TrainingHead");
-
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.UnionCouncil", b =>
@@ -1457,10 +1449,9 @@ namespace DBContext.Migrations
                         .WithOne("CICIG")
                         .HasForeignKey("DAL.Models.Domain.SocialMobilization.CICIG", "CommunityTypeId");
 
-
+                    b.HasOne("DAL.Models.Domain.MasterSetup.Phase", "Phase")
                         .WithMany("CICIG")
                         .HasForeignKey("PhaseId");
-
 
                     b.HasOne("DAL.Models.Domain.MasterSetup.Village", "Village")
                         .WithMany("CICIGs")
@@ -1496,7 +1487,7 @@ namespace DBContext.Migrations
                 {
                     b.HasOne("DAL.Models.Domain.MasterSetup.Phase", "Phase")
                         .WithMany("CICIGTrainings")
-
+                        .HasForeignKey("PhaseId");
 
                     b.HasOne("DAL.Models.Domain.MasterSetup.TrainingTitle", "TrainingTitle")
                         .WithMany("CICIGTrainings")
@@ -1638,9 +1629,7 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", b =>
                 {
-
                     b.Navigation("CIMember");
-
 
                     b.Navigation("DamageVerifieds");
                 });

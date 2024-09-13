@@ -86,14 +86,14 @@
                                                     @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded
                                                     {
                                                         <td>
-                                                            <a asp-action="Edit" asp-route-id="@item.TrainingHeadId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                            <a asp-action="Edit" asp-route-id="@item.TrainingHeadId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i>Edit</a>
                                                         </td>
                                                     }
 
                                                     @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Delete)).Result.Succeeded
                                                     {
                                                         <td>
-                                                            <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.TrainingHeadId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                                                            <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.TrainingHeadId"> <i class="mdi mdi-trash-can font-size-18"></i>Delete</a>
                                                         </td>
                                                     }
                                                 </tr>

@@ -1,0 +1,243 @@
+﻿@page
+@model LoginModel
+
+@* @{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+} *@
+
+@{
+    Layout = "_BlankLayout";
+    ViewData["Title"] = "Login IFRAP";
+}
+
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/sweetalert2/sweetalert2.css" />
+    <link rel="stylesheet" href="~/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="~/vendor/libs/&#64;form-validation/form-validation.css" />
+}
+@section VendorScripts {
+    <script src="~/vendor/libs/sweetalert2/sweetalert2.js"></script>
+    <script src="~/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="~/vendor/libs/cleavejs/cleave-phone.js"></script>
+    <script src="~/vendor/libs/select2/select2.js"></script>
+    <script src="~/vendor/libs/&#64;form-validation/popular.js"></script>
+    <script src="~/vendor/libs/&#64;form-validation/bootstrap5.js"></script>
+    <script src="~/vendor/libs/&#64;form-validation/auto-focus.js"></script>
+}
+
+@section PageScripts {
+    <script src="~/js/pages-auth.js"></script>
+    <script src="~/js/modal-edit-user.js"></script>
+    <script src="~/js/modal-enable-otp.js"></script>
+    <script src="~/js/app-user-view.js"></script>
+    <script src="~/js/app-user-view-security.js"></script>
+}
+
+@section PageStyles {
+    <link rel="stylesheet" href="~/vendor/css/pages/page-auth.css">
+}
+
+@* ************** Content ************** *@
+<div class="authentication-wrapper authentication-cover">
+    <!-- Logo -->
+    <a href="/" class="app-brand auth-cover-brand">
+        <span class="app-brand-logo demo">@await Html.PartialAsync("../_Partials/_Macros")</span>
+        <span class="app-brand-text demo text-heading fw-bold">@TempData.Peek("appName")</span>
+    </a>
+    <!-- /Logo -->
+    <div class="authentication-inner row m-0">
+        <!-- /Left Text -->
+        <div class="d-none d-lg-flex col-lg-8 p-0">
+            <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
+                <img src="~/img/illustrations/auth-login-illustration-light.png" alt="auth-login-cover" class="my-5 auth-illustration" data-app-light-img="illustrations/auth-login-illustration-light.png" data-app-dark-img="illustrations/auth-login-illustration-dark.png">
+
+                <img src="~/img/illustrations/bg-shape-image-light.png" alt="auth-login-cover" class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.png">
+            </div>
+        </div>
+        <!-- /Left Text -->
+        <!-- Login -->
+        
+        
+        <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
+            <div class="w-px-400 mx-auto mt-12 pt-5">
+                <h4 class="mb-1">Welcome to @TempData.Peek("appName")! 👋</h4>
+                <p class="mb-6">Please sign-in to your account and start the adventure</p>
+
+                <form id="account" class="mb-6" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    @* <div class="mb-6">
+                        <label for="email" class="form-label">Email or Username</label>
+                        <input type="text" class="form-control" id="email" name="email-username" placeholder="Enter your email or username" autofocus>
+                    </div> *@
+                   
+                    <div class="mb-6">
+                        <label asp-for="Input.Email" for="username" class="form-label">Username</label>
+                        <input asp-for="Input.Email" type="text" class="form-control" id="username" placeholder="Enter your email or username" autofocus>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    @* <div class="mb-6 form-password-toggle">
+                        <label class="form-label" for="password">Password</label>
+                        <div class="input-group input-group-merge">
+                            <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+                            <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                        </div>
+                    </div> *@      
+
+                    <div class="mb-6 form-password-toggle">
+                        @* <label class="form-label" for="newPassword">New Password</label> *@
+                        <label asp-for="Input.Password" for="userpassword">Password</label>
+                        <div class="input-group input-group-merge">
+                            <input asp-for="Input.Password" type="password" class="form-control" id="userpassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password">
+                            @* <input class="form-control" type="password" id="newPassword" name="newPassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" /> *@
+                            <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                            @* <span asp-validation-for="Input.Password" class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span> *@
+                        </div>
+                    </div>
+
+
+                   @*  <div class="mb-6 form-password-toggle">
+                        <label asp-for="Input.Password" for="userpassword" class="form-label">Password</label>
+                        <input asp-for="Input.Password" type="password" class="form-control" id="userpassword" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+                        <span asp-validation-for="Input.Password" class="input-group-text cursor-pointer"></span>
+                    </div> *@
+
+                    <div class="my-8">
+                        <div class="d-flex justify-content-between">
+                            <div class="form-check mb-0 ms-2">
+                                <input asp-for="Input.RememberMe" type="checkbox" class="form-check-input" id="customControlInline">
+                                <label asp-for="Input.RememberMe" class="form-check-label" for="customControlInline">Remember me</label>
+                            </div>
+                            <a href="/Auth/ForgotPasswordCover">
+                                <p class="mb-0">Forgot Password?</p>
+                            </a>
+                        </div>
+                    </div>
+                    @*<div class="my-8">
+                        <div class="d-flex justify-content-between">
+                            <div class="form-check mb-0 ms-2">
+                                <input class="form-check-input" type="checkbox" id="remember-me">
+                                <label class="form-check-label" for="remember-me">
+                                    Remember Me
+                                </label>
+                            </div>
+                            <a href="/Auth/ForgotPasswordCover">
+                                <p class="mb-0">Forgot Password?</p>
+                            </a>
+                        </div>
+                    </div> *@
+                    <button class="btn btn-primary d-grid w-100">
+                        Sign in
+                    </button>
+                </form>
+
+                <p class="text-center">
+                    <span>New on our platform?</span>
+                    <a href="/Auth/RegisterCover">
+                        <span>Create an account</span>
+                    </a>
+                </p>
+
+                <div class="divider my-6">
+                    <div class="divider-text">or</div>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-facebook me-1_5">
+                        <i class="tf-icons ti ti-brand-facebook-filled"></i>
+                    </a>
+
+                    <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-twitter me-1_5">
+                        <i class="tf-icons ti ti-brand-twitter-filled"></i>
+                    </a>
+
+                    <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-github me-1_5">
+                        <i class="tf-icons ti ti-brand-github-filled"></i>
+                    </a>
+
+                    <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-google-plus">
+                        <i class="tf-icons ti ti-brand-google-filled"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- /Login -->
+    </div>
+</div>
+
+        @* ////////////////////////////////////////////////////////////////////// *@
+
+        @* 
+        <div class="home-btn d-none d-sm-block">
+            <a href=@Url.Action("Index", "index") class="text-dark"><i class="mdi mdi-home-variant h2"></i></a>
+        </div>
+        <div class="account-pages my-5 pt-sm-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5">
+                        <div class="card overflow-hidden">
+                            <div class="bg-soft-primary">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="p-4">
+                                            <h4>IFRAP!</h4>
+                                            <p>Sign in to continue...</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 align-self-end pr-5 pb-5">
+                                        <img src="~/assets/images/gob_logo.png" alt="" class="img-fluid">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div>
+                                    <a href=@Url.Action("Index", "index")>
+                                        <div class="avatar-md profile-user-wid">
+                                            <span class="avatar-title rounded-circle bg-light">
+                                                <img src="~/assets/images/blep-v2.png" alt="" class="rounded-circle" height="60">
+                                            </span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-2">
+                                    <form id="account" method="post">
+                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="Input.Email" for="username">Username</label>
+                                            <input asp-for="Input.Email" type="text" class="form-control" id="username" placeholder="Enter username">
+                                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="Input.Password" for="userpassword">Password</label>
+                                            <input asp-for="Input.Password" type="password" class="form-control" id="userpassword" placeholder="Enter password">
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input asp-for="Input.RememberMe" type="checkbox" class="custom-control-input" id="customControlInline">
+                                            <label asp-for="Input.RememberMe" class="custom-control-label" for="customControlInline">Remember me</label>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">Log In</button>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+ *@
+
+@* @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+ *@

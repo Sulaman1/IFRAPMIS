@@ -1,10 +1,14 @@
 ﻿using BAL.IRepository.SocialMobilization;
+using DAL.Models;
 using DAL.Models.Domain.MasterSetup;
 using DAL.Models.Domain.SocialMobilization;
+using DAL.Models.Domain.SocialMobilization.Training;
 using IFRAPMIS.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using static IFRAPMIS.Controllers.SocialMobilization.Training.CITrainingMemberController;
 
 namespace IFRAPMIS.Controllers.SocialMobilization
 {
@@ -12,12 +16,120 @@ namespace IFRAPMIS.Controllers.SocialMobilization
     {
         private readonly ICICIG _context;
         private readonly ApplicationDbContext _context0;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CICIGController(ICICIG context, ApplicationDbContext context1)
+        public class CIMemberDTO
+        {
+            public int CIMemberId { get; set; }
+            public string MemberCode { get; set; }
+
+            // Assuming BeneficiaryVerified is a related entity, create a DTO for it as well
+            public BeneficiaryVerifiedDTO BeneficiaryVerified { get; set; }
+
+            // Add other properties you need to expose
+        }
+        public class BeneficiaryVerifiedDTO
+        {
+            public string CNIC { get; set; }
+            public string BeneficiaryName { get; set; }
+            public string BeneficiaryFather { get; set; }
+            public string Mobile { get; set; }
+            public string Gender { get; set; }
+
+            // Add other properties from BeneficiaryVerified if needed
+        }
+
+        public CICIGController(ICICIG context, ApplicationDbContext context1, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _context0 = context1;
+            _userManager = userManager;
         }
+
+        public async Task<IActionResult> TrackMember(int id)
+        {
+            var designation = new[]
+                        {
+                            new { DesignationId = 1, DesignationName = "Manager" },
+                            new { DesignationId = 2, DesignationName = "Engineer" },
+                            new { DesignationId = 3, DesignationName = "Technician" }
+                        };
+            // Create the SelectList and pass it to ViewData
+            ViewData["DesignationId"] = new SelectList(designation, "DesignationId", "DesignationName", "BeneficiaryVerified");
+
+            ViewBag.CICIGId = id;
+            return View();
+        }
+        public async Task<JsonResult> AjaxMemberInformation(string id, int CicigId)
+        {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
+            var cicigForCode = _context0.CICIGs.Where(c => c.CICIGId == CicigId)
+                                                .Select(c => c.Code)
+                                                .FirstOrDefault();
+
+            var info = _context0.BeneficiaryVerifieds                                                                        
+                            .Where(a => a.CNIC == id /*&& a.BeneficiaryVerified.BeneficiaryTypeId == 1*/)
+                            .FirstOrDefault();
+            if (info == null)
+            {
+                return new JsonResult(new { isValid = false, message = "No data found" });
+            }
+           
+            return Json(new { isValid = true, info, CicigId = cicigForCode });
+        }
+
+        public async Task<IActionResult> _Index(int id)
+        {
+            var applicationDbContext = await _context0.CIMembers      
+                                                .Include(cim => cim.BeneficiaryVerified)
+                                                .Where(a => a.CICIGId == id)
+                                                .ToListAsync();
+
+            var ciTrainMember = applicationDbContext;
+            return PartialView(ciTrainMember);
+        }
+        public async Task<JsonResult> AddBeneficiary(int BenVerifiedId, int CicigId, string DesignationId)
+        {
+            var miscode = _context0.CICIGs.Where(c => c.CICIGId == CicigId).Select(c => c.Code).FirstOrDefault();
+
+            var result = _context0.CIMembers.Count(a => a.BeneficiaryVerified.BeneficiaryVerifiedId == BenVerifiedId);
+            if (BenVerifiedId == 0 || CicigId == 0)
+            {
+                return Json(new { isValid = false, message = "Failed to Add BeneficiaryVerified!" });
+            }
+            else if (result > 0)
+            {
+                return Json(new { isValid = false, message = "Selected member is already added!" });
+            }
+            else
+            {
+                if (_context0.CIMembers.Count() == 0)
+                {
+                    CIMember obj = new CIMember();
+                    obj.MemberCode = miscode + "- 1";
+                    obj.BeneficiaryVerifiedId = BenVerifiedId;
+                    obj.CICIGId = CicigId;
+                    //obj.CreatedOn = DateTime.Today.Date;
+                    _context0.Add(obj);
+                    await _context0.SaveChangesAsync();
+                }
+                else 
+                {
+                    string mcode = _context0.CIMembers.Last().MemberCode;
+                    CIMember obj = new CIMember();
+                    obj.MemberCode = Convert.ToString(Convert.ToInt32(miscode.Split('-')[0].Trim())+1);
+                    obj.BeneficiaryVerifiedId = BenVerifiedId;
+                    obj.CICIGId = CicigId;
+                    //obj.CreatedOn = DateTime.Today.Date;
+                    _context0.Add(obj);
+                    await _context0.SaveChangesAsync();
+                }
+                
+            }
+            return Json(new { isValid = true, message = "BeneficiaryVerified has been added successfully." });
+        }
+
         public async Task<IActionResult> CDSummaryView()
         {
             ViewData["DistrictId"] = new SelectList(await _context.GetAllDistrict(), "DistrictName", "DistrictName");
@@ -300,7 +412,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization
             //----------------------------------------------- 
             ViewData["Tehsil"] = new SelectList(await _context.GetAllTehsilByDistrictName(communityInstitution.District), "TehsilId", "TehsilName", Convert.ToInt32(communityInstitution.Tehsil));
             ViewData["UnionCouncil"] = new SelectList(await _context.GetAllUCByTehsilId(Convert.ToInt32(communityInstitution.Tehsil)), "UnionCouncilId", "UnionCouncilName", communityInstitution.Village.UnionCouncilId);
-            ViewData["VillageId"] = new SelectList(await _context.GetAllVillageByUCId(communityInstitution.Village.UnionCouncilId), "VillageId", "Name", communityInstitution.VillageId);
+            ViewData["VillageId"] = new SelectList(await _context.GetAllVillageByUCId(communityInstitution.Village.UnionCouncilId), "VillageId", "VillageName", communityInstitution.VillageId);
             ViewData["PhaseId"] = new SelectList(_context0.Phases, "PhaseId", "Name", communityInstitution.Phase);
             return View(communityInstitution);
         }
@@ -325,11 +437,20 @@ namespace IFRAPMIS.Controllers.SocialMobilization
             {
                 ViewBag.Heading = "Common Interest Groups";
             }
-            ViewData["DistrictId"] = new SelectList(await _context.GetDistricts(HttpContext.User), "DistrictId", "Name", communityInstitution.District);
-            ViewData["TehsilId"] = new SelectList(await _context.GetAllTehsilByDistrictName(communityInstitution.District), "TehsilId", "TehsilName", communityInstitution.Village.UnionCouncils.TehsilId);
-            ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllUCByTehsilId(communityInstitution.Village.UnionCouncils.TehsilId), "UnionCouncilId", "UnionCouncilName", communityInstitution.Village.UnionCouncilId);
-            ViewData["VillageId"] = new SelectList(await _context.GetAllVillageByUCId(communityInstitution.Village.UnionCouncilId), "VillageId", "Name", communityInstitution.VillageId);
+            //-----------------------------------------------
+            var districtAccess = await _context.GetDistricts(HttpContext.User);
+            ViewData["District"] = new SelectList(districtAccess, "DistrictName", "DistrictName", communityInstitution.District);
+            //----------------------------------------------- 
+            ViewData["Tehsil"] = new SelectList(await _context.GetAllTehsilByDistrictName(communityInstitution.District), "TehsilId", "TehsilName", Convert.ToInt32(communityInstitution.Tehsil));
+            ViewData["UnionCouncil"] = new SelectList(await _context.GetAllUCByTehsilId(Convert.ToInt32(communityInstitution.Tehsil)), "UnionCouncilId", "UnionCouncilName", communityInstitution.Village.UnionCouncilId);
+            ViewData["VillageId"] = new SelectList(await _context.GetAllVillageByUCId(communityInstitution.Village.UnionCouncilId), "VillageId", "VillageName", communityInstitution.VillageId);
             ViewData["PhaseId"] = new SelectList(_context0.Phases, "PhaseId", "Name", communityInstitution.Phase);
+
+            //ViewData["DistrictId"] = new SelectList(await _context.GetDistricts(HttpContext.User), "DistrictId", "Name", communityInstitution.District);
+            //ViewData["TehsilId"] = new SelectList(await _context.GetAllTehsilByDistrictName(communityInstitution.District), "TehsilId", "TehsilName", communityInstitution.Village.UnionCouncils.TehsilId);
+            //ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllUCByTehsilId(communityInstitution.Village.UnionCouncils.TehsilId), "UnionCouncilId", "UnionCouncilName", communityInstitution.Village.UnionCouncilId);
+            //ViewData["VillageId"] = new SelectList(await _context.GetAllVillageByUCId(communityInstitution.Village.UnionCouncilId), "VillageId", "Name", communityInstitution.VillageId);
+            //ViewData["PhaseId"] = new SelectList(_context0.Phases, "PhaseId", "Name", communityInstitution.Phase);
             return View(communityInstitution);
         }
 
@@ -427,7 +548,8 @@ namespace IFRAPMIS.Controllers.SocialMobilization
                             await TOPAttachment.CopyToAsync(stream);
                         }
                     }
-                    communityInstitution.District = _context0.Districts.Find(DistrictId).DistrictName;
+                    //communityInstitution.District = _context0.Districts.Find(DistrictId).DistrictName;
+                    
                     _context0.Update(communityInstitution);
                     _context0.SaveChanges();
                 }
@@ -445,12 +567,16 @@ namespace IFRAPMIS.Controllers.SocialMobilization
                 return RedirectToAction(nameof(Index), new { id = communityInstitution.CommunityTypeId });
             }
             ViewBag.Heading = (id == 1) ? "Community Institutions" : "Common Interest Groups";
-            ViewData["DistrictId"] = new SelectList(await _context.GetDistricts(HttpContext.User), "DistrictId", "Name", communityInstitution.District);
-            ViewData["TehsilId"] = new SelectList(await _context.GetAllTehsilByDistrictName(communityInstitution.District), "TehsilId", "TehsilName", communityInstitution.Village.UnionCouncils.TehsilId);
-            ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllUCByTehsilId(communityInstitution.Village.UnionCouncils.TehsilId), "UnionCouncilId", "UnionCouncilName", communityInstitution.Village.UnionCouncilId);
-            ViewData["VillageId"] = new SelectList(await _context.GetAllVillageByUCId(communityInstitution.Village.UnionCouncilId), "VillageId", "Name", communityInstitution.VillageId);
+
+            var districtAccess = await _context.GetDistricts(HttpContext.User);
+            ViewData["District"] = new SelectList(districtAccess, "DistrictName", "DistrictName", communityInstitution.District);
+            //----------------------------------------------- 
+            ViewData["Tehsil"] = new SelectList(await _context.GetAllTehsilByDistrictName(communityInstitution.District), "TehsilId", "TehsilName", Convert.ToInt32(communityInstitution.Tehsil));
+            ViewData["UnionCouncil"] = new SelectList(await _context.GetAllUCByTehsilId(Convert.ToInt32(communityInstitution.Tehsil)), "UnionCouncilId", "UnionCouncilName", Convert.ToInt32(communityInstitution.UnionCouncil));
+            ViewData["VillageId"] = new SelectList(await _context.GetAllVillageByUCId(Convert.ToInt32(communityInstitution.UnionCouncil)), "VillageId", "VillageName", communityInstitution.VillageId);
             ViewData["PhaseId"] = new SelectList(_context0.Phases, "PhaseId", "Name", communityInstitution.Phase);
-            return View(communityInstitution);
+
+           return View(communityInstitution);
         }
         // GET: CICIGs/Delete/5
         public async Task<IActionResult> Delete(int? id)

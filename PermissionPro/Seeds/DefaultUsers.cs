@@ -26,7 +26,8 @@ namespace PermissionPro.Seeds
                 FirstName = "sulaman3",
                 LastName = "khan3",
                 UserName = "sudo3.admin@gmail.com",
-                Email = "sudo3.admin@gmail.com",               
+                Email = "sudo3.admin@gmail.com",
+                DistrictName = "Quetta",
                 EmailConfirmed = true
             };
             if (userManager.Users.All(u => u.Id != defaultUser.Id))
@@ -34,7 +35,7 @@ namespace PermissionPro.Seeds
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "123Pa$$word!");
+                    await userManager.CreateAsync(defaultUser, "Qwert!123");
                     await userManager.AddToRoleAsync(defaultUser, Roles.Basic.ToString());
                 }
             }
@@ -44,10 +45,11 @@ namespace PermissionPro.Seeds
             
             var defaultUser = new ApplicationUser
             {
-                FirstName = "sulaman4",
-                LastName = "khan4",
-                UserName = "sudo4.admin@gmail.com",
-                Email = "sudo4.admin@gmail.com", 
+                FirstName = "sulaman",
+                LastName = "khan",
+                UserName = "sudo.admin@gmail.com",
+                Email = "sudo.admin@gmail.com", 
+                DistrictName = "Quetta",
                 EmailConfirmed = true
             };
             if (userManager.Users.All(u => u.Id != defaultUser.Id))
@@ -55,7 +57,7 @@ namespace PermissionPro.Seeds
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "123Pa$$word!");
+                    await userManager.CreateAsync(defaultUser, "Qwert!123");
                     await userManager.AddToRoleAsync(defaultUser, Roles.Basic.ToString());
                     await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
                     await userManager.AddToRoleAsync(defaultUser, Roles.SuperAdmin.ToString());

@@ -91,34 +91,40 @@
                                             <input type="hidden" asp-for="TOPAttachment">
                                             <div class="form-group">
                                                 <label class="control-label">District</label>
-                                                <select required id="DistrictId" name="DistrictId" asp-items="ViewBag.DistrictId" class="form-control">                                                    
+                                                <select required id="District" name="District" asp-items="ViewBag.District" class="form-control">
+                                                    <option value=""> - - Select - -</option>
                                                 </select>
                                             </div>                    
                                         </div>
                                         <div class="col-md-4">                                            
                                            <div class="form-group">
                                                 <label class="control-label">Tehsil</label>
-                                                <select required id="TehsilId" asp-items="ViewBag.TehsilId" class="form-control">                                                    
+                                                <select required id="Tehsil" asp-items="ViewBag.Tehsil" class="form-control">
+                                                    <option value=""> - - Select - -</option>
                                                 </select>
                                             </div>                   
                                         </div>
                                         <div class="col-md-4">                                            
                                            <div class="form-group">
                                                 <label class="control-label">Union Council</label>
-                                                <select required asp-items="ViewBag.UnionCouncilId" asp-for="UnionCouncil" class="form-control">                                                    
+                                                <select required asp-items="ViewBag.UnionCouncil" asp-for="UnionCouncil" class="form-control">
+                                                    <option value=""> - - Select - -</option>
                                                 </select>
                                             </div>                   
-                                        </div>
-                                           <div class="col-md-4">
+                                        </div>       
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <label asp-for="VillageId" class="control-label"></label>
-                                                <select required asp-for="VillageId" asp-items="ViewBag.VillageId" class="form-control"></select>
+                                                <label class="control-label">Village</label>
+                                                <select required asp-for="VillageId" asp-items="ViewBag.VillageId" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label asp-for="Phase" class="control-label"></label>
-                                                <select required asp-for="Phase" asp-items="ViewBag.PhaseId" class="form-control">
+                                                <label asp-for="PhaseId" class="control-label"></label>
+                                                <select required asp-for="PhaseId" asp-items="ViewBag.PhaseId" class="form-control">
+                                                    <option value=""> - - Select - -</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -389,41 +395,41 @@ else
     <script src="~/assets/js/pages/form-element.init.js"></script>
     <script>
         $(document).ready(function () {            
-            $("#DistrictId").change(function () {                
-                $("#TehsilId").empty();
-                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
-                    $("#TehsilId").empty();
-                    $("#TehsilId").append('<option>Select...</option>');
-                    $("#UnionCouncilId").empty();
-                    $("#UnionCouncilId").append('<option>Select...</option>');
-                    console.log(data);
-                    $.each(data, function (index, row) {
+            $("#District").change(function () {                
+                $("#Tehsil").empty();
+                $.get("/CICIG/GetTehsils", { districtName: $("#District").val() }, function (data) {
+                    $("#Tehsil").empty();
+                    $("#Tehsil").append('<option>Select...</option>');
+                    $("#UnionCouncil").empty();
+                    $("#UnionCouncil").append('<option>Select...</option>');
+                    console.log(data);                   
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
-                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                        $("#Tehsil").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });
                 });
                 return false;
             });
-            $("#TehsilId").change(function () {                
-                $("#UnionCouncilId").empty();
-                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
-                    $("#UnionCouncilId").empty();
-                    $("#UnionCouncilId").append('<option>Select...</option>');
+            $("#Tehsil").change(function () {                
+                $("#UnionCouncil").empty();
+                $.get("/CICIG/GetUCs", { tehsilId: $("#Tehsil").val() }, function (data) {
+                    $("#UnionCouncil").empty();
+                    $("#UnionCouncil").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
-                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                        $("#UnionCouncil").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });
                 });
                 return false;
             });
-             $("#UnionCouncilId").change(function () {                
+             $("#UnionCouncil").change(function () {                
                 $("#VillageId").empty();
-                $.get("/CommunityInstitutions/GetVillages", { ucId: $("#UnionCouncilId").val() }, function (data) {
+                $.get("/CICIG/GetVillages", { ucId: $("#UnionCouncil").val() }, function (data) {
                     $("#VillageId").empty();
                     $("#VillageId").append('<option>Select...</option>');
                     console.log(data);
-                    $.each(data, function (index, row) {
+                    $.each(data.$values, function (index, row) {
                         console.log(row);
                         $("#VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
                     });

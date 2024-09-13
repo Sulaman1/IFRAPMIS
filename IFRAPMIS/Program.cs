@@ -79,7 +79,9 @@ namespace IFRAPMIS
 
             builder.Services.AddTransient<IBeneficiaryIP, BeneficiaryIPService>();
             builder.Services.AddTransient<IBeneficiaryPDMA, BeneficiaryPDMAService>();
+            builder.Services.AddTransient<IBeneficiaryVerified, BeneficiaryVerifiedService>();
             builder.Services.AddTransient<ICICIG, CICIGService>();
+            builder.Services.AddTransient<ICICIGMember, CICIGMemberService>();
 
             builder.Services.AddTransient<IDamageAssessmentLivestock, DamageAssessmentLivestockService>();
             builder.Services.AddTransient<IDamageAssessmentHTS, DamageAssessmentHTSService>();

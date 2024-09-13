@@ -1,0 +1,66 @@
+﻿@model IEnumerable<DAL.Models.Domain.SocialMobilization.CIMember>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryVerified.BeneficiaryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryVerified.BeneficiaryFather)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryVerified.CNIC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeneficiaryVerified.Mobile)
+            </th>
+@*             <th>
+                @Html.DisplayNameFor(model => model.OnDate)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.CICIG)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    @Html.DisplayFor(modelItem => item.BeneficiaryVerified.BeneficiaryName)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.BeneficiaryVerified.BeneficiaryFather)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeneficiaryVerified.CNIC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeneficiaryVerified.Mobile)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.OnDate)
+            </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.CICIG.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CIMemberId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CIMemberId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CIMemberId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

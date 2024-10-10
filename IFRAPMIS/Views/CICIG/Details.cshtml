@@ -179,7 +179,9 @@
     @{
             if (true)//(!Model.IsSubmittedForReview) || AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Create).Result.Succeeded && Model.IsVerified == false
         {                
+
                     <a asp-action="TrackMember" asp-controller="CICIG" asp-route-id="@Model.CICIGId"> <i class="bx bxs-user"></i><span key="t-invoices">Add Member</span></a>
+
         }
     }        
     </h6>
@@ -247,6 +249,7 @@
     <!-- Sweet Alerts js -->
     <!--<script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>-->
     <script type="text/javascript">
+
         $(document).ready(function() {
             $.get('@Url.Action("_Index","CICIGMembers", new { id=Model.CICIGId })', function(content) {
                 $("#dynamicContentContainer").html(content);
@@ -254,6 +257,7 @@
                 /* $("#divLoading").hide();*/
             });
         });
+
 
         function submitprofile(id) {
             Swal.fire({

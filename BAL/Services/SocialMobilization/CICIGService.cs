@@ -171,9 +171,11 @@ namespace BAL.Services.SocialMobilization
         {
             return await _context.CICIGs
                 .Include(cicig => cicig.Village)
+
                     .ThenInclude(v => v.UnionCouncils)
                         .ThenInclude(uc => uc.Tehsil)
                             .ThenInclude(t => t.District)
+
                 .Where(cicig => cicig.CICIGId == Id)
                 .FirstOrDefaultAsync();
         }

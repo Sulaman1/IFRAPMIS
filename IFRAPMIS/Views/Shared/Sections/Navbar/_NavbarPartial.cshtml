@@ -3,6 +3,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+
 @{
     string email = User.Identity?.Name;
     if (email.Contains("@"))
@@ -20,6 +21,7 @@
         profilePicture = "data:image/png;base64," + Convert.ToBase64String(user.ProfilePicture);
     }
 }
+
 
 @* ! Brand demo (display only for navbar-full and hide on below xl) *@
 @if (ViewData["navbarFull"] != null)
@@ -414,16 +416,19 @@
 
     <!-- User -->
 
+
         <li class="nav-item navbar-dropdown dropdown-user dropdown">            
             <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
             <div class="avatar avatar-online">
                 <img src=@profilePicture alt="ALT" class="rounded-circle">
             </div>
             </a>
+
       <ul class="dropdown-menu dropdown-menu-end">
         <li>
             @if (SignInManager.IsSignedIn(User))
             {
+
                 @* <a class="nav-link" asp-action="Index" asp-route-id="@Model.CommunityTypeId" asp-controller="CICIG" aria-selected="true"> *@
                 @* <a class="dropdown-item mt-0 nav-link" asp-controller="Pages" asp-action="AccountSettings"> *@
                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
@@ -442,6 +447,7 @@
                         </div>                                          
                     </div>
                 </a>
+
             }  
         </li>
         <li>

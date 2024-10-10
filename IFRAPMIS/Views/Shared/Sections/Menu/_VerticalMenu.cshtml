@@ -11,11 +11,13 @@
   <div
     class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
     <a asp-controller="Dashboards" asp-action="Index" class="app-brand-link">
+
             <span class="app-brand-logo demo" style="align-items:normal; width: 80px; height: 100px;">
            <img src="~/img/icons/ifrapicon.jpg" alt="Avatar" class="rounded-circle" />
             @* @await Html.PartialAsync("../_Partials/_Macros")  *@
       </span>
       <span class="app-brand-text demo menu-text fw-bold">IFRAP@* @TempData.Peek("appName") *@</span>
+
     </a>
 
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -29,6 +31,7 @@
   @* ! Full version menu-items *@
   <ul class="menu-inner py-1">
     <!-- Dashboards -->
+
     @{
         #region CommentBlock1
     }
@@ -81,9 +84,11 @@
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-layout-sidebar"></i>
         <div data-i18n="Master Setup">Master Setup</div>
+
       </a>
 
       <ul class="menu-sub">
+
 
         <li class='menu-item@(currentPage == "/Proviences/Index" ? " active" : "")'>
           <a asp-controller="Proviences" asp-action="Index" class="menu-link">
@@ -220,6 +225,7 @@
         #region CommentBlock2
     }
     <!--
+
     <li class='menu-item@(currentPage.StartsWith("/FrontPages") ? " active open" : "")'>
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class='menu-icon tf-icons ti ti-files'></i>
@@ -253,13 +259,14 @@
         </li>
       </ul>
     </li>
-    
+
     <li class='menu-item@(currentPage.StartsWith("/Transactions") ? " active" : "")'>
       <a asp-controller="Transactions" asp-action="Index" class="menu-link">
         <i class="menu-icon tf-icons ti ti-database"></i>
         <div data-i18n="Transactions (CRUD)">Transactions (CRUD)</div>
       </a>
     </li>
+
         -->
         @{
             #endregion
@@ -308,6 +315,7 @@
         }
         <!--
         <li class='menu-item@(currentPage == "/Apps/Email" ? " active" : "")'>
+
       <a asp-controller="Apps" asp-action="Email" class="menu-link">
         <i class="menu-icon tf-icons ti ti-mail"></i>
         <div data-i18n="Email">Email</div>
@@ -331,6 +339,7 @@
         <div data-i18n="Kanban">Kanban</div>
       </a>
     </li>
+
         -->
         @{
             #endregion
@@ -500,6 +509,7 @@
             </li>
           </ul>
         </li>
+
         -->
         @{
             #endregion
@@ -663,6 +673,7 @@
         #region CommentBlock5
     }
     <!--
+
     <li class='menu-item@(currentPage.StartsWith("/Academy") ? " active open" : "")'>
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class='menu-icon tf-icons ti ti-book'></i>
@@ -732,6 +743,7 @@
         </li>
       </ul>
     </li>
+
     
     -->
     @{
@@ -957,11 +969,13 @@
         </li>
       </ul>
     </li>
+
      *@
     @{
         #region CommentBlock6
     }
     <!--
+
     <li class='menu-item@(currentPage.StartsWith("/Wizards") ? " active open" : "")'>
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-forms"></i>
@@ -991,6 +1005,7 @@
         <div data-i18n="Modal Examples">Modal Examples</div>
       </a>
     </li>
+
             -->
         @{
             #endregion
@@ -1012,6 +1027,7 @@
             #region CommentBlock8
         }
         <!--
+
     <li class='menu-item@(currentPage.StartsWith("/Cards") ? " active open" : "")'>
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-id"></i>
@@ -1046,6 +1062,7 @@
         </li>
       </ul>
     </li>
+
     -->
     @{
         #endregion
@@ -1056,6 +1073,7 @@
             #region CommentBlock9
         }
         <!--
+
     <li class='menu-item@(currentPage.StartsWith("/Ui") ? " active open" : "")'>
       <a href="javascript:void(0)" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-color-swatch"></i>
@@ -1159,6 +1177,7 @@
         </li>
       </ul>
     </li>
+
     -->
     @{
         #endregion
@@ -1168,6 +1187,7 @@
             #region CommentBlock10
         }
         <!--
+
     <li class='menu-item@(currentPage.StartsWith("/ExtendedUi") ? " active open" : "")'>
       <a href="javascript:void(0)" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-components"></i>
@@ -1248,6 +1268,7 @@
         </li>
       </ul>
     </li>
+
     -->
     @{
         #endregion
@@ -1257,6 +1278,7 @@
             #region CommentBlock11
         }
         <!--
+
     <li class='menu-item@(currentPage.StartsWith("/Icons") ? " active open" : "")'>
       <a href="javascript:void(0)" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-brand-tabler"></i>
@@ -1275,6 +1297,7 @@
         </li>
       </ul>
     </li>
+
     -->
     @{
         #endregion
@@ -1296,6 +1319,7 @@
             #region CommentBlock13
         }
         <!--
+
     <li class='menu-item@(currentPage.StartsWith("/Forms") ? " active open" : "")'>
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons ti ti-toggle-left"></i>
@@ -1401,6 +1425,7 @@
         <div data-i18n="Form Validation">Form Validation</div>
       </a>
     </li>
+
     -->
     @{
         #endregion
@@ -1410,6 +1435,7 @@
             #region CommentBlock14
         }
         <!--
+
     <li class='menu-item@(currentPage == "/Tables/Basic" ? " active" : "")'>
       <a asp-controller="Tables" asp-action="Basic" class="menu-link">
         <i class="menu-icon tf-icons ti ti-table"></i>
@@ -1439,6 +1465,7 @@
         </li>
       </ul>
     </li>
+
     -->
     @{
         #endregion
@@ -1448,6 +1475,7 @@
             #region CommentBlock15
         }
         <!--
+
     <li class="menu-header small">
       <span class="menu-header-text" data-i18n="Charts & Maps">Charts &amp; Maps</span>
     </li>
@@ -1475,6 +1503,7 @@
         <div data-i18n="Leaflet Maps">Leaflet Maps</div>
       </a>
     </li>
+
     -->
     @{
         #endregion
@@ -1484,6 +1513,7 @@
             #region CommentBlock16
         }
         <!--
+
     <li class="menu-header small">
       <span class="menu-header-text" data-i18n="Misc">Misc</span>
     </li>
@@ -1499,12 +1529,14 @@
         <div data-i18n="Documentation">Documentation</div>
       </a>
     </li>
+
   -->
   @{
       #endregion
   }
 
 </ul>
+
 
 </aside>
 <!-- / Menu -->

@@ -37,13 +37,13 @@ namespace IFRAPMIS.Controllers.Damage
             return View(damageAssessmentHTS);
         }
 
-        // GET: Proviences/Create
+        // GET: Damage Assessment HTS/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Proviences/Create
+        // POST: Damage Assessment HTS/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -59,7 +59,7 @@ namespace IFRAPMIS.Controllers.Damage
             return View(damageAssessmentHTS);
         }
 
-        // GET: Proviences/Edit/5
+        // GET: Damage Assessment HTS/Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,7 +75,7 @@ namespace IFRAPMIS.Controllers.Damage
             return View(damageAssessmentHTS);
         }
 
-        // POST: Proviences/Edit/5
+        // POST: Damage Assessment HTS/Edit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -110,7 +110,7 @@ namespace IFRAPMIS.Controllers.Damage
             return View(damageAssessmentHTS);
         }
 
-        // GET: Proviences/Delete/5
+        // GET: Damage Assessment HTS/Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -127,7 +127,7 @@ namespace IFRAPMIS.Controllers.Damage
             return View(damageAssessmentHTS);
         }
 
-        // POST: Proviences/Delete/5
+        // POST: Damage Assessment HTS/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

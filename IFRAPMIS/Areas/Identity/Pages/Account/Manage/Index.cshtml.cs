@@ -48,6 +48,7 @@ namespace IFRAPMIS.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
             [Display(Name = "Profile Picture")]
             public byte[]? ProfilePicture { get; set; }
+
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -80,6 +81,7 @@ namespace IFRAPMIS.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+
         public async Task<IActionResult> OnPostAsync(byte[]? ProfilePicture)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -95,6 +97,7 @@ namespace IFRAPMIS.Areas.Identity.Pages.Account.Manage
                     }
                 }
             }
+
 
             if (user == null)
             {

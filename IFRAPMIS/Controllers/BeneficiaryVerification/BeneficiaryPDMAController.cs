@@ -56,7 +56,7 @@ namespace IFRAPMIS.Controllers.BeneficiaryVerification
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BeneficiaryPDMAId,BeneficiaryName,BeneficiaryFather,Gender,CNIC,Mobile,Age,MaritialStatus,IsDisable,CNICAttachment,IsRefugee,District,Tehsil,UnionCouncil")] BeneficiaryPDMA beneficiaryPDMA, IFormFile ProfilePicture)
+        public async Task<IActionResult> Create([Bind("BeneficiaryPDMAId,BeneficiaryName,BeneficiaryFather,Gender,CNIC,Mobile,Age,MaritialStatus,IsDisable,CNICAttachment,IsRefugee,District,Tehsil,UnionCouncil, SurveyDate, NextOfKin, NextOfKinCNIC")] BeneficiaryPDMA beneficiaryPDMA, IFormFile ProfilePicture)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace IFRAPMIS.Controllers.BeneficiaryVerification
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BeneficiaryPDMAId,BeneficiaryName,BeneficiaryFather,Gender,CNIC,Mobile,Age,MaritialStatus,IsDisable,CNICAttachment,IsRefugee,ProfilePicture,District,Tehsil,UnionCouncil")] BeneficiaryPDMA beneficiaryPDMA, IFormFile ProfilePicture)
+        public async Task<IActionResult> Edit(int id, [Bind("BeneficiaryPDMAId,BeneficiaryName,BeneficiaryFather,Gender,CNIC,Mobile,Age,MaritialStatus,IsDisable,CNICAttachment,IsRefugee,ProfilePicture,District,Tehsil,UnionCouncil, SurveyDate, NextOfKin, NextOfKinCNIC")] BeneficiaryPDMA beneficiaryPDMA, IFormFile ProfilePicture)
         {
             if (id != beneficiaryPDMA.BeneficiaryPDMAId)
             {

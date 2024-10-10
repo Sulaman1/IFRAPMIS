@@ -47,7 +47,7 @@ namespace IFRAPMIS.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
             [Display(Name = "Profile Picture")]
-            public byte[] ProfilePicture { get; set; }
+            public byte[]? ProfilePicture { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -80,9 +80,22 @@ namespace IFRAPMIS.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(byte[]? ProfilePicture)
         {
             var user = await _userManager.GetUserAsync(User);
+            if (Request.Form.Files.Count > 0)
+            {
+                IFormFile file = Request.Form.Files.FirstOrDefault();
+                if (file != null && file.Length > 0)
+                {
+                    using (var dataStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(dataStream);
+                        user.ProfilePicture = dataStream.ToArray();
+                    }
+                }
+            }
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");

@@ -66,6 +66,9 @@ namespace IFRAPMIS.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+            
+            [Display(Name = "Profile Picture")]
+            public byte[]? ProfilePicture { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -82,7 +85,7 @@ namespace IFRAPMIS.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            ViewData["DistrictId"] = new SelectList(_context.Districts, "DistrictId", "Name");            
+            ViewData["DistrictId"] = new SelectList(_context.Districts, "DistrictName", "DistrictName");            
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
@@ -104,6 +107,21 @@ namespace IFRAPMIS.Areas.Identity.Pages.Account
                     UserPassword = Input.Password,
                     EmailConfirmed = true
                 };
+
+                // Handle ProfilePicture upload
+                if (Request.Form.Files.Count > 0)
+                {
+                    IFormFile file = Request.Form.Files.FirstOrDefault();
+                    if (file != null && file.Length > 0)
+                    {
+                        using (var dataStream = new MemoryStream())
+                        {
+                            await file.CopyToAsync(dataStream);
+                            user.ProfilePicture = dataStream.ToArray();
+                        }
+                    }
+                }
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -134,7 +152,7 @@ namespace IFRAPMIS.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            ViewData["DistrictId"] = new SelectList(_context.Districts, "DistrictId", "Name", Input.DistrictName);
+            ViewData["DistrictId"] = new SelectList(_context.Districts, "DistrictName", "DistrictName", Input.DistrictName);
             // If we got this far, something failed, redisplay form
             return Page();
         }

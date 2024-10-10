@@ -28,7 +28,15 @@ namespace DAL.Models.Domain.MasterSetup
         public string? District { get; set; }
         public string? Tehsil { get; set; }
         public string? UnionCouncil { get; set; }
-        
+
+        public DateTime? SurveyDate { get; set; }
+        public string? NextOfKin { get; set; }
+        public string? NextOfKinCNIC { get; set; }
+
+        //Connections
+        public int? SurveyTeamId { get; set; }
+        public SurveyTeam? SurveyTeam { get; set; }
+
         //Collections
         public ICollection<DamageIP>? DamageIPs { get; set; }
         

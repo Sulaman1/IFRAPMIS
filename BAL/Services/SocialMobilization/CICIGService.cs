@@ -44,6 +44,7 @@ namespace BAL.Services.SocialMobilization
                     .ThenInclude(v => v.UnionCouncils)
                         .ThenInclude(uc => uc.Tehsil)
                             .ThenInclude(t => t.District)
+                    .Where(cicig => cicig.CommunityTypeId == id && cicig.IsSubmittedForReview == false)
                 .ToListAsync();
 
 
@@ -114,9 +115,13 @@ namespace BAL.Services.SocialMobilization
           int id,
           ClaimsPrincipal user)
         {
-            List<CICIG> applicationDbContext = await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.CommunityTypeId == id && a.IsSubmittedForReview == true && a.IsReviewed == false)).ToListAsync<CICIG>();
+            List<CICIG> applicationDbContext = await _context.CICIGs
+                                                    .Include(cicig => cicig.Phase)
+                                                    .Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District))
+                                                    .Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.CommunityTypeId == id && a.IsSubmittedForReview == true && a.IsReviewed == false))
+                                                    .ToListAsync<CICIG>();
             ApplicationUser currentuser = await _userManager.GetUserAsync(user);
-            if (currentuser.DistrictName == "All")
+            if (currentuser.DistrictName != "All")
                 applicationDbContext = applicationDbContext.Where<CICIG>((Func<CICIG, bool>)(a => a.Village.UnionCouncils.Tehsil.District.DistrictName == currentuser.DistrictName)).ToList<CICIG>();
             List<CICIG> submittedForReview = applicationDbContext;
             applicationDbContext = (List<CICIG>)null;
@@ -127,9 +132,13 @@ namespace BAL.Services.SocialMobilization
           int id,
           ClaimsPrincipal user)
         {
-            List<CICIG> applicationDbContext = await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.CommunityTypeId == id && a.IsReviewed == true && a.IsVerified == false)).ToListAsync<CICIG>();
+            List<CICIG> applicationDbContext = await _context.CICIGs
+                                                     .Include(cicig => cicig.Phase)
+                                                     .Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District))
+                                                     .Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.CommunityTypeId == id && a.IsReviewed == true && a.IsVerified == false))
+                                                     .ToListAsync<CICIG>();
             ApplicationUser currentuser = await _userManager.GetUserAsync(user);
-            if (currentuser.DistrictName == "All")
+            if (currentuser.DistrictName != "All")
                 applicationDbContext = applicationDbContext.Where<CICIG>((Func<CICIG, bool>)(a => a.Village.UnionCouncils.Tehsil.District.DistrictName == currentuser.DistrictName)).ToList<CICIG>();
             List<CICIG> submittedForVerify = applicationDbContext;
             applicationDbContext = (List<CICIG>)null;
@@ -140,14 +149,20 @@ namespace BAL.Services.SocialMobilization
         {
             //List<CICIG> applicationDbContext = await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncil.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.CommunityTypeId == id && a.IsVerified == true)).ToListAsync<CICIG>();
             List<CICIG> applicationDbContext = await _context.CICIGs
-                                                    .Where(cicig => cicig.IsVerified)
+                                                    .Include(cicig => cicig.Phase)
+                                                    .Include(cicig => cicig.Village)
+                                                        .ThenInclude(v => v.UnionCouncils)
+                                                            .ThenInclude(uc => uc.Tehsil)
+                                                                .ThenInclude(t => t.District)
+                                                    .Where(cicig => cicig.IsVerified == true && cicig.CommunityTypeId == id)
                                                     .ToListAsync();
-            //ApplicationUser currentuser = await _userManager.GetUserAsync(user);
-            //if (currentuser.DistrictId > 1)
-            //    applicationDbContext = applicationDbContext.Where<CICIG>((Func<CICIG, bool>)(a => a.DistrictId == currentuser.DistrictId)).ToList<CICIG>();
-            //List<CICIG> allVerified = applicationDbContext;
-            //applicationDbContext = (List<CICIG>)null;
-            return applicationDbContext;
+
+            ApplicationUser currentuser = await _userManager.GetUserAsync(user);        
+            if (currentuser.DistrictName != "All")
+                applicationDbContext = applicationDbContext.Where<CICIG>((Func<CICIG, bool>)(a => a.Village.UnionCouncils.Tehsil.District.DistrictName == currentuser.DistrictName)).ToList<CICIG>();
+            List<CICIG> allVerified = applicationDbContext;
+            applicationDbContext = (List<CICIG>)null;
+            return allVerified;
         }
 
         //public async Task<CICIG> GetById(int? Id) => await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District)).FirstOrDefaultAsync<CICIG>((Expression<Func<CICIG, bool>>)(m => (int?)m.CICIGId == Id));
@@ -156,15 +171,19 @@ namespace BAL.Services.SocialMobilization
         {
             return await _context.CICIGs
                 .Include(cicig => cicig.Village)
+                    .ThenInclude(v => v.UnionCouncils)
+                        .ThenInclude(uc => uc.Tehsil)
+                            .ThenInclude(t => t.District)
                 .Where(cicig => cicig.CICIGId == Id)
                 .FirstOrDefaultAsync();
         }
 
         public async Task<CICIG> GetByIdSubmittedDetails(int? Id) => await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.IsSubmittedForReview == true && a.IsVerified == false)).FirstOrDefaultAsync<CICIG>((Expression<Func<CICIG, bool>>)(m => (int?)m.CICIGId == Id));
 
-        //public async Task<CICIG> GetByIdVerifiedDetails(int? Id) => await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncil.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.IsReviewed == true && a.IsSubmittedForReview == true)).FirstOrDefaultAsync<CICIG>((Expression<Func<CICIG, bool>>)(m => (int?)m.CICIGId == Id));
+        public async Task<CICIG> GetByIdVerifiedDetails(int? Id) => 
+            await _context.CICIGs.Include<CICIG, District>((Expression<Func<CICIG, District>>)(c => c.Village.UnionCouncils.Tehsil.District)).Where<CICIG>((Expression<Func<CICIG, bool>>)(a => a.IsReviewed == true && a.IsSubmittedForReview == true)).FirstOrDefaultAsync<CICIG>((Expression<Func<CICIG, bool>>)(m => (int?)m.CICIGId == Id));
 
-        public async Task<CICIG> GetByIdVerifiedDetails(int? Id)
+        public async Task<CICIG> GetByIdVerifiedDetails2(int? Id)
         {
             return await _context.CICIGs
                 .Where(cicig => cicig.IsVerified == true && cicig.CICIGId != Id)
@@ -192,9 +211,9 @@ namespace BAL.Services.SocialMobilization
             if (val == 0)
             {
                 Cicig.IsVerified = false;
-                //Cicig.IsReviewed = false;
-                //Cicig.IsRejected = true;
-                //Cicig.RejectedComments = description;
+                Cicig.IsReviewed = false;
+                Cicig.IsRejected = true;
+                Cicig.RejectedComments = description;
             }
             else
             {
@@ -218,16 +237,16 @@ namespace BAL.Services.SocialMobilization
                 return false;
             if (val == 0)
             {
-                //Cicig.IsSubmittedForReview = false;
-                //Cicig.IsRejected = true;
-                //Cicig.RejectedComments = description;
+                Cicig.IsSubmittedForReview = false;
+                Cicig.IsRejected = true;
+                Cicig.RejectedComments = description;
             }
             else
             {
-                //Cicig.IsReviewed = true;
-                //Cicig.ReviewedOn = new DateTime?(DateTime.Today.Date);
-                //Cicig.ReviewedBy = name;
-                //Cicig.IsRejected = false;
+                Cicig.IsReviewed = true;
+                Cicig.ReviewedDate = new DateTime?(DateTime.Today.Date);
+                Cicig.ReviewedBy = name;
+                Cicig.IsRejected = false;
             }
             Update(Cicig);
             await Save();

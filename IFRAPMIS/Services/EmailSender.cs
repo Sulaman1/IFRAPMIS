@@ -29,7 +29,7 @@ namespace IFRAPMIS.Services
             /*using (var message = new MailMessage())
             {
                 message.To.Add(new MailAddress(emailAddress));
-                message.CC.Add(new MailAddress("kafil.fast09@gmail.com"));
+                message.CC.Add(new MailAddress("khansulaman303@gmail.com"));
                 message.Subject = subject;
                 message.Body = text;
                 message.IsBodyHtml = true;
@@ -46,7 +46,7 @@ namespace IFRAPMIS.Services
             MimeMessage message = new MimeMessage();
             MailboxAddress from = new MailboxAddress(_displayName,_username);            
             MailboxAddress to = new MailboxAddress("BLEP",emailAddress);
-            MailboxAddress cc = new MailboxAddress("Kafil","kafil.fast09@gmail.com");
+            MailboxAddress cc = new MailboxAddress("Sulaman","khansulaman303@gmail.com");
             message.From.Add(from);
             message.To.Add(to);
             message.Cc.Add(cc);

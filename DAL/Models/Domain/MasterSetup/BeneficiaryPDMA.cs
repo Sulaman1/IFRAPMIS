@@ -19,7 +19,7 @@ namespace DAL.Models.Domain.MasterSetup
         public string? Gender { get; set; }
         public string? CNIC { get; set; }
         public string? Mobile { get; set; }
-        public int Age { get; set; }
+        public int? Age { get; set; }
         public string? MaritialStatus { get; set; }
         public bool? IsDisable { get; set; }
         public string? CNICAttachment { get; set; }
@@ -28,6 +28,16 @@ namespace DAL.Models.Domain.MasterSetup
         public string? District { get; set; }
         public string? Tehsil { get; set; }
         public string? UnionCouncil { get; set; }
+
+        public DateTime? SurveyDate { get; set; }
+        public string? NextOfKin { get; set; }
+        public string? NextOfKinCNIC { get; set; }
+
+        public string? BeneficiaryIdentifiedFor { get; set; }
+
+        //Connection
+        public int? SurveyTeamId { get; set; }
+        public SurveyTeam? SurveyTeam { get; set; }
 
         //Collections
         public ICollection<DamagePDMA>? DamagePDMAs { get; set; }

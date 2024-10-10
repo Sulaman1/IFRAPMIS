@@ -13,7 +13,7 @@
 }
 
 
-@if (AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.View).Result.Succeeded)
+@if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.View).Result.Succeeded
 {
     <!-- DataTables -->
     <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -51,7 +51,7 @@
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.Gender)
                                                 </th>
-                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded)
+                                                @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded
                                                 {
                                                     <th></th>
                                                 }
@@ -95,7 +95,7 @@
                                                             <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="/assets/images/blep-v2.png.png">
                                                         }
                                                     </td>
-                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded)
+                                                    @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded
                                                     {
                                                         <td>
                                                             <a asp-action="Edit2" asp-route-id="@item.BeneficiaryVerifiedId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>

@@ -69,7 +69,7 @@
 
                                                 <tr class="@className">
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.Phase)
+                                                        @Html.DisplayFor(modelItem => item.Phase.Name)
                                                     </td>
                                                      <td>
                                                         <span>@(item.Code + "-" + item.Village.VillageName)</span>
@@ -88,7 +88,11 @@
                                                         @{
                                                             if (item.IsRejected ?? false)
                                                             {
-                                                                <span> | <a href="#" onclick="bindcomment('@item.RejectedComments')" style="cursor:pointer" data-toggle="modal" data-target=".bs-example-modal-center">Comments</a></span>
+                                                                <span>
+                                                                    | <button type="button" onclick="bindcomment('@item.RejectedComments')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLong">
+                                                                    Comment
+                                                                    </button>
+                                                                </span>                                                                
                                                             }
                                                         }
                                                     </td>                                                                                                       
@@ -135,23 +139,24 @@ else
         </div>
     </div>
 }
-<div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+
+
+<div class="modal fade" id="modalLong" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title mt-0">Rejection - Description</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p id="commentbox">
+                </p>                
+            </div>           
+        </div>
+    </div>
+</div>
 
-                </p>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+
 <!-- JAVASCRIPT -->
 <script src="~/assets/libs/jquery/jquery.min.js"></script>
 <script>

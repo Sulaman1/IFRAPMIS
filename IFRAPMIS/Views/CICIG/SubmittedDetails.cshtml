@@ -5,13 +5,12 @@
 @inject IAuthorizationService AuthorizationService
 @{
      ViewData["Title"] = "Detail";
-    ViewBag.pageTitle = "BLEP";
+    ViewBag.pageTitle = "IFRAP";
     ViewBag.Title = "Community Institute";
     ViewBag.pTitle = "Community Institute";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Styles {
     <!-- DataTables -->
     <style>
         input {
@@ -58,18 +57,23 @@
     }
         /* CSS link color */
     </style>    
-}
 
-<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
-<link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.css" />
+    <link rel="stylesheet" href="~/vendor/libs/sweetalert2/sweetalert2.css" />
+}
+@section VendorScripts {
+    <script src="~/vendor/libs/sweetalert2/sweetalert2.js"></script>
+}
 <section class="content-header">
-    <h4 class="text-center">Modality for Registration of Community Institutions in BLEP</h4>
+    <h4 class="text-center">Modality for Registration of Community Institutions in IFRAP</h4>
 </section>
 <section class="content mt-0">
     <div class="card">
         <div class="card-header ui-sortable-handle" style="cursor: move;">            
             <h4 class="card-title">
-                <b>Resolution of Community Institute Registration for BLEP Project Activates</b>
+                <b>Resolution of Community Institute Registration for IFRAP Project Activates</b>
             </h4>
         </div><!-- /.card-header -->
         <div class="card-body">
@@ -138,10 +142,12 @@
                         {
                             <div class="col-md-4">
                                 <div class="form-group" style="margin-bottom:0.5rem">
-                                    <label class="control-label">Uploaded Seletion Form</label>
+                                    <label class="control-label">Selection Form</label>
                                 </div>
                                 <div class="form-group">
-                                    <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.SelectionFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View Seletion Form</div>
+                                    <div data-bs-toggle="modal" data-bs-target="#exLargeModal" onclick="createModal('@Model.SelectionFormAttachment')" class="btn btn-info btn-sm">
+                                        View Seletion Form
+                                    </div>
                                 </div>
                             </div>
                         }
@@ -155,7 +161,9 @@
                                     <label class="control-label">Uploaded Village Profile</label>
                                 </div>
                                 <div class="form-group">
-                                    <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.VillageProfileAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View Village Profile</div>
+                                    <div data-bs-toggle="modal" data-bs-target="#exLargeModal" onclick="createModal('@Model.VillageProfileAttachment')" class="btn btn-info btn-sm">
+                                        View Village Profile
+                                    </div>
                                 </div>
                             </div>
                         }
@@ -169,7 +177,9 @@
                                     <label class="control-label">Uploaded Term of Partnership</label>
                                 </div>
                                 <div class="form-group">
-                                    <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.TOPAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View Term of Partnership</div>
+                                    <div data-bs-toggle="modal" data-bs-target="#exLargeModal" onclick="createModal('@Model.TOPAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon">
+                                        </i> View Term of Partnership
+                                    </div>
                                 </div>
                             </div>
                         }
@@ -180,9 +190,9 @@
     </div>
     <h6><b>List of Community Institute Members </b>
     @{
-        if (!Model.IsSubmittedForReview ?? false)
+        if (true)//!Model.IsSubmittedForReview ?? false
         {
-            <a asp-action="Create" asp-controller="CommunityInstituteMembers" asp-route-id="@Model.CICIGId"> <i class="bx bxs-user"></i><span key="t-invoices">Add Member</span></a>
+            <a asp-action="Create" asp-controller="CICIGMembers" asp-route-id="@Model.CICIGId"> <i class="bx bxs-user"></i><span key="t-invoices">Add Member</span></a>
         }
     }        
     </h6>
@@ -212,61 +222,64 @@
         }              
     }
 </section>
-<div class="container">
-<div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>                    
-                </div>
-                <div class="modal-body">
-                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                    </div>                
+<!-- Modal -->
+<div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalScrollableTitle">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
             </div>
         </div>
     </div>
 </div>
-</div>
-<div class="mapouter"><div class="gmap_canvas"><iframe width="100%" height="100%" frameborder="0" style="border:0" src="@String.Concat("https://www.google.com/maps/embed/v1/place?q=",@Model.Lat,",",@Model.Long,"&key=AIzaSyAq8CjILSiYD9C8h6B8lnZG4drnJVx0kpY&zoom=10")"></iframe></div></div>
-@section Scripts {    
-      <!-- toastr plugin -->
-    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
-    <!-- Sweet Alerts js -->
-    <script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
-    <script type="text/javascript">
-$(document).ready(function() {
-    $.get('@Url.Action("_Index","CommunityInstituteMembers", new { id=Model.CICIGId })', function(content) {
-        $("#dynamicContentContainer").html(content);
-        notificationme('Fetch Record Successfully!');
-        /* $("#divLoading").hide();*/
-    });
-});
 
-function submitprofile(Id) {
+
+<div class="mapouter"><div class="gmap_canvas"><iframe width="100%" height="100%" frameborder="0" style="border:0" src="@String.Concat("https://www.google.com/maps/embed/v1/place?q=",@Model.Lat,",",@Model.Long,"&key=AIzaSyAq8CjILSiYD9C8h6B8lnZG4drnJVx0kpY&zoom=10")"></iframe></div></div>
+@section Scripts {        
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.get('@Url.Action("_Index","CICIGMembers", new { id=Model.CICIGId })', function(content) {
+                $("#dynamicContentContainer").html(content);
+                notificationme('Fetch Record Successfully!');
+                /* $("#divLoading").hide();*/
+            });
+        });
+
+        function submitprofile(id) {
             Swal.fire({
-                title: "Are you sure?",
-                text: 'You Want to Submit Profile for Review',
-                type: "success",
-                showCancelButton: !0, confirmButtonColor: "#34c38f",
-                cancelButtonColor: "#f46a6a",
-                confirmButtonText: "Yes, Submit it!"
+                title: 'Are you sure?',
+                text: "You Want to Submit Profile for Review",
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonColor: "#34c38f",
+                confirmButtonText: 'Yes, Submit it!',
+                customClass: {
+                    confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+                    cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+                },
+                // buttonsStyling: false
             }).then(function (t) {
                 if (t.value == true) {
                     $.ajax({
                         type: "POST",
-                        url: "/CommunityInstitutions/CISubmitForApprovalRequest",
-                        data: { id: Id, val: 1 },
+                        url: "/CICIG/CISubmitForApprovalRequest",
+                        data: { id: id, val: 1, description:"desc" },
                         dataType: "json",
                         success: function (response) {
                             if (response != null) {
                                 if (response.isValid) {
                                     Swal.fire("Back", response.message, "success");
                                     $('#btnverifyprofile').prop('disabled', true);
-                                    $('#btnrejectprofile').prop('disabled', true);                                                                   
+                                    $('#btnrejectprofile').prop('disabled', true);
                                 } else {
                                     notificationme(response.message);
                                 }
@@ -282,7 +295,46 @@ function submitprofile(Id) {
                 }
             })
         }
-function rejectprofile(Id) {
+
+        // function submitprofile(Id) {
+        //     Swal.fire({
+        //         title: "Are you sure?",
+        //         text: 'You Want to Submit Profile for Review',
+        //         type: "success",
+        //         showCancelButton: !0, 
+        //         confirmButtonColor: "#34c38f",
+        //         cancelButtonColor: "#f46a6a",
+        //         confirmButtonText: "Yes, Submit it!"
+        //     }).then(function (t) {
+        //         if (t.value == true) {
+        //             $.ajax({
+        //                 type: "POST",
+        //                 url: "/CICIG/CISubmitForApprovalRequest",
+        //                 data: { id: Id, val: 1 },
+        //                 dataType: "json",
+        //                 success: function (response) {
+        //                     if (response != null) {
+        //                         if (response.isValid) {
+        //                             Swal.fire("Back", response.message, "success");
+        //                             $('#btnverifyprofile').prop('disabled', true);
+        //                             $('#btnrejectprofile').prop('disabled', true);                                                                   
+        //                         } else {
+        //                             notificationme(response.message);
+        //                         }
+        //                     }
+        //                 },
+        //                 failure: function (response) {
+        //                     alert(response.responseText);
+        //                 },
+        //                 error: function (response) {
+        //                     alert(response.responseText);
+        //                 }
+        //             });
+        //         }
+        //     })
+        // }
+        
+        function rejectprofile(Id) {
             var Description = "";
             Swal.fire({
                 title: "Are you sure?",
@@ -303,7 +355,7 @@ function rejectprofile(Id) {
                 if (t.value == true) {
                     $.ajax({
                         type: "POST",
-                        url: "/CommunityInstitutions/CISubmitForApprovalRequest",
+                        url: "/CICIG/CISubmitForApprovalRequest",
                         data: { id: Id, val: 0, description: Description },
                         dataType: "json",
                         success: function (response) {
@@ -327,7 +379,7 @@ function rejectprofile(Id) {
                 }
             })
         }
-function submitforapprovalprofile(Id) {
+        function submitforapprovalprofile(Id) {
             Swal.fire({
                 title: "Are you sure?",
                 text: 'You Want to Submit Profile for Approval',
@@ -339,7 +391,7 @@ function submitforapprovalprofile(Id) {
                 if (t.value == true) {
                     $.ajax({
                         type: "POST",
-                        url: "/CommunityInstitutions/CIApprovalRequest",
+                        url: "/CICIG/CIApprovalRequest",
                         data: { id: Id, val: 1 },
                         dataType: "json",
                         success: function (response) {
@@ -363,8 +415,8 @@ function submitforapprovalprofile(Id) {
                 }
             })
         }
-function rejectforapprovalprofile(Id) {
-    var Description = "";
+        function rejectforapprovalprofile(Id) {
+            var Description = "";
             Swal.fire({
                 title: "Are you sure?",                
                 html: "<h6>You Want to Submit Profile for Approval</h6><div class='text-center'><label>Description</label><div class='text-center'><textarea id='description' class='form-control' rows='2'></textarea></div>",
@@ -384,7 +436,7 @@ function rejectforapprovalprofile(Id) {
                 if (t.value == true) {
                     $.ajax({
                         type: "POST",
-                        url: "/CommunityInstitutions/CIApprovalRequest",
+                        url: "/CICIG/CIApprovalRequest",
                         data: { id: Id, val: 0, description : Description},
                         dataType: "json",
                         success: function (response) {
@@ -408,7 +460,7 @@ function rejectforapprovalprofile(Id) {
                 }
             })
         }
-function notificationme(message) {
+        function notificationme(message) {
             toastr.options = {
                 "closeButton": false,
                 "debug": false,
@@ -428,8 +480,8 @@ function notificationme(message) {
             };
             toastr.info(message);
         }
-function createModal(url) {
-    $("#pdfFile").attr("src", url);
-}
-</script>
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
 }

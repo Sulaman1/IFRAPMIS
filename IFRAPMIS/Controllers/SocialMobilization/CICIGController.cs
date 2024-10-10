@@ -135,7 +135,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization
             ViewData["DistrictId"] = new SelectList(await _context.GetAllDistrict(), "DistrictName", "DistrictName");
             ViewData["CommunityTypeId"] = new SelectList(await _context.GetCommunityTypes(), "CommunityTypeId", "Name");
             return View();
-        }
+        }///Views/CICIG/Components/CDSummary/CDSummary.cshtml
         public IActionResult ReloadCDSummary(int DId, int TId, int UCId, int CTId)
         {
             return ViewComponent("CDSummary", new { DId, TId, UCId, CTId });
@@ -403,6 +403,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization
                         await TOPAttachment.CopyToAsync(stream);
                     }
                 }
+                communityInstitution.IsRejected = false;
+                communityInstitution.IsReviewed = false;
+                communityInstitution.IsSubmittedForReview = false;
+                communityInstitution.IsVerified = false;
+                communityInstitution.IsApproved = false;
+
                 await _context.Insert(communityInstitution);
                 return RedirectToAction(nameof(Index), new { id = communityInstitution.CommunityTypeId });
             }
@@ -459,12 +465,16 @@ namespace IFRAPMIS.Controllers.SocialMobilization
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CICIG communityInstitution, int DistrictId, IFormFile SelectionFormAttachment, IFormFile VillageProfileAttachment, IFormFile TOPAttachment, int IsUnverifed)
+        public async Task<IActionResult> Edit(int id, CICIG communityInstitution, IFormFile SelectionFormAttachment, IFormFile VillageProfileAttachment, IFormFile TOPAttachment, int IsUnverifed)
         {
             if (id != communityInstitution.CICIGId)
             {
                 return NotFound();
             }
+            //int district = _context0.Districts.Find(d => d.DistrictName == communityInstitution.District);
+            int DistrictId = _context0.Districts
+                                    .FirstOrDefault(d => d.DistrictName == communityInstitution.District)?
+                                    .DistrictId ?? 0;
 
             if (ModelState.IsValid)
             {

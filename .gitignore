@@ -5,10 +5,10 @@ IFRAPMIS/.env
 **/.env/
 
 
-/IFRAPMIS/wwwroot/
-/wwwroot/
-**/wwwroot/
-.wwwroot/
+/IFRAPMIS/wwwroot/Documents
+/wwwroot/Documents
+**/wwwroot/Documents
+.wwwroot/Documents
 
 # Ignore build directories
 **/node_modules/

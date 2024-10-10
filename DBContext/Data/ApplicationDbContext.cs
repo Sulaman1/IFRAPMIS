@@ -6,6 +6,7 @@ using DAL.Models.Domain.SocialMobilization;
 using DAL.Models.Domain.SocialMobilization.Training;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using DAL.Models.ViewModels;
 
 namespace IFRAPMIS.Data
 {
@@ -41,6 +42,13 @@ namespace IFRAPMIS.Data
         public DbSet<Tehsil> Tehsils { get; set; }
         public DbSet<UnionCouncil> UnionCouncils { get; set; }
         public DbSet<Village> Villages { get; set; }
+
+        //View Models
+        public DbSet<CDSummary> CDSummary { get; set; }
+        public DbSet<SPToolAnalysis> SPToolAnalysis { get; set; }
+        public DbSet<ToolSummary3> ToolSummary3 { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

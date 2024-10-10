@@ -41,8 +41,11 @@
 @* ************** Content ************** *@
 <div class="authentication-wrapper authentication-cover">
     <!-- Logo -->
-    <a href="/" class="app-brand auth-cover-brand">
-        <span class="app-brand-logo demo">@await Html.PartialAsync("../_Partials/_Macros")</span>
+
+    <a href="/" class="app-brand auth-cover-brand" style="align-items:normal; width: 80px; height: 100px;">
+        @* <span class="app-brand-logo demo">@await Html.PartialAsync("../_Partials/_Macros")</span> *@
+        <img src="~/img/icons/ifrapicon.jpg" alt="Avatar" class="rounded-circle" />
+
         <span class="app-brand-text demo text-heading fw-bold">@TempData.Peek("appName")</span>
     </a>
     <!-- /Logo -->
@@ -61,7 +64,9 @@
         
         <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
             <div class="w-px-400 mx-auto mt-12 pt-5">
-                <h4 class="mb-1">Welcome to @TempData.Peek("appName")! 👋</h4>
+
+                <h4 class="mb-1">Welcome to IFRAP@* @TempData.Peek("appName") *@! 👋</h4>
+
                 <p class="mb-6">Please sign-in to your account and start the adventure</p>
 
                 <form id="account" class="mb-6" method="post">

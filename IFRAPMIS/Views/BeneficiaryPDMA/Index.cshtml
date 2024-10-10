@@ -54,6 +54,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.UnionCouncil)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SurveyDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextOfKinCNIC)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -110,6 +119,15 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UnionCouncil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SurveyDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextOfKin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextOfKinCNIC)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BeneficiaryPDMAId">Edit</a> |

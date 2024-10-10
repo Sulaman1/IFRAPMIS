@@ -22,6 +22,22 @@ namespace DBContext.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamageAssessmentBuilding", b =>
+                {
+                    b.Property<int>("DamageAssessmentBuildingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DamageAssessmentBuildingId"));
+
+                    b.Property<string>("DamageAssessmentBuildingType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DamageAssessmentBuildingId");
+
+                    b.ToTable("DamageAssessmentBuilding");
+                });
+
             modelBuilder.Entity("DAL.Models.Domain.Damage.DamageAssessmentHTS", b =>
                 {
                     b.Property<int>("DamageAssessmentHTSId")
@@ -68,21 +84,65 @@ namespace DBContext.Migrations
                     b.Property<int>("BeneficiaryIPId")
                         .HasColumnType("int");
 
+                    b.Property<double?>("CropLandArea")
+                        .HasColumnType("float");
+
+                    b.Property<int>("DamageAssessmentBuildingId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DamageAssessmentHTSId")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageAssessmentLivestockId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DamageType")
+                    b.Property<string>("DamageHouseCategory")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Percentage")
+                    b.Property<string>("DamageHouseNoOfRooms")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageOtherCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageOtherNoOfRooms")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageShopCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageShopNoOfRooms")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NumberOfAnimals")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NumberOfTrees")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OtherAnimalName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OtherAnimalNumber")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("OtherLandArea")
+                        .HasColumnType("float");
+
+                    b.Property<string>("OtherLandName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OtherTreeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OtherTreeNumber")
                         .HasColumnType("int");
 
                     b.HasKey("DamageIPId");
 
                     b.HasIndex("BeneficiaryIPId");
+
+                    b.HasIndex("DamageAssessmentBuildingId");
 
                     b.HasIndex("DamageAssessmentHTSId");
 
@@ -105,21 +165,65 @@ namespace DBContext.Migrations
                     b.Property<int>("BeneficiaryPDMAId")
                         .HasColumnType("int");
 
+                    b.Property<double?>("CropLandArea")
+                        .HasColumnType("float");
+
+                    b.Property<int>("DamageAssessmentBuildingId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DamageAssessmentHTSId")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageAssessmentLivestockId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DamageType")
+                    b.Property<string>("DamageHouseCategory")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Percentage")
+                    b.Property<string>("DamageHouseNoOfRooms")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageOtherCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageOtherNoOfRooms")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageShopCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageShopNoOfRooms")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NumberOfAnimals")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NumberOfTrees")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OtherAnimalName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OtherAnimalNumber")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("OtherLandArea")
+                        .HasColumnType("float");
+
+                    b.Property<string>("OtherLandName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OtherTreeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OtherTreeNumber")
                         .HasColumnType("int");
 
                     b.HasKey("DamagePDMAId");
 
                     b.HasIndex("BeneficiaryPDMAId");
+
+                    b.HasIndex("DamageAssessmentBuildingId");
 
                     b.HasIndex("DamageAssessmentHTSId");
 
@@ -142,21 +246,65 @@ namespace DBContext.Migrations
                     b.Property<int>("BeneficiaryVerifiedId")
                         .HasColumnType("int");
 
+                    b.Property<double?>("CropLandArea")
+                        .HasColumnType("float");
+
+                    b.Property<int>("DamageAssessmentBuildingId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DamageAssessmentHTSId")
                         .HasColumnType("int");
 
                     b.Property<int>("DamageAssessmentLivestockId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DamageType")
+                    b.Property<string>("DamageHouseCategory")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Percentage")
+                    b.Property<string>("DamageHouseNoOfRooms")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageOtherCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageOtherNoOfRooms")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageShopCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DamageShopNoOfRooms")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NumberOfAnimals")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NumberOfTrees")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OtherAnimalName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OtherAnimalNumber")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("OtherLandArea")
+                        .HasColumnType("float");
+
+                    b.Property<string>("OtherLandName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OtherTreeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OtherTreeNumber")
                         .HasColumnType("int");
 
                     b.HasKey("DamageVerifiedId");
 
                     b.HasIndex("BeneficiaryVerifiedId");
+
+                    b.HasIndex("DamageAssessmentBuildingId");
 
                     b.HasIndex("DamageAssessmentHTSId");
 
@@ -206,8 +354,20 @@ namespace DBContext.Migrations
                     b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NextOfKin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NextOfKinCNIC")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("ProfilePicture")
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime?>("SurveyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SurveyTeamId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Tehsil")
                         .HasColumnType("nvarchar(max)");
@@ -219,6 +379,8 @@ namespace DBContext.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("BeneficiaryIPId");
+
+                    b.HasIndex("SurveyTeamId");
 
                     b.HasIndex("VillageId");
 
@@ -233,10 +395,13 @@ namespace DBContext.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BeneficiaryPDMAId"));
 
-                    b.Property<int>("Age")
+                    b.Property<int?>("Age")
                         .HasColumnType("int");
 
                     b.Property<string>("BeneficiaryFather")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BeneficiaryIdentifiedFor")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BeneficiaryName")
@@ -266,8 +431,20 @@ namespace DBContext.Migrations
                     b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NextOfKin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NextOfKinCNIC")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("ProfilePicture")
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime?>("SurveyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SurveyTeamId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Tehsil")
                         .HasColumnType("nvarchar(max)");
@@ -279,6 +456,8 @@ namespace DBContext.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("BeneficiaryPDMAId");
+
+                    b.HasIndex("SurveyTeamId");
 
                     b.HasIndex("VillageId");
 
@@ -332,8 +511,20 @@ namespace DBContext.Migrations
                     b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NextOfKin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NextOfKinCNIC")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("ProfilePicture")
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime?>("SurveyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SurveyTeamId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Tehsil")
                         .HasColumnType("nvarchar(max)");
@@ -353,6 +544,8 @@ namespace DBContext.Migrations
                     b.HasIndex("BeneficiaryPDMAId")
                         .IsUnique()
                         .HasFilter("[BeneficiaryPDMAId] IS NOT NULL");
+
+                    b.HasIndex("SurveyTeamId");
 
                     b.HasIndex("VillageId");
 
@@ -492,6 +685,40 @@ namespace DBContext.Migrations
                     b.HasKey("SectionId");
 
                     b.ToTable("Sections");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.SurveyTeam", b =>
+                {
+                    b.Property<int>("SurveyTeamId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SurveyTeamId"));
+
+                    b.Property<string>("ArmyMemberName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CollectedByOrganization")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Member1Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Member2Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Member3Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NDMAMemberName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TeamLeadName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SurveyTeamId");
+
+                    b.ToTable("SurveyTeam");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Tehsil", b =>
@@ -993,6 +1220,159 @@ namespace DBContext.Migrations
                     b.ToTable("CITrainingParticipations");
                 });
 
+            modelBuilder.Entity("DAL.Models.ViewModels.CDSummary", b =>
+                {
+                    b.Property<int>("CommunityInstitutionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommunityInstitutionId"));
+
+                    b.Property<int>("Approved")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CDForm")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CommunityTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DistrictId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubmittedForApproval")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubmittedForReview")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TehsilName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UnionCouncilId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UnionCouncilName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CommunityInstitutionId");
+
+                    b.HasIndex("CommunityTypeId");
+
+                    b.HasIndex("UnionCouncilId");
+
+                    b.ToTable("CDSummary");
+                });
+
+            modelBuilder.Entity("DAL.Models.ViewModels.SPToolAnalysis", b =>
+                {
+                    b.Property<int>("ToolId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ToolId"));
+
+                    b.Property<string>("ControlLebel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ControlName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Latitute")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitute")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Response")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ToolId");
+
+                    b.ToTable("SPToolAnalysis");
+                });
+
+            modelBuilder.Entity("DAL.Models.ViewModels.ToolSummary3", b =>
+                {
+                    b.Property<long>("RowNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RowNumber"));
+
+                    b.Property<string>("ControlLebel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ControlName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Counter")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CurrentDateTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IsOffline")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Latitute")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Longitute")
+                        .HasColumnType("float");
+
+                    b.Property<string>("MD")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MD1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MD2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MD3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ToolId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Version")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RowNumber");
+
+                    b.ToTable("ToolSummary3");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -1237,6 +1617,12 @@ namespace DBContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DAL.Models.Domain.Damage.DamageAssessmentBuilding", "DamageAssessmentBuilding")
+                        .WithMany("DamageIPs")
+                        .HasForeignKey("DamageAssessmentBuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DAL.Models.Domain.Damage.DamageAssessmentHTS", "DamageAssessmentHTS")
                         .WithMany("DamageIPs")
                         .HasForeignKey("DamageAssessmentHTSId")
@@ -1251,6 +1637,8 @@ namespace DBContext.Migrations
 
                     b.Navigation("BeneficiaryIP");
 
+                    b.Navigation("DamageAssessmentBuilding");
+
                     b.Navigation("DamageAssessmentHTS");
 
                     b.Navigation("DamageAssessmentLivestock");
@@ -1261,6 +1649,12 @@ namespace DBContext.Migrations
                     b.HasOne("DAL.Models.Domain.MasterSetup.BeneficiaryPDMA", "BeneficiaryPDMA")
                         .WithMany("DamagePDMAs")
                         .HasForeignKey("BeneficiaryPDMAId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Domain.Damage.DamageAssessmentBuilding", "DamageAssessmentBuilding")
+                        .WithMany("DamagePDMAs")
+                        .HasForeignKey("DamageAssessmentBuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1278,6 +1672,8 @@ namespace DBContext.Migrations
 
                     b.Navigation("BeneficiaryPDMA");
 
+                    b.Navigation("DamageAssessmentBuilding");
+
                     b.Navigation("DamageAssessmentHTS");
 
                     b.Navigation("DamageAssessmentLivestock");
@@ -1288,6 +1684,12 @@ namespace DBContext.Migrations
                     b.HasOne("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "BeneficiaryVerified")
                         .WithMany("DamageVerifieds")
                         .HasForeignKey("BeneficiaryVerifiedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Domain.Damage.DamageAssessmentBuilding", "DamageAssessmentBuilding")
+                        .WithMany("DamageVerifieds")
+                        .HasForeignKey("DamageAssessmentBuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1305,6 +1707,8 @@ namespace DBContext.Migrations
 
                     b.Navigation("BeneficiaryVerified");
 
+                    b.Navigation("DamageAssessmentBuilding");
+
                     b.Navigation("DamageAssessmentHTS");
 
                     b.Navigation("DamageAssessmentLivestock");
@@ -1312,16 +1716,28 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryIP", b =>
                 {
+                    b.HasOne("DAL.Models.Domain.MasterSetup.SurveyTeam", "SurveyTeam")
+                        .WithMany("BeneficiaryIP")
+                        .HasForeignKey("SurveyTeamId");
+
                     b.HasOne("DAL.Models.Domain.MasterSetup.Village", null)
                         .WithMany("BeneficiaryIPs")
                         .HasForeignKey("VillageId");
+
+                    b.Navigation("SurveyTeam");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryPDMA", b =>
                 {
+                    b.HasOne("DAL.Models.Domain.MasterSetup.SurveyTeam", "SurveyTeam")
+                        .WithMany("BeneficiaryPDMA")
+                        .HasForeignKey("SurveyTeamId");
+
                     b.HasOne("DAL.Models.Domain.MasterSetup.Village", null)
                         .WithMany("BeneficiaryPDMAs")
                         .HasForeignKey("VillageId");
+
+                    b.Navigation("SurveyTeam");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", b =>
@@ -1334,6 +1750,10 @@ namespace DBContext.Migrations
                         .WithOne("BeneficiaryVerified")
                         .HasForeignKey("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "BeneficiaryPDMAId");
 
+                    b.HasOne("DAL.Models.Domain.MasterSetup.SurveyTeam", "SurveyTeam")
+                        .WithMany("BeneficiaryVerified")
+                        .HasForeignKey("SurveyTeamId");
+
                     b.HasOne("DAL.Models.Domain.MasterSetup.Village", null)
                         .WithMany("BeneficiaryVerifieds")
                         .HasForeignKey("VillageId");
@@ -1341,6 +1761,8 @@ namespace DBContext.Migrations
                     b.Navigation("BeneficiaryIP");
 
                     b.Navigation("BeneficiaryPDMA");
+
+                    b.Navigation("SurveyTeam");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.District", b =>
@@ -1544,6 +1966,25 @@ namespace DBContext.Migrations
                     b.Navigation("CICIGTrainings");
                 });
 
+            modelBuilder.Entity("DAL.Models.ViewModels.CDSummary", b =>
+                {
+                    b.HasOne("DAL.Models.Domain.MasterSetup.CommunityType", "CommunityType")
+                        .WithMany()
+                        .HasForeignKey("CommunityTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Domain.MasterSetup.UnionCouncil", "UnionCouncil")
+                        .WithMany()
+                        .HasForeignKey("UnionCouncilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CommunityType");
+
+                    b.Navigation("UnionCouncil");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1593,6 +2034,15 @@ namespace DBContext.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.Damage.DamageAssessmentBuilding", b =>
+                {
+                    b.Navigation("DamageIPs");
+
+                    b.Navigation("DamagePDMAs");
+
+                    b.Navigation("DamageVerifieds");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.Damage.DamageAssessmentHTS", b =>
@@ -1666,6 +2116,15 @@ namespace DBContext.Migrations
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Section", b =>
                 {
                     b.Navigation("Trainers");
+                });
+
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.SurveyTeam", b =>
+                {
+                    b.Navigation("BeneficiaryIP");
+
+                    b.Navigation("BeneficiaryPDMA");
+
+                    b.Navigation("BeneficiaryVerified");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Tehsil", b =>

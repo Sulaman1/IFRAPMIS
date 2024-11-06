@@ -23,10 +23,12 @@ namespace PermissionPro.Seeds
             //};
             var defaultUser = new ApplicationUser
             {
+
                 FirstName = "sulaman",
                 LastName = "khan",
                 UserName = "sulaman.basic@gmail.com",
                 Email = "sulaman.basic@gmail.com",
+
                 DistrictName = "Quetta",
                 EmailConfirmed = true
             };
@@ -47,9 +49,11 @@ namespace PermissionPro.Seeds
             {
                 FirstName = "sulaman",
                 LastName = "khan",
+
                 UserName = "sulaman.admin@gmail.com",
                 Email = "sulaman.admin@gmail.com", 
                 DistrictName = "All",
+
                 EmailConfirmed = true
             };
             if (userManager.Users.All(u => u.Id != defaultUser.Id))

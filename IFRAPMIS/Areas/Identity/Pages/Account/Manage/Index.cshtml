@@ -67,6 +67,7 @@
                                             <input asp-for="Input.PhoneNumber" class="form-control" />
                                             <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                                         </div>
+
                                         @* <div class="col-md-6"> *@
                                             @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
                                         <div class="form-group">
@@ -81,17 +82,20 @@
                                                 <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="~/img/icons/misc/leaf-green.png">
                                             }
 
+
                                             <input type="file"
                                                    accept=".png,.jpg,.jpeg,.gif,.tif"
                                                    asp-for="Input.ProfilePicture"
                                                    class="form-control"
                                                    style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
                                                    onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+
                                             @* <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span> *@
                                         </div>
                                         @* </div> *@
                                         <button id="sa-success" type="submit" class="btn btn-primary"><i class="bx bx-check-double font-size-16 align-middle mr-2"></i>Save</button>
                                     </div>                                    
+
 
                                 </div>
                             </form>

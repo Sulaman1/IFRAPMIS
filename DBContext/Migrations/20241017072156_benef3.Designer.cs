@@ -4,6 +4,7 @@ using IFRAPMIS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBContext.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241017072156_benef3")]
+    partial class benef3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -336,9 +339,6 @@ namespace DBContext.Migrations
                     b.Property<string>("CNICAttachment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
 
@@ -348,16 +348,7 @@ namespace DBContext.Migrations
                     b.Property<bool>("IsDisable")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsOnHold")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsRefugee")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRejected")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
                     b.Property<string>("MaritialStatus")
@@ -413,6 +404,9 @@ namespace DBContext.Migrations
                     b.Property<string>("BeneficiaryFather")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BeneficiaryIdentifiedFor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("BeneficiaryName")
                         .HasColumnType("nvarchar(max)");
 
@@ -420,9 +414,6 @@ namespace DBContext.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CNICAttachment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("District")
@@ -434,16 +425,7 @@ namespace DBContext.Migrations
                     b.Property<bool>("IsDisable")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsOnHold")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsRefugee")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRejected")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
                     b.Property<string>("MaritialStatus")

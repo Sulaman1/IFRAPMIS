@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\BeneficiaryVerified\BenefDetails.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
 
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
 
@@ -26,6 +30,18 @@
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\DBContext\DBContext.csproj" />
     <ProjectReference Include="..\PermissionPro\PermissionPro.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\BeneficiaryVerified\BenefDetails.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\BeneficiaryVerified\BenefDetails.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\BeneficiaryVerified\BenefDetails.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -75,5 +75,30 @@ namespace IFRAPMIS.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRole(string roleId)
+        {
+            if (string.IsNullOrEmpty(roleId))
+            {
+                return BadRequest("Role ID cannot be null or empty.");
+            }
+
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                return NotFound("Role not found.");
+            }
+
+            var result = await _roleManager.DeleteAsync(role);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return BadRequest("Error occurred while deleting the role.");
+        }
+
+
     }
 }

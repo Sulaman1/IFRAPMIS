@@ -25,7 +25,17 @@ namespace IFRAPMIS.Controllers.BeneficiaryVerification
         // GET: BeneficiaryIPs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.GetAll());
+            List<BeneficiaryIP> emptyIPBeneficiariesList = new List<BeneficiaryIP>();
+            return View(emptyIPBeneficiariesList);
+        }
+        public async Task<IActionResult> ListBeneficiariesIP()
+        {
+            var allBeneficiaries = await _context.GetAll();
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { data = allBeneficiaries });
+            }
+            return View(allBeneficiaries);
         }
 
         // GET: BeneficiaryIPs/Details/5
@@ -56,7 +66,7 @@ namespace IFRAPMIS.Controllers.BeneficiaryVerification
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BeneficiaryIPId,BeneficiaryName,BeneficiaryFather,Gender,CNIC,Mobile,Age,MaritialStatus,IsDisable,CNICAttachment,IsRefugee,District,Tehsil,UnionCouncil    ,SurveyDate, NextOfKin, NextOfKinCNIC")] BeneficiaryIP beneficiaryIP, IFormFile ProfilePicture)
+        public async Task<IActionResult> Create([Bind("BeneficiaryIPId,BeneficiaryName,BeneficiaryFather,Gender,CNIC,Mobile,Age,MaritialStatus,IsDisable,IsRefugee,District,Tehsil,UnionCouncil,SurveyDate, NextOfKin, NextOfKinCNIC")] BeneficiaryIP beneficiaryIP, IFormFile ProfilePicture, IFormFile CNICAttachment)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +76,31 @@ namespace IFRAPMIS.Controllers.BeneficiaryVerification
                     ModelState.AddModelError(nameof(beneficiaryIP.BeneficiaryName), "Beneficiary CNIC Already Exists!");
                     return View(beneficiaryIP);
                 }
+
+                if (CNICAttachment != null && CNICAttachment.Length > 0)
+                {
+                    Random random = new Random();
+                    int randomNumber1 = random.Next(999, 100000);
+                    var rootPath = Path.Combine(
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\BenIP_" + beneficiaryIP.District + "\\cnic" + randomNumber1.ToString() + "\\");
+                    string fileName = Path.GetFileName(CNICAttachment.FileName);
+                    int randomNumber2 = random.Next(999, 100000);
+                    fileName = "BenIP" + randomNumber2.ToString() + Path.GetExtension(fileName);
+                    string sPath = Path.Combine(rootPath);
+
+                    beneficiaryIP.CNICAttachment = Path.Combine("/Documents/BenIP_" + beneficiaryIP.District + "/cnic" + randomNumber1.ToString() + "/" + fileName);
+
+                    if (!System.IO.Directory.Exists(sPath))
+                    {
+                        System.IO.Directory.CreateDirectory(sPath);
+                    }
+                    string FullPathWithFileName = Path.Combine(sPath, fileName);
+                    using (var stream = new FileStream(FullPathWithFileName, FileMode.Create))
+                    {
+                        await CNICAttachment.CopyToAsync(stream);
+                    }
+                }
+                
                 _context.Insert(beneficiaryIP, ProfilePicture);
                 await _context.Save();
                 return RedirectToAction(nameof(Index));

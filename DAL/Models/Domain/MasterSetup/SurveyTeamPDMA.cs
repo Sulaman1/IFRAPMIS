@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models.Domain.MasterSetup
 {
-    public class SurveyTeam
+    public class SurveyTeamPDMA
     {
         [Key]
         public int SurveyTeamId { get; set; }
@@ -17,11 +17,9 @@ namespace DAL.Models.Domain.MasterSetup
         public string? Member3Name { get; set; }
         public string? ArmyMemberName { get; set; }
         public string? NDMAMemberName { get; set; }
-        public string? CollectedByOrganization { get; set; }
 
         //Connections        
-        public ICollection<BeneficiaryPDMA>? BeneficiaryPDMA { get; set; }
-        public ICollection<BeneficiaryIP>? BeneficiaryIP { get; set; }
+        public ICollection<BeneficiaryPDMA>? BeneficiaryPDMA { get; set; }       
         public ICollection<BeneficiaryVerified>? BeneficiaryVerified { get; set; }
     }
 }

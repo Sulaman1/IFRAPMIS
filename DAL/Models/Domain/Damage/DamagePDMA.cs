@@ -13,11 +13,11 @@ namespace DAL.Models.Domain.Damage
         [Key]
         public int DamagePDMAId { get; set; }
         //Building
-        public string? DamageHouseNoOfRooms { get; set; }
+        public int? DamageHouseNoOfRooms { get; set; }
         public string? DamageHouseCategory { get; set; }
-        public string? DamageShopNoOfRooms { get; set; }
+        public int? DamageShopNoOfRooms { get; set; }
         public string? DamageShopCategory { get; set; }
-        public string? DamageOtherNoOfRooms { get; set; }
+        public int? DamageOtherNoOfRooms { get; set; }
         public string? DamageOtherCategory { get; set; }
         //Crops
         public double? CropLandArea { get; set; }

@@ -4,6 +4,7 @@ using IFRAPMIS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBContext.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241017055205_benef")]
+    partial class benef
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -336,28 +339,16 @@ namespace DBContext.Migrations
                     b.Property<string>("CNICAttachment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDisable")
+                    b.Property<bool?>("IsDisable")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsOnHold")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRefugee")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRejected")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsVerified")
+                    b.Property<bool?>("IsRefugee")
                         .HasColumnType("bit");
 
                     b.Property<string>("MaritialStatus")
@@ -378,7 +369,7 @@ namespace DBContext.Migrations
                     b.Property<DateTime?>("SurveyDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("SurveyTeamIPId")
+                    b.Property<int?>("SurveyTeamId")
                         .HasColumnType("int");
 
                     b.Property<string>("Tehsil")
@@ -392,7 +383,7 @@ namespace DBContext.Migrations
 
                     b.HasKey("BeneficiaryIPId");
 
-                    b.HasIndex("SurveyTeamIPId");
+                    b.HasIndex("SurveyTeamId");
 
                     b.HasIndex("VillageId");
 
@@ -413,6 +404,9 @@ namespace DBContext.Migrations
                     b.Property<string>("BeneficiaryFather")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BeneficiaryIdentifiedFor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("BeneficiaryName")
                         .HasColumnType("nvarchar(max)");
 
@@ -422,28 +416,16 @@ namespace DBContext.Migrations
                     b.Property<string>("CNICAttachment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDisable")
+                    b.Property<bool?>("IsDisable")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsOnHold")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRefugee")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRejected")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsVerified")
+                    b.Property<bool?>("IsRefugee")
                         .HasColumnType("bit");
 
                     b.Property<string>("MaritialStatus")
@@ -464,7 +446,7 @@ namespace DBContext.Migrations
                     b.Property<DateTime?>("SurveyDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("SurveyTeamPDMAId")
+                    b.Property<int?>("SurveyTeamId")
                         .HasColumnType("int");
 
                     b.Property<string>("Tehsil")
@@ -478,7 +460,7 @@ namespace DBContext.Migrations
 
                     b.HasKey("BeneficiaryPDMAId");
 
-                    b.HasIndex("SurveyTeamPDMAId");
+                    b.HasIndex("SurveyTeamId");
 
                     b.HasIndex("VillageId");
 
@@ -523,10 +505,10 @@ namespace DBContext.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDisable")
+                    b.Property<bool?>("IsDisable")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsRefugee")
+                    b.Property<bool?>("IsRefugee")
                         .HasColumnType("bit");
 
                     b.Property<string>("MaritialStatus")
@@ -547,10 +529,7 @@ namespace DBContext.Migrations
                     b.Property<DateTime?>("SurveyDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("SurveyTeamIPId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SurveyTeamPDMAId")
+                    b.Property<int?>("SurveyTeamId")
                         .HasColumnType("int");
 
                     b.Property<string>("Tehsil")
@@ -572,9 +551,7 @@ namespace DBContext.Migrations
                         .IsUnique()
                         .HasFilter("[BeneficiaryPDMAId] IS NOT NULL");
 
-                    b.HasIndex("SurveyTeamIPId");
-
-                    b.HasIndex("SurveyTeamPDMAId");
+                    b.HasIndex("SurveyTeamId");
 
                     b.HasIndex("VillageId");
 
@@ -716,35 +693,7 @@ namespace DBContext.Migrations
                     b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.SurveyTeamIP", b =>
-                {
-                    b.Property<int>("SurveyTeamIPId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SurveyTeamIPId"));
-
-                    b.Property<string>("CollectedByOrganization")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Member1Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Member2Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Member3Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TeamLeadName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SurveyTeamIPId");
-
-                    b.ToTable("SurveyTeamIP");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.SurveyTeamPDMA", b =>
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.SurveyTeam", b =>
                 {
                     b.Property<int>("SurveyTeamId")
                         .ValueGeneratedOnAdd()
@@ -753,6 +702,9 @@ namespace DBContext.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SurveyTeamId"));
 
                     b.Property<string>("ArmyMemberName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CollectedByOrganization")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Member1Name")
@@ -772,7 +724,7 @@ namespace DBContext.Migrations
 
                     b.HasKey("SurveyTeamId");
 
-                    b.ToTable("SurveyTeamPDMA");
+                    b.ToTable("SurveyTeam");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Tehsil", b =>
@@ -1770,28 +1722,28 @@ namespace DBContext.Migrations
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryIP", b =>
                 {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.SurveyTeamIP", "SurveyTeamIP")
+                    b.HasOne("DAL.Models.Domain.MasterSetup.SurveyTeam", "SurveyTeam")
                         .WithMany("BeneficiaryIP")
-                        .HasForeignKey("SurveyTeamIPId");
+                        .HasForeignKey("SurveyTeamId");
 
                     b.HasOne("DAL.Models.Domain.MasterSetup.Village", null)
                         .WithMany("BeneficiaryIPs")
                         .HasForeignKey("VillageId");
 
-                    b.Navigation("SurveyTeamIP");
+                    b.Navigation("SurveyTeam");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryPDMA", b =>
                 {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.SurveyTeamPDMA", "SurveyTeamPDMA")
+                    b.HasOne("DAL.Models.Domain.MasterSetup.SurveyTeam", "SurveyTeam")
                         .WithMany("BeneficiaryPDMA")
-                        .HasForeignKey("SurveyTeamPDMAId");
+                        .HasForeignKey("SurveyTeamId");
 
                     b.HasOne("DAL.Models.Domain.MasterSetup.Village", null)
                         .WithMany("BeneficiaryPDMAs")
                         .HasForeignKey("VillageId");
 
-                    b.Navigation("SurveyTeamPDMA");
+                    b.Navigation("SurveyTeam");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", b =>
@@ -1804,13 +1756,9 @@ namespace DBContext.Migrations
                         .WithOne("BeneficiaryVerified")
                         .HasForeignKey("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "BeneficiaryPDMAId");
 
-                    b.HasOne("DAL.Models.Domain.MasterSetup.SurveyTeamIP", "SurveyTeamIP")
+                    b.HasOne("DAL.Models.Domain.MasterSetup.SurveyTeam", "SurveyTeam")
                         .WithMany("BeneficiaryVerified")
-                        .HasForeignKey("SurveyTeamIPId");
-
-                    b.HasOne("DAL.Models.Domain.MasterSetup.SurveyTeamPDMA", "SurveyTeamPDMA")
-                        .WithMany("BeneficiaryVerified")
-                        .HasForeignKey("SurveyTeamPDMAId");
+                        .HasForeignKey("SurveyTeamId");
 
                     b.HasOne("DAL.Models.Domain.MasterSetup.Village", null)
                         .WithMany("BeneficiaryVerifieds")
@@ -1820,9 +1768,7 @@ namespace DBContext.Migrations
 
                     b.Navigation("BeneficiaryPDMA");
 
-                    b.Navigation("SurveyTeamIP");
-
-                    b.Navigation("SurveyTeamPDMA");
+                    b.Navigation("SurveyTeam");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.District", b =>
@@ -2178,15 +2124,10 @@ namespace DBContext.Migrations
                     b.Navigation("Trainers");
                 });
 
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.SurveyTeamIP", b =>
+            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.SurveyTeam", b =>
                 {
                     b.Navigation("BeneficiaryIP");
 
-                    b.Navigation("BeneficiaryVerified");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.MasterSetup.SurveyTeamPDMA", b =>
-                {
                     b.Navigation("BeneficiaryPDMA");
 
                     b.Navigation("BeneficiaryVerified");

@@ -1,140 +1,543 @@
-﻿@model IEnumerable<DAL.Models.Domain.MasterSetup.BeneficiaryIP>
+﻿@using DAL.Models.Domain.MasterSetup
+@model IEnumerable<DAL.Models.Domain.MasterSetup.BeneficiaryIP>
 
-@{
-    ViewData["Title"] = "Index";
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.css">
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css">
+    <link rel="stylesheet" href="~/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css">
+    <link rel="stylesheet" href="~/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="~/vendor/libs/&#64;form-validation/form-validation.css" />
+
+    <link rel="stylesheet" href="~/vendor/libs/datatables-select-bs5/select.bootstrap5.css">
+    <link rel="stylesheet" href="~/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css">
+    <link rel="stylesheet" href="~/vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css">
+    <link rel="stylesheet" href="~/vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css">
+
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.css" />
+    <link rel="stylesheet" href="~/vendor/libs/sweetalert2/sweetalert2.css" />
 }
 
-<h1>Index</h1>
+@section VendorScripts {
+    <script src="~/vendor/libs/moment/moment.js"></script>
+    <script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    <script src="~/vendor/libs/select2/select2.js"></script>
+    <script src="~/vendor/libs/&#64;form-validation/popular.js"></script>
+    <script src="~/vendor/libs/&#64;form-validation/bootstrap5.js"></script>
+    <script src="~/vendor/libs/&#64;form-validation/auto-focus.js"></script>
+    <script src="~/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="~/vendor/libs/cleavejs/cleave-phone.js"></script>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BeneficiaryName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BeneficiaryFather)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CNIC)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Mobile)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Age)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaritialStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDisable)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CNICAttachment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsRefugee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProfilePicture)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.District)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tehsil)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnionCouncil)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SurveyDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NextOfKin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NextOfKinCNIC)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeneficiaryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeneficiaryFather)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CNIC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Mobile)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaritialStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDisable)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CNICAttachment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRefugee)
-            </td>
-            <td>
-                @if (item.ProfilePicture != null && item.ProfilePicture.Length > 0)
-                {
-                    var base64 = Convert.ToBase64String(item.ProfilePicture);
-                    var imgSrc = $"data:image/png;base64,{base64}";
-                    <img src="@imgSrc" alt="Profile Picture" style="width: 100px; height: 100px;" />
-                }
-                else
-                {
-                    <span>No picture available</span>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.District)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tehsil)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnionCouncil)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SurveyDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NextOfKin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NextOfKinCNIC)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BeneficiaryIPId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BeneficiaryIPId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BeneficiaryIPId">Delete</a>
-            </td>
-        </tr>
+    <script src="~/vendor/libs/sweetalert2/sweetalert2.js"></script>
 }
-    </tbody>
-</table>
+
+@section PageScripts {
+    @* <script src="~/js/app-user-list.js"></script> *@
+    @* <script src="~/js/extended-ui-sweetalert2.js"></script> *@
+}
+
+
+<!-- Users List Table -->
+<div class="card">
+    <div class="card-header border-bottom">
+        <h5 class="card-title mb-0">Filters</h5>
+        <div class="d-flex justify-content-between align-items-center row pt-4 gap-4 gap-md-0">
+            @* <div class="col-md-4 user_role"></div>
+            <div class="col-md-4 user_plan"></div> *@
+            <div class="col-md-4 user_status"></div>
+        </div>
+    </div>
+    <div class="card-datatable table-responsive text-nowrap" style="padding-left:20px">
+        <table class="datatables-users table dt-scrollableTable">
+            <thead class="border-top">
+                <tr>
+                    <th>Name</th>
+                    <th>CNIC</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>ProfilePicture</th>
+                    <th>District</th>
+                    <th>SurveyDate</th>
+
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Datatable (jquery)
+    $(function () {
+        let borderColor, bodyBg, headingColor;
+
+        if (isDarkStyle) {
+            borderColor = config.colors_dark.borderColor;
+            bodyBg = config.colors_dark.bodyBg;
+            headingColor = config.colors_dark.headingColor;
+        } else {
+            borderColor = config.colors.borderColor;
+            bodyBg = config.colors.bodyBg;
+            headingColor = config.colors.headingColor;
+        }
+
+        // Variable declaration for table
+        var dt_user_table = $('.datatables-users'),
+            select2 = $('.select2'),
+            userView = '/Users/ViewAccount',
+            statusObj = {
+                1: { title: 'Verified', class: 'bg-label-success' },
+                2: { title: 'Rejected', class: 'bg-label-danger' },
+                3: { title: 'OnHold', class: 'bg-label-warning' },
+                4: { title: 'No Status', class: 'bg-label-primary' }
+            };
+
+        if (select2.length) {
+            var $this = select2;
+            $this.wrap('<div class="position-relative"></div>').select2({
+                placeholder: 'Select Country',
+                dropdownParent: $this.parent()
+            });
+        }
+        
+        console.log("dtuser data LENGTH: ", dt_user_table.length)
+        // Users datatable
+        if (dt_user_table.length) {
+            console.log("dtuser data2 LENGTH: ", dt_user_table.length)
+            var dt_user = dt_user_table.DataTable({
+                //ajax: assetsPath + 'json/user-list.json', // JSON file to add data
+                ajax: {
+                    url: '/BeneficiaryIP/ListBeneficiariesIP', // Update this URL to point to your Index action
+                    type: 'GET',
+                    dataSrc: function (json) {
+                        // Extract the actual data array from the wrapped structure
+                        console.log('Original JSON data:', json.data.$values); // Log the entire JSON response
+                        return json.data.$values || []; // Return the user array for DataTables
+                    }
+                    //dataSrc: 'data' // Path where your actual data is located in the JSON response
+                },
+                columns: [
+                    // columns according to JSON
+
+                    { data: 'beneficiaryName' },                       
+                    { data: 'cnic' },                        
+                    { data: 'gender' },                       
+                    { data: 'age' }, 
+                    { data: 'profilePicture' },                       
+                    { data: 'district' },                    
+                    { data: 'surveyDate' },
+                    //{ data: 'isRejected' },
+                    // { data: 'isOnHold' },
+                    
+                    { data: 'isRejected' },
+                    { data: 'action' }
+                ],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        responsivePriority: 4,
+                        render: function (data, type, full, meta) {
+                            var beneficiaryName = full['beneficiaryName'];                            
+                            
+                            return '<span class="text-heading">' + (beneficiaryName || 'N/A') + '</span>';
+                        }
+                    },
+                    {
+                        // User Status
+                        targets: 1,//6
+                        render: function (data, type, full, meta) {
+                            var $cnic = full['cnic'];
+
+                            return '<span class="text-heading">' + $cnic + '</span>';
+                        }
+                    },                    
+                    {
+                        // Plans
+                        targets: 2,
+                        render: function (data, type, full, meta) {
+                            var $gender = full['gender'];
+                            
+                            return '<span class="text-heading">' + ($gender || 'N/A') + '</span>';
+                        }
+                    },                    
+                    {
+                        // User Status
+                        targets: 3,//6
+                        render: function (data, type, full, meta) {
+                            var $age = full['age'];
+                            
+                            return '<span class="text-heading">' + ($age || 'N/A') + '</span>';
+                        }
+                    },                    
+                    {
+                        // User Status
+                        targets: 4,//6
+                        render: function (data, type, full, meta) {
+                            var $profilePic = full['profilePicture'];
+                            
+                            // Check if profilePic is available and convert it to a Base64 image if it exists
+                            if ($profilePic) {
+                                // Construct the Base64 image source
+                                var imgSrc = 'data:image/jpeg;base64,' + $profilePic;
+                                return '<img src="' + imgSrc + '" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 50px; height: 50px;" />';
+                            }                            
+                            else {
+                                // Return a placeholder if no profile picture is available
+                                return '<img src="/img/front-pages/icons/user.png" alt="Default Profile Picture" class="img-fluid rounded-circle" style="width: 50px; height: 50px;" />';
+                            }
+                        }
+                    },
+                    {
+                        // User Status
+                        targets: 5,//6
+                        render: function (data, type, full, meta) {
+                            var $district = full['district'];
+                            
+                            return '<span class="text-heading">' + ($district || 'N/A') + '</span>';
+                        }
+                    },                    
+                    {
+                        // User Status
+                        targets: 6,//6
+                        render: function (data, type, full, meta) {
+                            var $surveyDate = full['surveyDate'];
+                           
+                            // Check if surveyDate is available and format it
+                            if ($surveyDate) {
+                                // Parse the date string into a JavaScript Date object
+                                var date = new Date($surveyDate);
+
+                                // Format the date (e.g., using 'MM/DD/YYYY' or any desired format)
+                                var formattedDate = date.toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit'
+                                });
+
+                                return '<span class="text-heading">' + formattedDate + '</span>';
+                            }
+                            else {
+                                // Return a placeholder if no date is available
+                                return '<span class="text-muted">N/A</span>';
+                            }
+                        }
+                    },
+                    {
+                        // User Status
+                        targets: 7,//6
+                        title: 'Status',
+                        //searchable: false,
+                        //orderable: false,
+                        render: function (data, type, full, meta) {
+
+                            var isverified = full['isVerified'];                            
+                            var isrejected = full['isRejected'];                           
+                            var isonhold = full['isOnHold'];
+                            
+
+                            if (isverified == false && isrejected == false && isonhold == false) {
+                                return (
+                                    '<span class="badge ' +
+                                    statusObj[4].class +
+                                    '" text-capitalized>' +
+                                    statusObj[4].title +
+                                    '</span>'
+                                );
+                            }
+
+                            if (isverified == true) {
+                                return (
+                                    '<span class="badge ' +
+                                    statusObj[1].class +
+                                    '" text-capitalized>' +
+                                    statusObj[1].title +
+                                    '</span>'
+                                );
+                            }
+                            if (isrejected == true) {
+                                return (
+                                    '<span class="badge ' +
+                                    statusObj[2].class +
+                                    '" text-capitalized>' +
+                                    statusObj[2].title +
+                                    '</span>'
+                                );
+                            }
+                            if (isonhold == true) {
+                                return (
+                                    '<span class="badge ' +
+                                    statusObj[3].class +
+                                    '" text-capitalized>' +
+                                    statusObj[3].title +
+                                    '</span>'
+                                );
+                            }
+                        }
+                    },                   
+                    
+                    {
+                        // Actions
+                        targets: 8,
+                        title: 'Actions',
+                        searchable: false,
+                        orderable: false,
+                        render: function (data, type, full, meta) {  
+                            if (true) {
+                                return (
+                                    '<div class="d-flex align-items-center">' +
+                                    '<a href="/BeneficiaryIP/Details?id=' + encodeURIComponent(full.beneficiaryIPId) + '" ' +  // Pass the id as a query string to preview the beneficiary
+                                        'data-bs-toggle="tooltip" class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill" ' +
+                                        'data-bs-placement="top" title="Preview Beneficiary">' +
+                                        '<i class="ti ti-eye mx-2 ti-md"></i></a>' +
+                                    '</div>'  +
+                                    '<div class="d-flex align-items-center">' +
+                                    '<div class="btn-group">' +
+                                    '<a href="javascript:;" class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">' +
+                                    '<i class="ti ti-dots-vertical ti-md"></i>' +
+                                    '</a>' +
+                                    '<div class="dropdown-menu dropdown-menu-end m-0">' +
+                                    // Damages
+                                    '<a href="/BeneficiaryIPDamage/DamageDetails?id=' + full.beneficiaryIPId + '" class="dropdown-item">' +
+                                    '<i class="fas fa-house-flood-water"></i> Damage' +
+                                    '</a>' +
+                                    // Edit
+                                    '<a href="/BeneficiaryIP/Edit?id=' + full.beneficiaryIPId + '" class="dropdown-item">' +
+                                    '<i class="fas fa-wrench"></i> Edit' +
+                                    '</a>' +
+                                    // Delete
+                                    '<a href="/BeneficiaryIP/Delete?id=' + full.beneficiaryIPId + '" class="dropdown-item">' +
+                                    '<i class="fas fa-trash-can"></i> Delete' +
+                                    '</a>'+
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>'
+                                );
+                            }                        
+                        }
+                    }
+                ],
+                //scrollY: '300px',
+                scrollX: true, // Enable horizontal scrolling
+                //order: [[2, 'desc']],
+                dom:
+                    '<"row"' +
+                    '<"col-md-2"<"ms-n2"l>>' +
+                    '<"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-6 mb-md-0 mt-n6 mt-md-0"fB>>' +
+                    '>t' +
+                    '<"row"' +
+                    '<"col-sm-12 col-md-6"i>' +
+                    '<"col-sm-12 col-md-6"p>' +
+                    '>',
+                language: {
+                    sLengthMenu: '_MENU_',
+                    search: '',
+                    searchPlaceholder: 'Search User',
+                    paginate: {
+                        next: '<i class="ti ti-chevron-right ti-sm"></i>',
+                        previous: '<i class="ti ti-chevron-left ti-sm"></i>'
+                    }
+                },
+                // Buttons with Dropdown
+                buttons: [
+                    {
+                        extend: 'collection',
+                        className: 'btn btn-label-secondary dropdown-toggle mx-4 waves-effect waves-light',
+                        text: '<i class="ti ti-upload me-2 ti-xs"></i>Export',
+                        buttons: [
+                            {
+                                extend: 'print',
+                                text: '<i class="ti ti-printer me-2" ></i>Print',
+                                className: 'dropdown-item',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4, 5, 6, 7],
+                                    // prevent avatar to be print
+                                    format: {
+                                        body: function (inner, coldex, rowdex) {
+                                            console.log("inner: ", inner);
+                                            console.log("coldex: ", coldex);
+                                            console.log("rowdex: ", rowdex);
+                                            if (inner.length <= 0) return inner;
+                                            var el = $.parseHTML(inner);
+                                            var result = '';
+                                            $.each(el, function (index, item) {
+                                                console.log("index: ", index);
+                                                console.log("item: ", item);
+                                                if (item.classList !== undefined && item.classList.contains('user-name')) {
+                                                    result = result + item.lastChild.firstChild.textContent;
+                                                } else if (item.innerText === undefined) {
+                                                    result = result + item.textContent;
+                                                } else result = result + item.innerText;
+                                            });
+                                            return result;
+                                            console.log("result: ", result);
+
+                                        }
+                                    }
+                                },
+                                customize: function (win) {
+                                    console.log("win: ", win);
+                                    //customize print view for dark
+                                    $(win.document.body)
+                                        .css('color', headingColor)
+                                        .css('border-color', borderColor)
+                                        .css('background-color', bodyBg);
+                                    $(win.document.body)
+                                        .find('table')
+                                        .addClass('compact')
+                                        .css('color', 'inherit')
+                                        .css('border-color', 'inherit')
+                                        .css('background-color', 'inherit');
+                                }
+                            },
+                            {
+                                extend: 'csv',
+                                text: '<i class="ti ti-file-text me-2" ></i>Csv',
+                                className: 'dropdown-item',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4, 5, 6, 7],
+                                    // prevent avatar to be display
+                                    format: {
+                                        body: function (inner, coldex, rowdex) {
+                                            if (inner.length <= 0) return inner;
+                                            var el = $.parseHTML(inner);
+                                            var result = '';
+                                            $.each(el, function (index, item) {
+                                                if (item.classList !== undefined && item.classList.contains('user-name')) {
+                                                    result = result + item.lastChild.firstChild.textContent;
+                                                } else if (item.innerText === undefined) {
+                                                    result = result + item.textContent;
+                                                } else result = result + item.innerText;
+                                            });
+                                            return result;
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                text: '<i class="ti ti-file-spreadsheet me-2"></i>Excel',
+                                className: 'dropdown-item',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4, 5, 6, 7],
+                                    // prevent avatar to be display
+                                    format: {
+                                        body: function (inner, coldex, rowdex) {
+                                            if (inner.length <= 0) return inner;
+                                            var el = $.parseHTML(inner);
+                                            var result = '';
+                                            $.each(el, function (index, item) {
+                                                if (item.classList !== undefined && item.classList.contains('user-name')) {
+                                                    result = result + item.lastChild.firstChild.textContent;
+                                                } else if (item.innerText === undefined) {
+                                                    result = result + item.textContent;
+                                                } else result = result + item.innerText;
+                                            });
+                                            return result;
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                text: '<i class="ti ti-file-code-2 me-2"></i>Pdf',
+                                className: 'dropdown-item',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4, 5, 6, 7],
+                                    // prevent avatar to be display
+                                    format: {
+                                        body: function (inner, coldex, rowdex) {
+                                            if (inner.length <= 0) return inner;
+                                            var el = $.parseHTML(inner);
+                                            var result = '';
+                                            $.each(el, function (index, item) {
+                                                if (item.classList !== undefined && item.classList.contains('user-name')) {
+                                                    result = result + item.lastChild.firstChild.textContent;
+                                                } else if (item.innerText === undefined) {
+                                                    result = result + item.textContent;
+                                                } else result = result + item.innerText;
+                                            });
+                                            return result;
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                extend: 'copy',
+                                text: '<i class="ti ti-copy me-2" ></i>Copy',
+                                className: 'dropdown-item',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4, 5, 6, 7],
+                                    // prevent avatar to be display
+                                    format: {
+                                        body: function (inner, coldex, rowdex) {
+                                            if (inner.length <= 0) return inner;
+                                            var el = $.parseHTML(inner);
+                                            var result = '';
+                                            $.each(el, function (index, item) {
+                                                if (item.classList !== undefined && item.classList.contains('user-name')) {
+                                                    result = result + item.lastChild.firstChild.textContent;
+                                                } else if (item.innerText === undefined) {
+                                                    result = result + item.textContent;
+                                                } else result = result + item.innerText;
+                                            });
+                                            return result;
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        text: '<i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Add Beneficiary</span>',
+                        className: 'add-new btn btn-primary waves-effect waves-light',
+                        action: function () {
+                            window.location.href = '/BeneficiaryIP/Create';
+                        }
+                    }
+                    
+                ],
+                
+                initComplete: function (settings, json) {
+                    
+                    // Adding status filter once table initialized
+                    this.api()
+                        .columns(7)
+                        .every(function () {
+                            var column = this;
+                            console.log("COLUMN: ", column)
+
+                            // Create the dropdown and append it to .user_status
+                            var select = $('<select id="FilterTransaction" class="form-select text-capitalize">' +
+                                '<option value="">Select Status</option>' +
+                                '</select>')
+                                .appendTo('.user_status')
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                    console.log("VAL: ", val);
+                                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                });
+
+                            // Dynamically add options from statusObj
+                            $.each(statusObj, function (key, status) {
+                                select.append(
+                                    '<option value="' + status.title + '" class="text-capitalize">' + status.title + '</option>'
+                                );
+                            });
+                        });
+
+                    dt_user_table.find('tbody tr:first').addClass('border-top-0');
+                    $('.card-header').after('<hr class="my-0">');                
+                }
+            });
+        }
+       
+        // Filter form control to default size
+        // ? setTimeout used for multilingual table initialization
+        setTimeout(() => {
+            $('.dataTables_filter .form-control').removeClass('form-control-sm');
+            $('.dataTables_length .form-select').removeClass('form-select-sm');
+        }, 300);
+    });
+</script>

@@ -219,11 +219,25 @@ namespace IFRAPMIS.Controllers.SocialMobilization
             var status = await _context.CISubmitForReviewRequest(id, User.Identity.Name);
             if (status)
             {
-                return Json(new { isValid = true, message = "Profile has been submitted successfully for review." });
+                return Json(new { isValid = true, message = "CI/CIG has been submitted successfully for review." });
             }
             else
             {
-                return Json(new { isValid = false, message = "Failed to Submit Profile!" });
+                return Json(new { isValid = false, message = "Failed to Submit CI/CIG!" });
+            }
+        }
+        public async Task<JsonResult> CIRejectdRequest(int id, int val, string description)
+        {
+            var status = await _context.CIApprovalRequest(id, val, User.Identity.Name, description);
+            string message = "";
+            if (status)
+            {
+                message = "CI/CIG has been Rejected successfully.";
+                return Json(new { isValid = status, message = message });
+            }
+            else
+            {
+                return Json(new { isValid = status, message = "Failed to Reject CI/CIG!" });
             }
         }
         public async Task<JsonResult> CIApprovalRequest(int id, int val, string description)
@@ -232,12 +246,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization
             string message = "";
             if (status)
             {
-                message = "Profile has been approved successfully.";
+                message = "CI/CIG has been approved successfully.";
                 return Json(new { isValid = status, message = message });
             }
             else
             {
-                return Json(new { isValid = status, message = "Failed to Submit Profile!" });
+                return Json(new { isValid = status, message = "Failed to Submit CI/CIG!" });
             }
         }
         public async Task<JsonResult> CISubmitForApprovalRequest(int id, int val, string description)
@@ -246,12 +260,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization
             string message = "";
             if (status)
             {
-                message = "Profile has been forwarded for approval successfully.";
+                message = "CI/CIG has been Submitted for approval successfully.";
                 return Json(new { isValid = status, message = message });
             }
             else
             {
-                return Json(new { isValid = status, message = "Profile has been submitted successfully for approval." });
+                return Json(new { isValid = status, message = "CI/CIG has been submitted successfully for approval." });
             }
         }
         public async Task<JsonResult> GetTehsils(string districtName)

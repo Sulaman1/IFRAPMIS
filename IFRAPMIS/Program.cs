@@ -54,7 +54,7 @@ namespace IFRAPMIS
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            var envConnectionString = Environment.GetEnvironmentVariable("MY_CONNECTION_STRING")?.Trim(); ;
+            var envConnectionString = Environment.GetEnvironmentVariable("MY_CONNECTION_STRING")?.Trim();
             if (!string.IsNullOrEmpty(envConnectionString))
             {
                 builder.Configuration["ConnectionStrings:DefaultConnection"] = envConnectionString;

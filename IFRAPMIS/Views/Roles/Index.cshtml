@@ -26,11 +26,11 @@
     <script src="~/js/modal-add-role.js"></script>
 }
 
-<!-- Include Bootstrap CSS -->
+@* <!-- Include Bootstrap CSS -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <!-- Include FontAwesome for icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
+ *@
 
 @* ************** Content ************** *@
 <h4 class="mb-1">Roles List</h4>
@@ -38,11 +38,10 @@
 <p class="mb-6">A role provided access to predefined menus and features so that depending on <br> assigned role an administrator can have access to what user needs.</p>
 
 
-
 <div class="row">
     @foreach (var role in Model)
     {
-        <div class="col-xl-4 col-lg-6 col-md-6">
+        <div class="col-xl-4 col-lg-6 col-md-6" style="padding-bottom:2%;">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -65,15 +64,15 @@
                     <div class="d-flex justify-content-between align-items-end">
                         <div class="role-heading">
                             <h5 class="mb-1">@role.RoleName</h5>
-                            <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#addRoleModal" class="role-edit-modal"><span>Edit Role</span></a>
+                            @* <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#addRoleModal" class="role-edit-modal"><span>Edit Role</span></a> *@
                         </div>
-                        <a href="javascript:void(0);"><i class="ti ti-copy ti-md text-heading"></i></a>
+                        @* <a href="javascript:void(0);"><i class="ti ti-copy ti-md text-heading"></i></a> *@
                     </div>
                 </div>
             </div>
         </div>
     }
-    <div class="col-xl-4 col-lg-6 col-md-6">
+    <div class="col-xl-4 col-lg-6 col-md-6" style="padding-bottom:2%;">
         <div class="card h-100">
             <div class="row h-100">
                 <div class="col-sm-3">
@@ -194,12 +193,14 @@
     </tbody>
 </table>
  *@
-<!-- Include jQuery, Popper.js, and Bootstrap JS -->
+
+
+@* <!-- Include jQuery, Popper.js, and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-
+ *@
 
 
 <script>
@@ -408,10 +409,13 @@
                                 '<a href="/Permission/Index?roleId=' + full.id + '" class="dropdown-item">' +
                                 '<i class="fas fa-wrench"></i> Manage Permissions' +
                                 '</a>' +
-                                // // Reset password
-                                // '<a href="/Identity/Account/ResetPasswordAdmin?id=' + full.id + '" class="dropdown-item">' +
-                                // '<i class="fas fa-wrench"></i> Reset Password' +
-                                // '</a>' +
+                                // Delete Role
+                                '<form action="/Roles/DeleteRole" method="post" style="display: inline;">' +
+                                '<input type="hidden" name="roleId" value="' + full.id + '"/>' +
+                                '<button type="submit" class="dropdown-item" onclick="return confirm(\'Are you sure you want to delete this role?\')">' +
+                                '<i class="fas fa-trash"></i> Delete Role' +
+                                '</button>' +
+                                '</form>' +
                                 // // Change district
                                 // '<a href="/Identity/Account/Manage/ChangeDistrict?id=' + full.id + '" class="dropdown-item">' +
                                 // '<i class="fas fa-wrench"></i> Reset District' +
@@ -494,7 +498,7 @@
                                 text: '<i class="ti ti-printer me-2" ></i>Print',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [1, 2],
+                                    columns: [0, 1],
                                     // prevent avatar to be print
                                     format: {
                                         body: function (inner, coldex, rowdex) {
@@ -531,7 +535,7 @@
                                 text: '<i class="ti ti-file-text me-2" ></i>Csv',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [1, 2],
+                                    columns: [0, 1],
                                     // prevent avatar to be display
                                     format: {
                                         body: function (inner, coldex, rowdex) {
@@ -555,7 +559,7 @@
                                 text: '<i class="ti ti-file-spreadsheet me-2"></i>Excel',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [1, 2],
+                                    columns: [0, 1],
                                     // prevent avatar to be display
                                     format: {
                                         body: function (inner, coldex, rowdex) {
@@ -579,7 +583,7 @@
                                 text: '<i class="ti ti-file-code-2 me-2"></i>Pdf',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [1, 2],
+                                    columns: [0, 1],
                                     // prevent avatar to be display
                                     format: {
                                         body: function (inner, coldex, rowdex) {
@@ -603,7 +607,7 @@
                                 text: '<i class="ti ti-copy me-2" ></i>Copy',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [1, 2],
+                                    columns: [0, 1],
                                     // prevent avatar to be display
                                     format: {
                                         body: function (inner, coldex, rowdex) {
@@ -756,6 +760,7 @@
             $('.dataTables_length .form-select').removeClass('form-select-sm');
         }, 300);
     });
+
 
 </script>
 

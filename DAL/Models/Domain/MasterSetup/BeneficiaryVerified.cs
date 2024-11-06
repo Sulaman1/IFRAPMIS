@@ -23,9 +23,9 @@ namespace DAL.Models.Domain.MasterSetup
         public string? Mobile { get; set; }
         public int Age { get; set; }
         public string? MaritialStatus { get; set; }
-        public bool? IsDisable { get; set; }
+        public bool IsDisable { get; set; }
         public string? CNICAttachment { get; set; }
-        public bool? IsRefugee { get; set; }
+        public bool IsRefugee { get; set; }
         public byte[]? ProfilePicture { get; set; }
         public string? District { get; set; }
         public string? Tehsil { get; set; }
@@ -33,14 +33,17 @@ namespace DAL.Models.Domain.MasterSetup
         public DateTime? SurveyDate { get; set; }
         public string? NextOfKin { get; set; }
         public string? NextOfKinCNIC { get; set; }
+        public string? BeneficiaryIdentifiedFor { get; set; }
 
         //Connections
         public int? BeneficiaryIPId { get; set; }
         public BeneficiaryIP? BeneficiaryIP { get; set; }
         public int? BeneficiaryPDMAId { get; set; }
         public BeneficiaryPDMA? BeneficiaryPDMA { get; set; }
-        public int? SurveyTeamId { get; set; }
-        public SurveyTeam? SurveyTeam { get; set; }
+        public int? SurveyTeamPDMAId { get; set; }
+        public SurveyTeamPDMA? SurveyTeamPDMA { get; set; }
+        public int? SurveyTeamIPId { get; set; }
+        public SurveyTeamIP? SurveyTeamIP { get; set; }
 
         //Collections
         public ICollection<DamageVerified>? DamageVerifieds { get; set; }

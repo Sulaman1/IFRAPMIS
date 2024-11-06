@@ -1,5 +1,6 @@
 ﻿@using DAL.Models.Domain.MasterSetup
-@model IEnumerable<DAL.Models.Domain.MasterSetup.BeneficiaryPDMA>
+@model IEnumerable<BeneficiaryListViewModel>
+
 
 @section VendorStyles {
     <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.css">
@@ -35,27 +36,94 @@
     @* <script src="~/js/extended-ui-sweetalert2.js"></script> *@
 }
 
+
+<script>
+    function openCommentPopup(cnic, btn) {
+        Swal.fire({
+            title: 'Enter Your Comment!',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: btn,
+            showLoaderOnConfirm: true,
+            customClass: {
+                confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+                cancelButton: 'btn btn-label-danger waves-effect waves-light'
+            },
+            preConfirm: (comment) => {
+                if (!comment) {
+                    Swal.showValidationMessage('You need to write a comment!');
+                } else {
+                    // Call the CommentBeneficiary function with comment and CNIC
+                    CommentBeneficiary(comment, cnic, btn);
+                }
+            },
+            backdrop: true,
+            allowOutsideClick: () => !Swal.isLoading()
+        });
+    }
+
+    function CommentBeneficiary(comment, cnic, btn) {
+        // This function would handle the rejection logic
+        // Example: You might send an AJAX request to your backend
+        var callFunction = '';
+        if (btn == "Reject") {
+            callFunction = 'RejectBeneficiary';
+            btn = 'Rejected';
+        }
+        if (btn == "OnHold") {
+            callFunction = 'OnHoldBeneficiary';
+        }
+        $.ajax({
+            url: '/BeneficiaryVerified/'+callFunction, // Your action method
+            type: 'POST',
+            data: { id: cnic, comment: comment },
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Beneficiary ' + btn,
+                    text: 'The beneficiary with CNIC ' + cnic + ' has been ' + btn + '.',
+                    confirmButtonText: 'OK', // This will show only the OK button
+                    customClass: {
+                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Refresh the page after the user clicks "OK"
+                        location.reload(); // Refresh the current page
+                    }
+                });;
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'There was an error processing the request.',
+                    confirmButtonText: 'OK', // Ensure only OK button is shown
+                    customClass: {
+                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                    }
+                });
+            }
+        });
+    }
+</script>
+
+
 <!-- Users List Table -->
 <div class="card">
-    <div class="card-header border-bottom">
-        <h5 class="card-title mb-0">Filters</h5>
-        <div class="d-flex justify-content-between align-items-center row pt-4 gap-4 gap-md-0">
-            @* <div class="col-md-4 user_role"></div>
-            <div class="col-md-4 user_plan"></div> *@
-            <div class="col-md-4 user_status"></div>
-        </div>
-    </div>
-
     <div class="card-datatable table-responsive text-nowrap" style="padding-left:20px">
         <table class="datatables-users table dt-scrollableTable">
             <thead class="border-top">
-                <tr>
-                    <th>Name</th>
-                    <th>CNIC</th>
+                <tr>                   
+                    <th>BeneficiaryName</th>                                                                            
+                    <th>CNIC</th>                    
                     <th>Gender</th>
                     <th>Age</th>
                     <th>ProfilePicture</th>
-                    <th>District</th>
+                    <th>District</th>                    
                     <th>SurveyDate</th>
 
                     <th>Status</th>
@@ -67,6 +135,7 @@
         </table>
     </div>
 </div>
+
 
 <script>
     // Datatable (jquery)
@@ -101,7 +170,7 @@
                 dropdownParent: $this.parent()
             });
         }
-        
+
         console.log("dtuser data LENGTH: ", dt_user_table.length)
         // Users datatable
         if (dt_user_table.length) {
@@ -109,7 +178,7 @@
             var dt_user = dt_user_table.DataTable({
                 //ajax: assetsPath + 'json/user-list.json', // JSON file to add data
                 ajax: {
-                    url: '/BeneficiaryPDMA/ListBeneficiariesPDMA', // Update this URL to point to your Index action
+                    url: '/BeneficiaryVerified/ListBeneficiariesVerify', // Update this URL to point to your Index action
                     type: 'GET',
                     dataSrc: function (json) {
                         // Extract the actual data array from the wrapped structure
@@ -121,27 +190,32 @@
                 columns: [
                     // columns according to JSON
 
-                    { data: 'beneficiaryName' },                       
+                    { data: 'beneficiaryNamePDMA' },                       
                     { data: 'cnic' },                        
-                    { data: 'gender' },                       
-                    { data: 'age' }, 
-                    { data: 'profilePicture' },                       
-                    { data: 'district' },                    
-                    { data: 'surveyDate' },
+                    { data: 'genderPDMA' },                       
+                    { data: 'agePDMA' }, 
+                    { data: 'profilePicturePDMA' },                       
+                    { data: 'districtPDMA' },                    
+                    { data: 'surveyDatePDMA' },
                     //{ data: 'isRejected' },
                     // { data: 'isOnHold' },
                     
-                    { data: 'isRejected' },
+                    { data: 'isRejectedPDMA' },
                     { data: 'action' }
                 ],
                 columnDefs: [
+
                     {
                         targets: 0,
                         responsivePriority: 4,
                         render: function (data, type, full, meta) {
-                            var beneficiaryName = full['beneficiaryName'];                            
-                            
-                            return '<span class="text-heading">' + (beneficiaryName || 'N/A') + '</span>';
+                            var beneficiaryNamePDMA = full['beneficiaryNamePDMA'];
+                            var beneficiaryNameIP = full['beneficiaryNameIP'];
+
+                            // Show beneficiaryNamePDMA if not null, otherwise show beneficiaryNameIP
+                            var displayName = (beneficiaryNamePDMA === "N/A") ? beneficiaryNameIP : beneficiaryNamePDMA;
+
+                            return '<span class="text-heading">' + (displayName || 'N/A') + '</span>';
                         }
                     },
                     {
@@ -157,32 +231,44 @@
                         // Plans
                         targets: 2,
                         render: function (data, type, full, meta) {
-                            var $gender = full['gender'];
+                            var $gender = full['genderPDMA'];
+                            var $genderIP = full['genderIP'];
                             
-                            return '<span class="text-heading">' + ($gender || 'N/A') + '</span>';
+                            var displayGender = ($gender === "N/A") ? $genderIP : $gender;
+
+                            return '<span class="text-heading">' + (displayGender || 'N/A') + '</span>';
                         }
                     },                    
                     {
                         // User Status
                         targets: 3,//6
                         render: function (data, type, full, meta) {
-                            var $age = full['age'];
+                            var $age = full['agePDMA'];
+                            var $ageIP = full['ageIP'];
                             
-                            return '<span class="text-heading">' + ($age || 'N/A') + '</span>';
+                            var displayAge = ($age === 0) ? $ageIP : $age;
+
+                            return '<span class="text-heading">' + (displayAge || 'N/A') + '</span>';
                         }
                     },                    
                     {
                         // User Status
                         targets: 4,//6
                         render: function (data, type, full, meta) {
-                            var $profilePic = full['profilePicture'];
-                            
+                            var $profilePic = full['profilePicturePDMA'];
+                            var $profilePicIP = full['profilePictureIP'];
+                           
                             // Check if profilePic is available and convert it to a Base64 image if it exists
                             if ($profilePic) {
                                 // Construct the Base64 image source
                                 var imgSrc = 'data:image/jpeg;base64,' + $profilePic;
                                 return '<img src="' + imgSrc + '" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 50px; height: 50px;" />';
-                            }                            
+                            }
+                            else if ($profilePicIP) {
+                                // Construct the Base64 image source
+                                var imgSrc = 'data:image/jpeg;base64,' + $profilePicIP;
+                                return '<img src="' + imgSrc + '" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 50px; height: 50px;" />';
+                            }
                             else {
                                 // Return a placeholder if no profile picture is available
                                 return '<img src="/img/front-pages/icons/user.png" alt="Default Profile Picture" class="img-fluid rounded-circle" style="width: 50px; height: 50px;" />';
@@ -193,17 +279,21 @@
                         // User Status
                         targets: 5,//6
                         render: function (data, type, full, meta) {
-                            var $district = full['district'];
+                            var $district = full['districtPDMA'];
+                            var $districtIP = full['districtIP'];
                             
-                            return '<span class="text-heading">' + ($district || 'N/A') + '</span>';
+                            var displayDistrict = ($district === "N/A") ? $districtIP : $district;
+
+                            return '<span class="text-heading">' + (displayDistrict || 'N/A') + '</span>';
                         }
                     },                    
                     {
                         // User Status
                         targets: 6,//6
                         render: function (data, type, full, meta) {
-                            var $surveyDate = full['surveyDate'];
-                           
+                            var $surveyDate = full['surveyDatePDMA'];
+                            var $surveyDateIP = full['surveyDateIP'];
+                            console.log("")
                             // Check if surveyDate is available and format it
                             if ($surveyDate) {
                                 // Parse the date string into a JavaScript Date object
@@ -218,7 +308,19 @@
 
                                 return '<span class="text-heading">' + formattedDate + '</span>';
                             }
-                            else {
+                            else if ($surveyDateIP) {                                
+                                    // Parse the date string into a JavaScript Date object
+                                    var date = new Date($surveyDateIP);
+
+                                    // Format the date (e.g., using 'MM/DD/YYYY' or any desired format)
+                                    var formattedDate = date.toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                    });
+
+                                    return '<span class="text-heading">' + formattedDate + '</span>';                                
+                            }else {
                                 // Return a placeholder if no date is available
                                 return '<span class="text-muted">N/A</span>';
                             }
@@ -228,16 +330,18 @@
                         // User Status
                         targets: 7,//6
                         title: 'Status',
-                        //searchable: false,
-                        //orderable: false,
+                        searchable: false,
+                        orderable: false,
                         render: function (data, type, full, meta) {
 
-                            var isverified = full['isVerified'];                            
-                            var isrejected = full['isRejected'];                           
-                            var isonhold = full['isOnHold'];
-                            
+                            var isverifiedPDMA = full['isVerifiedPDMA'];
+                            var isverifiedIP = full['isVerifiedIP'];
+                            var isrejectedPDMA = full['isRejectedPDMA'];
+                            var isrejectedIP = full['isRejectedIP'];
+                            var isonholdPDMA = full['isOnHoldPDMA'];
+                            var isonholdIP = full['isOnHoldIP'];
 
-                            if (isverified == false && isrejected == false && isonhold == false) {
+                            if ((isverifiedPDMA == false && isverifiedIP == false) && (isrejectedPDMA == false && isrejectedIP == false) && (isonholdPDMA == false && isonholdIP == false)) {
                                 return (
                                     '<span class="badge ' +
                                     statusObj[4].class +
@@ -247,7 +351,7 @@
                                 );
                             }
 
-                            if (isverified == true) {
+                            if (isverifiedPDMA == true || isverifiedIP == true) {
                                 return (
                                     '<span class="badge ' +
                                     statusObj[1].class +
@@ -256,7 +360,7 @@
                                     '</span>'
                                 );
                             }
-                            if (isrejected == true) {
+                            if (isrejectedPDMA == true || isrejectedIP == true) {
                                 return (
                                     '<span class="badge ' +
                                     statusObj[2].class +
@@ -265,7 +369,7 @@
                                     '</span>'
                                 );
                             }
-                            if (isonhold == true) {
+                            if (isonholdPDMA == true || isonholdIP == true) {
                                 return (
                                     '<span class="badge ' +
                                     statusObj[3].class +
@@ -283,38 +387,19 @@
                         title: 'Actions',
                         searchable: false,
                         orderable: false,
-                        render: function (data, type, full, meta) {  
+                        render: function (data, type, full, meta) {                            
                             if (true) {
                                 return (
                                     '<div class="d-flex align-items-center">' +
-                                    '<a href="/BeneficiaryPDMA/Details?id=' + encodeURIComponent(full.beneficiaryPDMAId) + '" ' +  // Pass the id as a query string to preview the beneficiary
+                                    '<a href="/BeneficiaryVerified/CompareBeneficiaries?id=' + encodeURIComponent(full.cnic) + '" ' +  // Pass the CNIC as a query string to preview the invoice
                                         'data-bs-toggle="tooltip" class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill" ' +
                                         'data-bs-placement="top" title="Preview Beneficiary">' +
                                         '<i class="ti ti-eye mx-2 ti-md"></i></a>' +
-                                    '</div>'  +
-                                    '<div class="d-flex align-items-center">' +
-                                    '<div class="btn-group">' +
-                                    '<a href="javascript:;" class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">' +
-                                    '<i class="ti ti-dots-vertical ti-md"></i>' +
-                                    '</a>' +
-                                    '<div class="dropdown-menu dropdown-menu-end m-0">' +
-                                    // Damages
-                                    '<a href="/BeneficiaryPDMADamage/DamageDetails?id=' + full.beneficiaryPDMAId + '" class="dropdown-item">' +
-                                    '<i class="fas fa-house-flood-water"></i> Damage' +
-                                    '</a>' +
-                                    // Edit
-                                    '<a href="/BeneficiaryPDMA/Edit?id=' + full.beneficiaryPDMAId + '" class="dropdown-item">' +
-                                    '<i class="fas fa-wrench"></i> Edit' +
-                                    '</a>' +
-                                    // Delete
-                                    '<a href="/BeneficiaryPDMA/Delete?id=' + full.beneficiaryPDMAId + '" class="dropdown-item">' +
-                                    '<i class="fas fa-trash-can"></i> Delete' +
-                                    '</a>'+
-                                    '</div>' +
-                                    '</div>' +
-                                    '</div>'
+                                    '</div>'       
                                 );
-                            }                        
+                            }
+                                                 
+                        
                         }
                     }
                 ],
@@ -351,7 +436,7 @@
                                 text: '<i class="ti ti-printer me-2" ></i>Print',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5, 6, 7],
+                                    columns: [1, 2, 3, 4, 5, 6],
                                     // prevent avatar to be print
                                     format: {
                                         body: function (inner, coldex, rowdex) {
@@ -396,7 +481,7 @@
                                 text: '<i class="ti ti-file-text me-2" ></i>Csv',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5, 6, 7],
+                                    columns: [1, 2, 3, 4, 5, 6],
                                     // prevent avatar to be display
                                     format: {
                                         body: function (inner, coldex, rowdex) {
@@ -420,7 +505,7 @@
                                 text: '<i class="ti ti-file-spreadsheet me-2"></i>Excel',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5, 6, 7],
+                                    columns: [1, 2, 3, 4, 5, 6],
                                     // prevent avatar to be display
                                     format: {
                                         body: function (inner, coldex, rowdex) {
@@ -444,7 +529,7 @@
                                 text: '<i class="ti ti-file-code-2 me-2"></i>Pdf',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5, 6, 7],
+                                    columns: [1, 2, 3, 4, 5, 6],
                                     // prevent avatar to be display
                                     format: {
                                         body: function (inner, coldex, rowdex) {
@@ -468,7 +553,7 @@
                                 text: '<i class="ti ti-copy me-2" ></i>Copy',
                                 className: 'dropdown-item',
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5, 6, 7],
+                                    columns: [1, 2, 3, 4, 5, 6],
                                     // prevent avatar to be display
                                     format: {
                                         body: function (inner, coldex, rowdex) {
@@ -488,48 +573,14 @@
                                 }
                             }
                         ]
-                    },
-                    {
-                        text: '<i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Add Beneficiary</span>',
-                        className: 'add-new btn btn-primary waves-effect waves-light',
-                        action: function () {
-                            window.location.href = '/BeneficiaryPDMA/Create';
-                        }
                     }
                     
                 ],
                 
                 initComplete: function (settings, json) {
-                    
-                    // Adding status filter once table initialized
-                    this.api()
-                        .columns(7)
-                        .every(function () {
-                            var column = this;
-                            console.log("COLUMN: ", column)
-
-                            // Create the dropdown and append it to .user_status
-                            var select = $('<select id="FilterTransaction" class="form-select text-capitalize">' +
-                                '<option value="">Select Status</option>' +
-                                '</select>')
-                                .appendTo('.user_status')
-                                .on('change', function () {
-                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                    console.log("VAL: ", val);
-                                    column.search(val ? '^' + val + '$' : '', true, false).draw();
-                                });
-
-                            // Dynamically add options from statusObj
-                            $.each(statusObj, function (key, status) {
-                                select.append(
-                                    '<option value="' + status.title + '" class="text-capitalize">' + status.title + '</option>'
-                                );
-                            });
-                        });
-
                     dt_user_table.find('tbody tr:first').addClass('border-top-0');
                     $('.card-header').after('<hr class="my-0">');                
-                }
+                    }
             });
         }
        
@@ -540,4 +591,5 @@
             $('.dataTables_length .form-select').removeClass('form-select-sm');
         }, 300);
     });
+
 </script>

@@ -1,0 +1,974 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using DAL.Models.Domain.MasterSetup
+@model CompareBeneficiaryViewModel
+
+@{
+    ViewData["Title"] = "Compare Beneficiary Data";
+}
+
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.css" />
+    <link rel="stylesheet" href="~/vendor/libs/sweetalert2/sweetalert2.css" />
+
+    <link rel="stylesheet" href="~/vendor/libs/bootstrap-select/bootstrap-select.css" />
+    <link rel="stylesheet" href="~/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.css" />
+    <link rel="stylesheet" href="~/vendor/libs/typeahead-js/typeahead.css" />
+    <link rel="stylesheet" href="~/vendor/libs/&#64;form-validation/form-validation.css" />
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/sweetalert2/sweetalert2.js"></script>
+
+    <script src="~/vendor/libs/select2/select2.js"></script>
+    <script src="~/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
+    <script src="~/vendor/libs/moment/moment.js"></script>
+    <script src="~/vendor/libs/flatpickr/flatpickr.js"></script>
+    <script src="~/vendor/libs/typeahead-js/typeahead.js"></script>
+    <script src="~/vendor/libs/&#64;form-validation/popular.js"></script>
+    <script src="~/vendor/libs/&#64;form-validation/bootstrap5.js"></script>
+    <script src="~/vendor/libs/&#64;form-validation/auto-focus.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/&#64;popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+}
+
+@section PageScripts {
+    @* <script src="~/js/form-validation.js" defer></script> *@
+}
+
+
+@* ************** Content ************** *@
+<div class="row mb-6">
+    <div class="col-md mb-6 mb-md-0">
+        <div class="card">
+            <h5 class="card-header">Beneficiary IP Details</h5>
+            <div class="card-body">
+                <form class="beneficiaryIPform">
+                    @if (Model.BeneficiaryIP != null)
+                    {
+                        <h3>BeneficiaryIP Details</h3>
+                        <div class="mb-6">
+                            <label class="form-label" for="beneficiaryName">Name</label>
+                            <input type="text" class="form-control" id="beneficiaryName" asp-for="BeneficiaryIP.BeneficiaryName" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="beneficiaryFather">Father/Husband Name</label>
+                            <input type="text" class="form-control" id="beneficiaryFather" asp-for="BeneficiaryIP.BeneficiaryFather" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="gender">Gender</label>
+                            <input type="text" class="form-control" id="gender" asp-for="BeneficiaryIP.Gender" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="cnic">CNIC</label>
+                            <input type="text" class="form-control" id="cnic" asp-for="BeneficiaryIP.CNIC" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <div class="form-group" style="margin-bottom:0.5rem">
+                                <label class="control-label">CNIC Attachement</label>
+                            </div>
+                            <div class="form-group">
+                                <div data-bs-toggle="modal" data-bs-target="#exLargeModal" onclick="createModal('@Model.BeneficiaryIP.CNICAttachment')" class="btn btn-info btn-sm">
+                                    View
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="mobile">Mobile</label>
+                            <input type="text" class="form-control" id="mobile" asp-for="BeneficiaryIP.Mobile" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="age">Age</label>
+                            <input type="text" class="form-control" id="age" asp-for="BeneficiaryIP.Age" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="maritalStatus">Marital Status</label>
+                            <input type="text" class="form-control" id="maritalStatus" asp-for="BeneficiaryIP.MaritialStatus" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="isDisabled">Is Disabled</label>
+                            <input type="checkbox" class="form-check-input" id="isDisabled" asp-for="BeneficiaryIP.IsDisable" readonly disabled/>
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="isRefugee">Is Refugee</label>
+                            <input type="checkbox" class="form-check-input" id="isRefugee" asp-for="BeneficiaryIP.IsRefugee" readonly disabled/>
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="district">District</label>
+                            <input type="text" class="form-control" id="district" asp-for="BeneficiaryIP.District" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="tehsil">Tehsil</label>
+                            <input type="text" class="form-control" id="tehsil" asp-for="BeneficiaryIP.Tehsil" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="unionCouncil">Union Council</label>
+                            <input type="text" class="form-control" id="unionCouncil" asp-for="BeneficiaryIP.UnionCouncil" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="surveyDate">Survey Date</label>
+                            <input type="text" class="form-control" id="surveyDate" asp-for="BeneficiaryIP.SurveyDate" readonly />
+                        </div>                       
+                        <div class="mb-6">
+                            <label class="form-label" for="nextOfKin">Next of Kin</label>
+                            <input type="text" class="form-control" id="nextOfKin" asp-for="BeneficiaryIP.NextOfKin" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="nextOfKinCNIC">Next of Kin CNIC</label>
+                            <input type="text" class="form-control" id="nextOfKinCNIC" asp-for="BeneficiaryIP.NextOfKinCNIC" readonly />
+                        </div>
+                        
+                    }
+                    else
+                    {
+                        <div class="alert alert-solid-warning d-flex align-items-center" role="alert">
+                            <span class="alert-icon rounded">
+                                <i class="ti ti-bell"></i>
+                            </span>
+                            There Is No Data Of This Beneficiary In IP
+                        </div>                       
+                    }
+             @* </form>
+                <form class="DamageIP"> *@
+                    @if (Model.DamageIP != null)
+                    {
+                        <h3>BeneficiaryIP Damage Details</h3>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageHouseNoOfRooms">DamageHouseNoOfRooms</label>
+                            <input type="text" class="form-control" id="DamageHouseNoOfRooms" asp-for="DamageIP.DamageHouseNoOfRooms" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageHouseCategory">DamageHouseCategory</label>
+                            <input type="text" class="form-control" id="DamageHouseCategory" asp-for="DamageIP.DamageHouseCategory" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageShopNoOfRooms">DamageShopNoOfRooms</label>
+                            <input type="text" class="form-control" id="DamageShopNoOfRooms" asp-for="DamageIP.DamageShopNoOfRooms" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageShopCategory">DamageShopCategory</label>
+                            <input type="text" class="form-control" id="DamageShopCategory" asp-for="DamageIP.DamageShopCategory" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageOtherNoOfRooms">DamageOtherNoOfRooms</label>
+                            <input type="text" class="form-control" id="DamageOtherNoOfRooms" asp-for="DamageIP.DamageOtherNoOfRooms" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageOtherCategory">DamageOtherCategory</label>
+                            <input type="text" class="form-control" id="DamageOtherCategory" asp-for="DamageIP.DamageOtherCategory" readonly />
+                        </div>
+                        <hr/>
+                        <h5>Crops Damage</h5>
+                        <hr/>
+                        <div class="mb-6">
+                            <label class="form-label" for="CropLandArea">CropLandArea</label>
+                            <input type="text" class="form-control" id="CropLandArea" asp-for="DamageIP.CropLandArea" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherLandName">OtherLandName</label>
+                            <input type="text" class="form-control" id="OtherLandName" asp-for="DamageIP.OtherLandName" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherLandArea">OtherLandArea</label>
+                            <input type="text" class="form-control" id="OtherLandArea" asp-for="DamageIP.OtherLandArea" readonly />
+                        </div>
+                        <hr />
+                        <h5>Fruits Damage</h5>
+                        <hr />
+                         <div class="mb-6">
+                            <label class="form-label" for="NumberOfTrees">NumberOfTrees</label>
+                            <input type="text" class="form-control" id="NumberOfTrees" asp-for="DamageIP.NumberOfTrees" readonly />
+                        </div>
+                         <div class="mb-6">
+                            <label class="form-label" for="OtherTreeName">OtherTreeName</label>
+                            <input type="text" class="form-control" id="OtherTreeName" asp-for="DamageIP.OtherTreeName" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherTreeNumber">OtherTreeNumber</label>
+                            <input type="text" class="form-control" id="OtherTreeNumber" asp-for="DamageIP.OtherTreeNumber" readonly />
+                        </div>
+                        <hr />
+                        <h5>Livestock Damage</h5>
+                        <hr />
+                        <div class="mb-6">
+                            <label class="form-label" for="NumberOfAnimals">NumberOfAnimals</label>
+                            <input type="text" class="form-control" id="NumberOfAnimals" asp-for="DamageIP.NumberOfAnimals" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherAnimalName">OtherAnimalName</label>
+                            <input type="text" class="form-control" id="OtherAnimalName" asp-for="DamageIP.OtherAnimalName" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherAnimalNumber">OtherAnimalNumber</label>
+                            <input type="text" class="form-control" id="OtherAnimalNumber" asp-for="DamageIP.OtherAnimalNumber" readonly />
+                        </div>
+                        
+                    }
+                    else
+                    {
+                        <div class="alert alert-solid-warning d-flex align-items-center" role="alert">
+                            <span class="alert-icon rounded">
+                                <i class="ti ti-bell"></i>
+                            </span>
+                            There Is No Damage Data Of This Beneficiary In IP
+                        </div>                        
+                    }
+                    <button type="button" onclick="useData('ip')" id="populateIPButton" class="btn btn-primary">Use IP Data</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Validation -->
+    <div class="col-md">
+        <div class="card">
+            <h5 class="card-header">Beneficiary PDMA Details</h5>
+            <div class="card-body">
+                @* class="needs-validation" novalidate *@
+                <form class="beneficiaryPDMAform">
+                    @if (Model.BeneficiaryPDMA != null)
+                    {
+                        <h3>BeneficiaryPDMA Details</h3>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-name">Name</label>
+                            <input type="text" class="form-control" id="bs-validation-name" asp-for="BeneficiaryPDMA.BeneficiaryName" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-father">Father/Husband Name</label>
+                            <input type="text" class="form-control" id="bs-validation-father" asp-for="BeneficiaryPDMA.BeneficiaryFather" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-gender">Gender</label>
+                            <input type="text" class="form-control" id="bs-validation-gender" asp-for="BeneficiaryPDMA.Gender" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-cnic">CNIC</label>
+                            <input type="text" class="form-control" id="bs-validation-cnic" asp-for="BeneficiaryPDMA.CNIC" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <div class="form-group" style="margin-bottom:0.5rem">
+                                <label class="control-label">CNIC Attachement</label>
+                            </div>
+                            <div class="form-group">
+                                <div data-bs-toggle="modal" data-bs-target="#exLargeModal" onclick="createModal('@Model.BeneficiaryPDMA.CNICAttachment')" class="btn btn-info btn-sm">
+                                    View
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-mobile">Mobile</label>
+                            <input type="text" class="form-control" id="bs-validation-mobile" asp-for="BeneficiaryPDMA.Mobile" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-age">Age</label>
+                            <input type="text" class="form-control" id="bs-validation-age" asp-for="BeneficiaryPDMA.Age" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-marital-status">Marital Status</label>
+                            <input type="text" class="form-control" id="bs-validation-marital-status" asp-for="BeneficiaryPDMA.MaritialStatus" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-is-disabled">Is Disabled</label>
+                            <input type="checkbox" class="form-check-input" id="bs-validation-is-disabled" asp-for="BeneficiaryPDMA.IsDisable" readonly disabled/>
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-is-refugee">Is Refugee</label>
+                            <input type="checkbox" class="form-check-input" id="bs-validation-is-refugee" asp-for="BeneficiaryPDMA.IsRefugee" readonly disabled/>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-district">District</label>
+                            <input type="text" class="form-control" id="bs-validation-district" asp-for="BeneficiaryPDMA.District" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-tehsil">Tehsil</label>
+                            <input type="text" class="form-control" id="bs-validation-tehsil" asp-for="BeneficiaryPDMA.Tehsil" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-union-council">Union Council</label>
+                            <input type="text" class="form-control" id="bs-validation-union-council" asp-for="BeneficiaryPDMA.UnionCouncil" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-survey-date">Survey Date</label>
+                            <input type="text" class="form-control" id="bs-validation-survey-date" asp-for="BeneficiaryPDMA.SurveyDate" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-next-of-kin">Next of Kin</label>
+                            <input type="text" class="form-control" id="bs-validation-next-of-kin" asp-for="BeneficiaryPDMA.NextOfKin" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="bs-validation-next-of-kin-cnic">Next of Kin CNIC</label>
+                            <input type="text" class="form-control" id="bs-validation-next-of-kin-cnic" asp-for="BeneficiaryPDMA.NextOfKinCNIC" readonly />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-solid-warning d-flex align-items-center" role="alert">
+                            <span class="alert-icon rounded">
+                                <i class="ti ti-bell"></i>
+                            </span>
+                            There Is No Data Of This Beneficiary In PDMA
+                        </div>
+                    }
+                
+                @* </form>
+                <form class="DamagePDMA"> *@
+                    
+                    @if (Model.DamagePDMA != null)
+                    {
+                        <h3>BeneficiaryPDMA Damage Details</h3>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageHouseNoOfRooms">DamageHouseNoOfRooms</label>
+                            <input type="text" class="form-control" id="DamageHouseNoOfRooms" asp-for="DamagePDMA.DamageHouseNoOfRooms" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageHouseCategory">DamageHouseCategory</label>
+                            <input type="text" class="form-control" id="DamageHouseCategory" asp-for="DamagePDMA.DamageHouseCategory" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageShopNoOfRooms">DamageShopNoOfRooms</label>
+                            <input type="text" class="form-control" id="DamageShopNoOfRooms" asp-for="DamagePDMA.DamageShopNoOfRooms" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageShopCategory">DamageShopCategory</label>
+                            <input type="text" class="form-control" id="DamageShopCategory" asp-for="DamagePDMA.DamageShopCategory" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageOtherNoOfRooms">DamageOtherNoOfRooms</label>
+                            <input type="text" class="form-control" id="DamageOtherNoOfRooms" asp-for="DamagePDMA.DamageOtherNoOfRooms" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="DamageOtherCategory">DamageOtherCategory</label>
+                            <input type="text" class="form-control" id="DamageOtherCategory" asp-for="DamagePDMA.DamageOtherCategory" readonly />
+                        </div>
+                        <hr />
+                        <h5>Crops Damage</h5>
+                        <hr />
+                        <div class="mb-6">
+                            <label class="form-label" for="CropLandArea">CropLandArea</label>
+                            <input type="text" class="form-control" id="CropLandArea" asp-for="DamagePDMA.CropLandArea" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherLandName">OtherLandName</label>
+                            <input type="text" class="form-control" id="OtherLandName" asp-for="DamagePDMA.OtherLandName" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherLandArea">OtherLandArea</label>
+                            <input type="text" class="form-control" id="OtherLandArea" asp-for="DamagePDMA.OtherLandArea" readonly />
+                        </div>
+                        <hr />
+                        <h5>Fruits Damage</h5>
+                        <hr />
+                        <div class="mb-6">
+                            <label class="form-label" for="NumberOfTrees">NumberOfTrees</label>
+                            <input type="text" class="form-control" id="NumberOfTrees" asp-for="DamagePDMA.NumberOfTrees" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherTreeName">OtherTreeName</label>
+                            <input type="text" class="form-control" id="OtherTreeName" asp-for="DamagePDMA.OtherTreeName" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherTreeNumber">OtherTreeNumber</label>
+                            <input type="text" class="form-control" id="OtherTreeNumber" asp-for="DamagePDMA.OtherTreeNumber" readonly />
+                        </div>
+                        <hr />
+                        <h5>Livestock Damage</h5>
+                        <hr />
+                        <div class="mb-6">
+                            <label class="form-label" for="NumberOfAnimals">NumberOfAnimals</label>
+                            <input type="text" class="form-control" id="NumberOfAnimals" asp-for="DamagePDMA.NumberOfAnimals" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherAnimalName">OtherAnimalName</label>
+                            <input type="text" class="form-control" id="OtherAnimalName" asp-for="DamagePDMA.OtherAnimalName" readonly />
+                        </div>
+                        <div class="mb-6">
+                            <label class="form-label" for="OtherAnimalNumber">OtherAnimalNumber</label>
+                            <input type="text" class="form-control" id="OtherAnimalNumber" asp-for="DamagePDMA.OtherAnimalNumber" readonly />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-solid-warning d-flex align-items-center" role="alert">
+                            <span class="alert-icon rounded">
+                                <i class="ti ti-bell"></i>
+                            </span>
+                            There Is No Damage Data Of This Beneficiary In PDMA
+                        </div>
+                    }
+
+                    <button type="button" onclick='useData("pdma")' id="populatePDMAButton" class="btn btn-primary">Use PDMA Data</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- /Bootstrap Validation -->
+
+</div>
+
+<div class="row">
+    <!-- FormValidation -->
+    <div class="col-12">
+        <div class="card">
+            <h5 class="card-header">Verified Data</h5>
+            <hr class="mt-0" />
+            <div class="card-body">               
+                <form id="formValidationExamples22" asp-action="CompareBeneficiaries" method="post" class="row g-6" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" name="datafrom" value="1" />
+                    <input type="hidden" asp-for="VerifiedCNICAttachment">
+
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedName">Verified Name</label>
+                        <input asp-for="VerifiedName" class="form-control" id="formValidationName" required/>
+                        <span asp-validation-for="VerifiedName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedFather">Verified Father/Husband Name</label>
+                        <input asp-for="VerifiedFather" class="form-control" id="formValidationFather" required/>
+                        <span asp-validation-for="VerifiedFather" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedGender">Verified Gender</label>
+                        <input asp-for="VerifiedGender" class="form-control" id="formValidationGender" required/>
+                        <span asp-validation-for="VerifiedGender" class="text-danger"></span>
+                    </div>                   
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedCNIC">Verified CNIC</label>
+                        <input asp-for="VerifiedCNIC" class="form-control" id="formValidationCNIC" value="@(Model.BeneficiaryIP?.CNIC ?? Model.BeneficiaryPDMA?.CNIC)" disabled />
+                        <input type="hidden" asp-for="VerifiedCNIC" value="@(Model.BeneficiaryIP?.CNIC ?? Model.BeneficiaryPDMA?.CNIC)" />
+                        <span asp-validation-for="VerifiedCNIC" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedCNICAttachment">CNIC Attachement</label>
+                        <input asp-for="VerifiedCNICAttachment" type="file" class="form-control" id="formValidationCNICAttachment" />
+                        <span asp-validation-for="VerifiedCNICAttachment" class="text-danger"></span>
+                    </div>
+                        
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedMobile">Verified Mobile</label>
+                        <input asp-for="VerifiedMobile" class="form-control" id="formValidationMobile" required/>
+                        <span asp-validation-for="VerifiedMobile" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedAge">Verified Age</label>
+                        <input asp-for="VerifiedAge" class="form-control" id="formValidationAge" required/>
+                        <span asp-validation-for="VerifiedAge" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedMaritialStatus">Verified Marital Status</label>
+                        <input asp-for="VerifiedMaritialStatus" class="form-control" id="formValidationMaritalStatus" required/>
+                        <span asp-validation-for="VerifiedMaritialStatus" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Verified Is Disabled</label>
+                        <input asp-for="VerifiedIsDisable" type="checkbox" class="form-check-input" id="formValidationVerifiedIsDisable" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Verified Is Refugee</label>
+                        <input asp-for="VerifiedIsRefugee" type="checkbox" class="form-check-input" id="formValidationVerifiedIsRefugee" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedDistrict">Verified District</label>
+                        <input asp-for="VerifiedDistrict" class="form-control" id="formValidationDistrict" required/>
+                        <span asp-validation-for="VerifiedDistrict" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedTehsil">Verified Tehsil</label>
+                        <input asp-for="VerifiedTehsil" class="form-control" id="formValidationTehsil" required/>
+                        <span asp-validation-for="VerifiedTehsil" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedUnionCouncil">Verified Union Council</label>
+                        <input asp-for="VerifiedUnionCouncil" class="form-control" id="formValidationUnionCouncil" required/>
+                        <span asp-validation-for="VerifiedUnionCouncil" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedSurveyDate">Verified Survey Date</label>
+                        <input asp-for="VerifiedSurveyDate" type="date" class="form-control" id="formValidationSurveyDate" required/>
+                        <span asp-validation-for="VerifiedSurveyDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedNextOfKin">Verified Next of Kin</label>
+                        <input asp-for="VerifiedNextOfKin" class="form-control" id="formValidationNextOfKin" required/>
+                        <span asp-validation-for="VerifiedNextOfKin" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedNextOfKinCNIC">Verified Next of Kin CNIC</label>
+                        <input asp-for="VerifiedNextOfKinCNIC" class="form-control" id="formValidationNextOfKinCNIC" required/>
+                        <span asp-validation-for="VerifiedNextOfKinCNIC" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedIdentifiedFor">Identified By</label>
+                        <input asp-for="VerifiedIdentifiedFor" type="text" class="form-control" id="VerifiedIdentifiedFor" required />
+                        <span asp-validation-for="VerifiedIdentifiedFor" class="text-danger"></span>
+                    </div>
+                    
+                    <hr />
+                    <h5>Building Damage</h5>
+                    <hr />
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedDamageHouseNoOfRooms">VerifiedDamageHouseNoOfRooms</label>
+                        <input asp-for="VerifiedDamageHouseNoOfRooms" class="form-control" id="VerifiedDamageHouseNoOfRooms" required />
+                        <span asp-validation-for="VerifiedDamageHouseNoOfRooms" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedDamageHouseCategory">VerifiedDamageHouseCategory</label>
+                        <input asp-for="VerifiedDamageHouseCategory" class="form-control" id="VerifiedDamageHouseCategory" required />
+                        <span asp-validation-for="VerifiedDamageHouseCategory" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedDamageShopNoOfRooms">VerifiedDamageShopNoOfRooms</label>
+                        <input asp-for="VerifiedDamageShopNoOfRooms" class="form-control" id="VerifiedDamageShopNoOfRooms" required />
+                        <span asp-validation-for="VerifiedDamageShopNoOfRooms" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedDamageShopCategory">VerifiedDamageShopCategory</label>
+                        <input asp-for="VerifiedDamageShopCategory" class="form-control" id="VerifiedDamageShopCategory" required />
+                        <span asp-validation-for="VerifiedDamageShopCategory" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedDamageOtherNoOfRooms">VerifiedDamageOtherNoOfRooms</label>
+                        <input asp-for="VerifiedDamageOtherNoOfRooms" class="form-control" id="VerifiedDamageOtherNoOfRooms" required />
+                        <span asp-validation-for="VerifiedDamageOtherNoOfRooms" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedDamageOtherCategory">VerifiedDamageOtherCategory</label>
+                        <input asp-for="VerifiedDamageOtherCategory" class="form-control" id="VerifiedDamageOtherCategory" required />
+                        <span asp-validation-for="VerifiedDamageOtherCategory" class="text-danger"></span>
+                    </div>
+                    <hr/>
+                    <h5>Crops Damage</h5>
+                    <hr/>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedCropLandArea">VerifiedCropLandArea</label>
+                        <input asp-for="VerifiedCropLandArea" class="form-control" id="VerifiedCropLandArea" required />
+                        <span asp-validation-for="VerifiedCropLandArea" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedOtherLandName">VerifiedOtherLandName</label>
+                        <input asp-for="VerifiedOtherLandName" class="form-control" id="VerifiedOtherLandName" required />
+                        <span asp-validation-for="VerifiedOtherLandName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedOtherLandArea">VerifiedOtherLandArea</label>
+                        <input asp-for="VerifiedOtherLandArea" class="form-control" id="VerifiedOtherLandArea" required />
+                        <span asp-validation-for="VerifiedOtherLandArea" class="text-danger"></span>
+                    </div>
+                    <hr/>
+                    <h5>Fruits Damage</h5>
+                    <hr/>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedNumberOfTrees">VerifiedNumberOfTrees</label>
+                        <input asp-for="VerifiedNumberOfTrees" class="form-control" id="VerifiedNumberOfTrees" required />
+                        <span asp-validation-for="VerifiedNumberOfTrees" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedOtherTreeName">VerifiedOtherTreeName</label>
+                        <input asp-for="VerifiedOtherTreeName" class="form-control" id="VerifiedOtherTreeName" required />
+                        <span asp-validation-for="VerifiedOtherTreeName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedOtherTreeNumber">VerifiedOtherTreeNumber</label>
+                        <input asp-for="VerifiedOtherTreeNumber" class="form-control" id="VerifiedOtherTreeNumber" required />
+                        <span asp-validation-for="VerifiedOtherTreeNumber" class="text-danger"></span>
+                    </div>
+                    <hr/>
+                    <h5>Livestock Damage</h5>
+                    <hr/>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedNumberOfAnimals">VerifiedNumberOfAnimals</label>
+                        <input asp-for="VerifiedNumberOfAnimals" class="form-control" id="VerifiedNumberOfAnimals" required />
+                        <span asp-validation-for="VerifiedNumberOfAnimals" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedOtherAnimalName">VerifiedOtherAnimalName</label>
+                        <input asp-for="VerifiedOtherAnimalName" class="form-control" id="VerifiedOtherAnimalName" required />
+                        <span asp-validation-for="VerifiedOtherAnimalName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="VerifiedOtherAnimalNumber">VerifiedOtherAnimalNumber</label>
+                        <input asp-for="VerifiedOtherAnimalNumber" class="form-control" id="VerifiedOtherAnimalNumber" required />
+                        <span asp-validation-for="VerifiedOtherAnimalNumber" class="text-danger"></span>
+                    </div>
+
+                    <!-- Hidden fields for IDs -->
+                    @if (Model.BeneficiaryIP != null)
+                    {
+                        <input type="hidden" asp-for="BeneficiaryIPId" value="@Model.BeneficiaryIP.BeneficiaryIPId" />
+                        <input type="hidden" asp-for="SurveyTeamIPId" value="@Model.BeneficiaryIP.SurveyTeamIPId" />
+                        
+                    }
+                    @if (Model.BeneficiaryPDMA != null)
+                    {
+                        <input type="hidden" asp-for="BeneficiaryPDMAId" value="@Model.BeneficiaryPDMA.BeneficiaryPDMAId" />
+                        <input type="hidden" asp-for="SurveyTeamPDMAId" value="@Model.BeneficiaryPDMA.SurveyTeamPDMAId" />                        
+                    }    
+                    @if (Model.DamageIP != null)
+                    {
+                        <input type="hidden" asp-for="DamageIPId" value="@Model.DamageIP.DamageIPId" />                        
+                    }
+                    @if (Model.DamagePDMA != null)
+                    {
+                        <input type="hidden" asp-for="DamagePDMAId" value="@Model.DamagePDMA.DamagePDMAId" />
+                    }
+
+                </form>                
+
+            </div>
+        </div>
+    </div>       
+</div>
+        <!-- /FormValidation -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="col-auto text-center">
+                    <!-- Center the buttons -->
+                    @if (Model.BeneficiaryIP != null && Model.BeneficiaryPDMA != null)
+                    {
+                        @if (!Model.BeneficiaryIP.IsVerified && !Model.BeneficiaryPDMA.IsVerified && !Model.BeneficiaryIP.IsRejected && !Model.BeneficiaryPDMA.IsRejected && !Model.BeneficiaryIP.IsOnHold && !Model.BeneficiaryPDMA.IsOnHold)
+                        {
+                            <button type="button" onclick="document.getElementById('formValidationExamples22').submit();" class="btn btn-primary btn-lg">Verify</button>
+                            <button type="button" onclick="openCommentPopup(@Model.BeneficiaryIP.CNIC, 'Reject')" class="btn btn-warning btn-lg">Reject</button>
+                            <button type="button" onclick="openCommentPopup(@Model.BeneficiaryIP.CNIC, 'OnHold')" class="btn btn-info btn-lg">OnHold</button>
+                        }
+                        @if ((Model.BeneficiaryIP.IsVerified || Model.BeneficiaryPDMA.IsVerified) && (!Model.BeneficiaryIP.IsRejected && !Model.BeneficiaryPDMA.IsRejected && !Model.BeneficiaryIP.IsOnHold && !Model.BeneficiaryPDMA.IsOnHold))
+                        {
+                            if (Model.BeneficiaryIP.Comments != "")
+                            {
+                                <button type="button" onclick="ModalForComment('@(Model.BeneficiaryIP?.Comments ?? "")', 'Verified')" id="modal-with-title" class="btn btn-success btn-lg">Verified</button>
+                            }
+                            else
+                            {
+                                <button type="button" onclick="ModalForComment('@(Model.BeneficiaryPDMA?.Comments ?? "")', 'Verified')" id="modal-with-title" class="btn btn-success btn-lg">Verified</button>
+                            }
+                        }
+                        @if ((Model.BeneficiaryIP.IsRejected || Model.BeneficiaryPDMA.IsRejected) && (!Model.BeneficiaryIP.IsVerified && !Model.BeneficiaryPDMA.IsVerified && !Model.BeneficiaryIP.IsOnHold && !Model.BeneficiaryPDMA.IsOnHold))
+                        {
+                            if (Model.BeneficiaryIP.Comments != "")
+                            {
+                                <button type="button" onclick="ModalForComment('@(Model.BeneficiaryIP?.Comments ?? "")', 'Rejected')" id="modal-with-title" class="btn btn-danger btn-lg">Rejected</button>
+                            }
+                            else
+                            {
+                                <button type="button" onclick="ModalForComment('@(Model.BeneficiaryPDMA?.Comments ?? "")', 'Rejected')" id="modal-with-title" class="btn btn-danger btn-lg">Rejected</button>
+                            }
+                        }
+                        @if ((Model.BeneficiaryIP.IsOnHold || Model.BeneficiaryPDMA.IsOnHold) && (!Model.BeneficiaryIP.IsRejected && !Model.BeneficiaryPDMA.IsRejected && !Model.BeneficiaryIP.IsVerified && !Model.BeneficiaryPDMA.IsVerified))
+                        {
+                            <button type="button" onclick="document.getElementById('formValidationExamples22').submit();" class="btn btn-primary btn-lg">Verify</button>
+                            <button type="button" onclick="openCommentPopup(@Model.BeneficiaryIP.CNIC, 'Reject')" class="btn btn-warning btn-lg">Reject</button>
+                            if (Model.BeneficiaryIP.Comments != "")
+                            {
+                                <button type="button" onclick="ModalForComment('@(Model.BeneficiaryIP?.Comments ?? "")', 'Held')" id="modal-with-title" class="btn btn-secondary btn-lg">Held</button>
+                            }
+                            else
+                            {
+                                <button type="button" onclick="ModalForComment('@(Model.BeneficiaryPDMA?.Comments ?? "")', 'Held')" id="modal-with-title" class="btn btn-secondary btn-lg">Held</button>
+                            }
+                        }
+                    }
+                    else if (Model.BeneficiaryIP == null)
+                    {
+                        @if (!Model.BeneficiaryPDMA.IsVerified && !Model.BeneficiaryPDMA.IsRejected && !Model.BeneficiaryPDMA.IsOnHold)
+                        {
+                            <button type="button" onclick="document.getElementById('formValidationExamples22').submit();" class="btn btn-primary btn-lg">Verify</button>
+                            <button type="button" onclick="openCommentPopup(@Model.BeneficiaryPDMA.CNIC, 'Reject')" class="btn btn-warning btn-lg">Reject</button>
+                            <button type="button" onclick="openCommentPopup(@Model.BeneficiaryPDMA.CNIC, 'OnHold')" class="btn btn-info btn-lg">OnHold</button>
+                        }
+                        @if ((Model.BeneficiaryPDMA.IsVerified) && (!Model.BeneficiaryPDMA.IsRejected && !Model.BeneficiaryPDMA.IsOnHold))
+                        {
+                            <button type="button" onclick="ModalForComment('@(Model.BeneficiaryPDMA?.Comments ?? "")', 'Verified')" id="modal-with-title" class="btn btn-success btn-lg">Verified</button>
+                        }
+                        @if ((Model.BeneficiaryPDMA.IsRejected) && (!Model.BeneficiaryPDMA.IsVerified && !Model.BeneficiaryPDMA.IsOnHold))
+                        {
+                            <button type="button" onclick="ModalForComment('@(Model.BeneficiaryPDMA?.Comments ?? "")', 'Rejected')" id="modal-with-title" class="btn btn-danger btn-lg">Rejected</button>
+                        }
+                        @if ((Model.BeneficiaryPDMA.IsOnHold) && (!Model.BeneficiaryPDMA.IsRejected && !Model.BeneficiaryPDMA.IsVerified))
+                        {
+                            <button type="button" onclick="document.getElementById('formValidationExamples22').submit();" class="btn btn-primary btn-lg">Verify</button>
+                            <button type="button" onclick="openCommentPopup(@Model.BeneficiaryPDMA.CNIC, 'Reject')" class="btn btn-warning btn-lg">Reject</button>
+                            <button type="button" onclick="ModalForComment('@(Model.BeneficiaryPDMA?.Comments ?? "")', 'Held')" id="modal-with-title" class="btn btn-secondary btn-lg">Held</button>
+                        }
+                    }
+                    else
+                    {
+                        @if (!Model.BeneficiaryIP.IsVerified && !Model.BeneficiaryIP.IsRejected && !Model.BeneficiaryIP.IsOnHold)
+                        {
+                            <button type="button" onclick="document.getElementById('formValidationExamples22').submit();" class="btn btn-primary btn-lg">Verify</button>
+                            <button type="button" onclick="openCommentPopup(@Model.BeneficiaryIP.CNIC, 'Reject')" class="btn btn-warning btn-lg">Reject</button>
+                            <button type="button" onclick="openCommentPopup(@Model.BeneficiaryIP.CNIC, 'OnHold')" class="btn btn-info btn-lg">OnHold</button>
+                        }
+                        @if ((Model.BeneficiaryIP.IsVerified) && (!Model.BeneficiaryIP.IsRejected && !Model.BeneficiaryIP.IsOnHold))
+                        {
+                            <button type="button" onclick="ModalForComment('@(Model.BeneficiaryIP?.Comments ?? "")', 'Verified')" id="modal-with-title" class="btn btn-success btn-lg">Verified</button>
+                        }
+                        @if ((Model.BeneficiaryIP.IsRejected) && (!Model.BeneficiaryIP.IsVerified && !Model.BeneficiaryIP.IsOnHold))
+                        {
+                            <button type="button" onclick="ModalForComment('@(Model.BeneficiaryIP?.Comments ?? "")', 'Rejected')" id="modal-with-title" class="btn btn-danger btn-lg">Rejected</button>
+                        }
+                        @if ((Model.BeneficiaryIP.IsOnHold) && (!Model.BeneficiaryIP.IsRejected && !Model.BeneficiaryIP.IsVerified))
+                        {
+                            <button type="button" onclick="document.getElementById('formValidationExamples22').submit();" class="btn btn-primary btn-lg">Verify</button>
+                            <button type="button" onclick="openCommentPopup(@Model.BeneficiaryIP.CNIC, 'Reject')" class="btn btn-warning btn-lg">Reject</button>                            
+                            <button type="button" onclick="ModalForComment('@(Model.BeneficiaryIP?.Comments ?? "")', 'Held')" id="modal-with-title" class="btn btn-secondary btn-lg">Held</button>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalScrollableTitle">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+   
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('filePath').addEventListener('change', function (event) {
+                const fileInput = event.target;
+                const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : '';
+                console.log("File: ", fileInput.files);
+                document.getElementById('formValidationCNICAttachment').value = fileName;
+            });
+        });
+
+
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+        function createVerifiedModal() {
+            var cnicAttachmentUrl = document.getElementById("formValidationCNICAttachment").value;
+            $("#pdfFile").attr("src", cnicAttachmentUrl);
+        }
+
+        // Enable Bootstrap validation
+        (function () {
+            'use strict';
+         
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation');
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated'); // Add Bootstrap's validation class
+                    }, false);
+                });
+        })();
+
+        function useData(whichData) {
+            console.log("Which Data: ", whichData)
+            if(whichData == "pdma"){
+               
+                var pdma = @Html.Raw(Json.Serialize(Model.BeneficiaryPDMA));
+                var pdmaDamage = @Html.Raw(Json.Serialize(Model.DamagePDMA));
+
+                console.log("pdma: ", pdma)
+                console.log("damage pdma: ", pdmaDamage)
+
+                // Populate verified fields with BeneficiaryPDMA data
+                document.querySelector('[name="datafrom"]').value = "pdma";
+                document.querySelector('[name="VerifiedName"]').value = pdma.beneficiaryName;
+                document.querySelector('[name="VerifiedFather"]').value = pdma.beneficiaryFather;
+                document.querySelector('[name="VerifiedGender"]').value = pdma.gender;
+                document.querySelector('[name="VerifiedCNIC"]').value = pdma.cnic;
+                //document.querySelector('[name="VerifiedCNICAttachment"]').value = pdma.cnicAttachment;
+                document.querySelector('[name="VerifiedMobile"]').value = pdma.mobile;
+                document.querySelector('[name="VerifiedAge"]').value = pdma.age;
+                document.querySelector('[name="VerifiedMaritialStatus"]').value = pdma.maritialStatus;
+                document.querySelector('[name="VerifiedIsDisable"]').checked = pdma.isDisable;
+                document.querySelector('[name="VerifiedIsRefugee"]').checked = pdma.isRefugee;
+                document.querySelector('[name="VerifiedDistrict"]').value = pdma.district;
+                document.querySelector('[name="VerifiedTehsil"]').value = pdma.tehsil;
+                document.querySelector('[name="VerifiedUnionCouncil"]').value = pdma.unionCouncil;
+                document.querySelector('[name="VerifiedSurveyDate"]').value = pdma.surveyDate ? new Date(pdma.surveyDate).toISOString().split('T')[0] : '';
+                document.querySelector('[name="VerifiedNextOfKin"]').value = pdma.nextOfKin;
+                document.querySelector('[name="VerifiedNextOfKinCNIC"]').value = pdma.nextOfKinCNIC;
+                // document.querySelector('[name="VerifiedIdentifiedFor"]').value = pdma.beneficiaryIdentifiedFor;
+
+                document.querySelector('[name="VerifiedDamageHouseNoOfRooms"]').value = pdmaDamage.damageHouseNoOfRooms;
+                document.querySelector('[name="VerifiedDamageHouseCategory"]').value = pdmaDamage.damageHouseCategory;
+                document.querySelector('[name="VerifiedDamageShopNoOfRooms"]').value = pdmaDamage.damageShopNoOfRooms;
+                document.querySelector('[name="VerifiedDamageShopCategory"]').value = pdmaDamage.damageShopCategory;
+                document.querySelector('[name="VerifiedDamageOtherNoOfRooms"]').value = pdmaDamage.damageOtherNoOfRooms;
+                document.querySelector('[name="VerifiedDamageOtherCategory"]').value = pdmaDamage.damageOtherCategory;
+
+                document.querySelector('[name="VerifiedCropLandArea"]').value = pdmaDamage.cropLandArea;
+                document.querySelector('[name="VerifiedOtherLandName"]').value = pdmaDamage.otherLandName;
+                document.querySelector('[name="VerifiedOtherLandArea"]').value = pdmaDamage.otherLandArea;
+                document.querySelector('[name="VerifiedNumberOfTrees"]').value = pdmaDamage.numberOfTrees;
+                document.querySelector('[name="VerifiedOtherTreeName"]').value = pdmaDamage.otherTreeName;
+                document.querySelector('[name="VerifiedOtherTreeNumber"]').value = pdmaDamage.otherTreeNumber;
+                document.querySelector('[name="VerifiedNumberOfAnimals"]').value = pdmaDamage.numberOfAnimals;
+                document.querySelector('[name="VerifiedOtherAnimalName"]').value = pdmaDamage.otherAnimalName;
+                document.querySelector('[name="VerifiedOtherAnimalNumber"]').value = pdmaDamage.otherAnimalNumber;
+            }
+            if (whichData == "ip") {
+
+                var ip = @Html.Raw(Json.Serialize(Model.BeneficiaryIP));
+                var ipDamage = @Html.Raw(Json.Serialize(Model.DamageIP));
+
+                // Populate verified fields with BeneficiaryPDMA data
+                document.querySelector('[name="datafrom"]').value = "ip";
+                document.querySelector('[name="VerifiedName"]').value = ip.beneficiaryName;
+                document.querySelector('[name="VerifiedFather"]').value = ip.beneficiaryFather;
+                document.querySelector('[name="VerifiedGender"]').value = ip.gender;
+                document.querySelector('[name="VerifiedCNIC"]').value = ip.cnic;
+                //document.querySelector('[name="VerifiedCNICAttachment"]').value = ip.cnicAttachment;
+                document.querySelector('[name="VerifiedMobile"]').value = ip.mobile;
+                document.querySelector('[name="VerifiedAge"]').value = ip.age;
+                document.querySelector('[name="VerifiedMaritialStatus"]').value = ip.maritialStatus;
+                document.querySelector('[name="VerifiedIsDisable"]').checked = ip.isDisable;
+                document.querySelector('[name="VerifiedIsRefugee"]').checked = ip.isRefugee;
+                document.querySelector('[name="VerifiedDistrict"]').value = ip.district;
+                document.querySelector('[name="VerifiedTehsil"]').value = ip.tehsil;
+                document.querySelector('[name="VerifiedUnionCouncil"]').value = ip.unionCouncil;
+                document.querySelector('[name="VerifiedSurveyDate"]').value = ip.surveyDate ? new Date(ip.surveyDate).toISOString().split('T')[0] : '';
+                document.querySelector('[name="VerifiedNextOfKin"]').value = ip.nextOfKin;
+                document.querySelector('[name="VerifiedNextOfKinCNIC"]').value = ip.nextOfKinCNIC;
+                // document.querySelector('[name="VerifiedIdentifiedFor"]').value = ip.beneficiaryIdentifiedFor;
+
+                document.querySelector('[name="VerifiedDamageHouseNoOfRooms"]').value = ipDamage.damageHouseNoOfRooms;
+                document.querySelector('[name="VerifiedDamageHouseCategory"]').value = ipDamage.damageHouseCategory;
+                document.querySelector('[name="VerifiedDamageShopNoOfRooms"]').value = ipDamage.damageShopNoOfRooms;
+                document.querySelector('[name="VerifiedDamageShopCategory"]').value = ipDamage.damageShopCategory;
+                document.querySelector('[name="VerifiedDamageOtherNoOfRooms"]').value = ipDamage.damageOtherNoOfRooms;
+                document.querySelector('[name="VerifiedDamageOtherCategory"]').value = ipDamage.damageOtherCategory;
+
+                document.querySelector('[name="VerifiedCropLandArea"]').value = ipDamage.cropLandArea;
+                document.querySelector('[name="VerifiedOtherLandName"]').value = ipDamage.otherLandName;
+                document.querySelector('[name="VerifiedOtherLandArea"]').value = ipDamage.otherLandArea;
+                document.querySelector('[name="VerifiedNumberOfTrees"]').value = ipDamage.numberOfTrees;
+                document.querySelector('[name="VerifiedOtherTreeName"]').value = ipDamage.otherTreeName;
+                document.querySelector('[name="VerifiedOtherTreeNumber"]').value = ipDamage.otherTreeNumber;
+                document.querySelector('[name="VerifiedNumberOfAnimals"]').value = ipDamage.numberOfAnimals;
+                document.querySelector('[name="VerifiedOtherAnimalName"]').value = ipDamage.otherAnimalName;
+                document.querySelector('[name="VerifiedOtherAnimalNumber"]').value = ipDamage.otherAnimalNumber;            
+            }
+        }
+
+        function openCommentPopup(cnic, btn) {
+            Swal.fire({
+                title: 'Enter Your Comment!',
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: btn,
+                showLoaderOnConfirm: true,
+                customClass: {
+                    confirmButton: 'btn btn-primary me-3 waves-effect waves-light',
+                    cancelButton: 'btn btn-label-danger waves-effect waves-light'
+                },
+                preConfirm: (comment) => {
+                    if (!comment) {
+                        Swal.showValidationMessage('You need to write a comment!');
+                    } else {
+                        // Call the CommentBeneficiary function with comment and CNIC
+                        CommentBeneficiary(comment, cnic, btn);
+                    }
+                },
+                backdrop: true,
+                allowOutsideClick: () => !Swal.isLoading()
+            });
+        }
+
+        function CommentBeneficiary(comment, cnic, btn) {
+            // This function would handle the rejection logic
+            // Example: You might send an AJAX request to your backend
+            var callFunction = '';
+            if (btn == "Reject") {
+                callFunction = 'RejectBeneficiary';
+                btn = 'Rejected';
+            }
+            if (btn == "OnHold") {
+                callFunction = 'OnHoldBeneficiary';
+            }
+            $.ajax({
+                url: '/BeneficiaryVerified/' + callFunction, // Your action method
+                type: 'POST',
+                data: { id: cnic, comment: comment },
+                success: function (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Beneficiary ' + btn,
+                        text: 'The beneficiary with CNIC ' + cnic + ' has been ' + btn + '.',
+                        confirmButtonText: 'OK', // This will show only the OK button
+                        customClass: {
+                            confirmButton: 'btn btn-primary waves-effect waves-light'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Refresh the page after the user clicks "OK"
+                            location.reload(); // Refresh the current page
+                        }
+                    });;
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'There was an error processing the request.',
+                        confirmButtonText: 'OK', // Ensure only OK button is shown
+                        customClass: {
+                            confirmButton: 'btn btn-primary waves-effect waves-light'
+                        }
+                    });
+                }
+            });
+        }
+
+        function ModalForComment(comment, msg){
+            console.log("click")
+            const withTitle = document.querySelector('#modal-with-title');
+
+            Swal.fire({
+                title: msg + ' Comment',
+                text: comment,
+                customClass: {
+                    confirmButton: 'btn btn-primary waves-effect waves-light'
+                },
+                buttonsStyling: false
+            });         
+        }
+        
+        
+    </script>
+} 

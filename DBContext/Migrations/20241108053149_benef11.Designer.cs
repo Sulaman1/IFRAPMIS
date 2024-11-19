@@ -4,6 +4,7 @@ using IFRAPMIS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBContext.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241108053149_benef11")]
+    partial class benef11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -957,21 +960,6 @@ namespace DBContext.Migrations
                     b.ToTable("CICIGTrainingTrainer");
                 });
 
-            modelBuilder.Entity("DAL.Models.Domain.ResolveManyToMany.TechTrainingTrainer", b =>
-                {
-                    b.Property<int>("TechTrainingsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TechTrainingsId", "TrainerId");
-
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("TechTrainingTrainer");
-                });
-
             modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CICIG", b =>
                 {
                     b.Property<int>("CICIGId")
@@ -1287,197 +1275,6 @@ namespace DBContext.Migrations
                     b.HasIndex("CICIGTrainingsId");
 
                     b.ToTable("CITrainingParticipations");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.TechTrainingnamespace.TechTraining", b =>
-                {
-                    b.Property<int>("TechTrainingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TechTrainingId"));
-
-                    b.Property<string>("AttendanceAttachment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("District")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Ended")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lat")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Long")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PhaseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PictureAttachment1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PictureAttachment2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PictureAttachment3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PictureAttachment4")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReportAttachment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SessionPlanAttachment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Started")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TechTrainer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tehsil")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TotalClasses")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalDays")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalMembersParticipated")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalNumberFemale")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TotalNumberMale")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TrainingCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrainingHeadName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrainingName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TrainingTitleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TrainingTitleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnionCouncil")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Venue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VillageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TechTrainingId");
-
-                    b.HasIndex("PhaseId");
-
-                    b.HasIndex("TrainingTitleId");
-
-                    b.HasIndex("VillageId");
-
-                    b.ToTable("TechTrainings");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.TechTrainingnamespace.TechTrainingMember", b =>
-                {
-                    b.Property<int>("TechTrainingMemberId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TechTrainingMemberId"));
-
-                    b.Property<string>("AdmissionFormAttachment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BeneficiaryTrainingCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BeneficiaryVerifiedId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BusinessName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CNICAttachment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CertificateAttachment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Designation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EducationDocAttachment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdentifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PWD")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredSkill1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredSkill2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredSkill3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredSkill4")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SelfEmployed")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TechTrainingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TechTrainingMemberId");
-
-                    b.HasIndex("BeneficiaryVerifiedId")
-                        .IsUnique();
-
-                    b.HasIndex("TechTrainingId");
-
-                    b.ToTable("TechTrainingMembers");
                 });
 
             modelBuilder.Entity("DAL.Models.ViewModels.CDSummary", b =>
@@ -2131,25 +1928,6 @@ namespace DBContext.Migrations
                     b.Navigation("Trainer");
                 });
 
-            modelBuilder.Entity("DAL.Models.Domain.ResolveManyToMany.TechTrainingTrainer", b =>
-                {
-                    b.HasOne("DAL.Models.Domain.TechTrainingnamespace.TechTraining", "TechTrainings")
-                        .WithMany("TechTrainingTrainers")
-                        .HasForeignKey("TechTrainingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Models.Domain.MasterSetup.Trainer", "Trainer")
-                        .WithMany("TechTrainingTrainers")
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TechTrainings");
-
-                    b.Navigation("Trainer");
-                });
-
             modelBuilder.Entity("DAL.Models.Domain.SocialMobilization.CICIG", b =>
                 {
                     b.HasOne("DAL.Models.Domain.MasterSetup.CommunityType", "CommunityType")
@@ -2249,48 +2027,6 @@ namespace DBContext.Migrations
                     b.Navigation("CICIG");
 
                     b.Navigation("CICIGTrainings");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.TechTrainingnamespace.TechTraining", b =>
-                {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.Phase", "Phase")
-                        .WithMany()
-                        .HasForeignKey("PhaseId");
-
-                    b.HasOne("DAL.Models.Domain.MasterSetup.TrainingTitle", "TrainingTitle")
-                        .WithMany("TechTrainings")
-                        .HasForeignKey("TrainingTitleId");
-
-                    b.HasOne("DAL.Models.Domain.MasterSetup.Village", "Village")
-                        .WithMany()
-                        .HasForeignKey("VillageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Phase");
-
-                    b.Navigation("TrainingTitle");
-
-                    b.Navigation("Village");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.TechTrainingnamespace.TechTrainingMember", b =>
-                {
-                    b.HasOne("DAL.Models.Domain.MasterSetup.BeneficiaryVerified", "BeneficiaryVerified")
-                        .WithOne("TechTrainingMember")
-                        .HasForeignKey("DAL.Models.Domain.TechTrainingnamespace.TechTrainingMember", "BeneficiaryVerifiedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Models.Domain.TechTrainingnamespace.TechTraining", "TechTraining")
-                        .WithMany("TechTrainingMemebers")
-                        .HasForeignKey("TechTrainingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BeneficiaryVerified");
-
-                    b.Navigation("TechTraining");
                 });
 
             modelBuilder.Entity("DAL.Models.ViewModels.CDSummary", b =>
@@ -2409,8 +2145,6 @@ namespace DBContext.Migrations
                     b.Navigation("CIMember");
 
                     b.Navigation("DamageVerifieds");
-
-                    b.Navigation("TechTrainingMember");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.CommunityType", b =>
@@ -2469,8 +2203,6 @@ namespace DBContext.Migrations
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.Trainer", b =>
                 {
                     b.Navigation("CICIGTrainingTrainers");
-
-                    b.Navigation("TechTrainingTrainers");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingHead", b =>
@@ -2481,8 +2213,6 @@ namespace DBContext.Migrations
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.TrainingTitle", b =>
                 {
                     b.Navigation("CICIGTrainings");
-
-                    b.Navigation("TechTrainings");
                 });
 
             modelBuilder.Entity("DAL.Models.Domain.MasterSetup.UnionCouncil", b =>
@@ -2522,13 +2252,6 @@ namespace DBContext.Migrations
                     b.Navigation("CITrainingParticipation");
 
                     b.Navigation("Members");
-                });
-
-            modelBuilder.Entity("DAL.Models.Domain.TechTrainingnamespace.TechTraining", b =>
-                {
-                    b.Navigation("TechTrainingMemebers");
-
-                    b.Navigation("TechTrainingTrainers");
                 });
 #pragma warning restore 612, 618
         }

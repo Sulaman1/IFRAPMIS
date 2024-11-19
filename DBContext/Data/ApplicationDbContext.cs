@@ -7,6 +7,7 @@ using DAL.Models.Domain.SocialMobilization.Training;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using DAL.Models.ViewModels;
+using DAL.Models.Domain.TechTrainingnamespace;
 
 namespace IFRAPMIS.Data
 {
@@ -26,6 +27,8 @@ namespace IFRAPMIS.Data
         public DbSet<CIMember> CIMembers { get; set; }
         public DbSet<CITrainingMember> CITrainingMembers { get; set; }
         public DbSet<CITrainingParticipation> CITrainingParticipations { get; set; }
+        public DbSet<TechTraining> TechTrainings { get; set; }
+        public DbSet<TechTrainingMember> TechTrainingMembers { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Section> Sections { get; set; }
         public DbSet<TrainingHead> TrainingHeads { get; set; }
@@ -72,6 +75,19 @@ namespace IFRAPMIS.Data
             modelBuilder.Entity<CICIGTrainingTrainer>()
                 .HasOne(ct => ct.Trainer)
                 .WithMany(t => t.CICIGTrainingTrainers)
+                .HasForeignKey(ct => ct.TrainerId);
+
+            modelBuilder.Entity<TechTrainingTrainer>()
+               .HasKey(ct => new { ct.TechTrainingsId, ct.TrainerId });
+
+            modelBuilder.Entity<TechTrainingTrainer>()
+                .HasOne(ct => ct.TechTrainings)
+                .WithMany(c => c.TechTrainingTrainers)
+                .HasForeignKey(ct => ct.TechTrainingsId);
+
+            modelBuilder.Entity<TechTrainingTrainer>()
+                .HasOne(ct => ct.Trainer)
+                .WithMany(t => t.TechTrainingTrainers)
                 .HasForeignKey(ct => ct.TrainerId);
 
             // Configure the foreign key for CICIG in CICIGTrainings

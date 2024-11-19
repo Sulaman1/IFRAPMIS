@@ -144,7 +144,7 @@
           </a>
         </li> *@
       </ul>
-    </li>
+    </li>        
 
         
         <!-- Apps & Pages -->
@@ -527,6 +527,30 @@
     
     </ul>
     </li>
+
+        <!-- TRAININGS -->
+        <li class="menu-header small">
+            @* <span class="menu-header-text" data-i18n="Apps & Pages">Apps &amp; Pages</span> *@
+            <span class="menu-header-text" data-i18n="TRAININGS">TRAININGS</span>
+        </li>
+        <li class='menu-item@(currentPage.StartsWith("/CICIGTraining") ? " active open" : "")'>
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons ti ti-jump-rope"></i>
+                <div data-i18n="Training">Training</div>
+            </a>
+            <ul class="menu-sub">
+                <li class='menu-item@(currentPage.StartsWith("CICIGTraining/Index") ? " active" : "")'>
+                    <a asp-controller="CICIGTraining" asp-action="Index" class="menu-link">
+                        <div data-i18n="Training List">Training List</div>
+                    </a>
+                </li>
+                <li class='menu-item@(currentPage.StartsWith("CICIGTraining/Create") ? " active" : "")'>
+                    <a asp-controller="CICIGTraining" asp-action="Create" class="menu-link">
+                        <div data-i18n="Training Create">Training Create</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
         <!-- Apps & Pages -->
         <li class="menu-header small">

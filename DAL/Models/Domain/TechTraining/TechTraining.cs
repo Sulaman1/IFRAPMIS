@@ -1,19 +1,19 @@
-﻿using System;
+﻿using DAL.Models.Domain.MasterSetup;
+using DAL.Models.Domain.ResolveManyToMany;
+using DAL.Models.Domain.SocialMobilization.Training;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models.Domain.MasterSetup;
-using DAL.Models.Domain.ResolveManyToMany;
 
-
-namespace DAL.Models.Domain.SocialMobilization.Training
+namespace DAL.Models.Domain.TechTrainingnamespace
 {
-    public class CICIGTrainings
+    public class TechTraining
     {
         [Key]
-        public int CICIGTrainingsId { get; set; }
+        public int TechTrainingId { get; set; }
         public string? TrainingName { get; set; }
         public string? TrainingCode { get; set; }
         public string? District { get; set; }
@@ -43,20 +43,32 @@ namespace DAL.Models.Domain.SocialMobilization.Training
         public string? PictureAttachment3 { get; set; }
         public string? PictureAttachment4 { get; set; }
 
+        [Display(Name = "Trainer")]
+        public string TechTrainer { get; set; }
+
         //Connections
         public int VillageId { get; set; }
-        public Village? Village { get; set; }       
+        public Village? Village { get; set; }
+        //public int? TrainingHeadId { get; set; }
+        //public TrainingHead? TrainingHead { get; set; }
         public int? TrainingTitleId { get; set; }
-        public TrainingTitle? TrainingTitle { get; set; }      
+        public TrainingTitle? TrainingTitle { get; set; }
+        //Connection
         public int? PhaseId { get; set; }
         public Phase? Phase { get; set; }
 
         //Collections
-        public ICollection<CITrainingMember>? Members { get; set; }      
-        public ICollection<CITrainingParticipation>? CITrainingParticipation { get; set; }
-                
+        public ICollection<TechTrainingMember>? TechTrainingMemebers { get; set; }
+
+
+        //public ICollection<CITrainingMember>? Members { get; set; }
+        //public ICollection<CITrainingParticipation>? CITrainingParticipation { get; set; }
+
+        //public int[]? TrainerIds { get; set; }
+        //public ICollection<Trainer>? Trainer { get; set; }
+
         //Navigations
-        public ICollection<CICIGTrainingTrainer>? CICIGTrainingTrainers { get; set; }  // Navigation property for many-to-many relationship        
+        public ICollection<TechTrainingTrainer>? TechTrainingTrainers { get; set; }  // Navigation property for many-to-many relationship        
 
     }
 }

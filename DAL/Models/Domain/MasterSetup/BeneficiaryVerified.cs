@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Models.Domain.Damage;
 using DAL.Models.Domain.SocialMobilization;
+using DAL.Models.Domain.SocialMobilization.Training;
+using DAL.Models.Domain.TechTrainingnamespace;
+//using DAL.Models.Domain.TechTraining;
 
 namespace DAL.Models.Domain.MasterSetup
 {
@@ -50,5 +53,6 @@ namespace DAL.Models.Domain.MasterSetup
         
         //Navigations      
         public CIMember? CIMember { get; set; }
+        public TechTrainingMember? TechTrainingMember { get; set; }
     }
 }

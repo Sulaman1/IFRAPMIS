@@ -42,6 +42,16 @@
 
   <ItemGroup>
     <None Include="Views\BeneficiaryVerified\BenefDetails.cshtml" />
+    <None Include="Views\TechTraining\Create.cshtml" />
+    <None Include="Views\TechTraining\Delete.cshtml" />
+    <None Include="Views\TechTraining\Details.cshtml" />
+    <None Include="Views\TechTraining\Edit.cshtml" />
+    <None Include="Views\TechTraining\Index.cshtml" />
+    <None Include="Views\TechTrainingMember\Delete.cshtml" />
+    <None Include="Views\TechTrainingMember\Edit.cshtml" />
+    <None Include="Views\TechTrainingMember\Index.cshtml" />
+    <None Include="Views\TechTrainingMember\TrackMember.cshtml" />
+    <None Include="Views\TechTrainingMember\_Index.cshtml" />
   </ItemGroup>
 
 </Project>

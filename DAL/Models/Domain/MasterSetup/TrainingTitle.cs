@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Models.Domain.SocialMobilization.Training;
+using DAL.Models.Domain.TechTrainingnamespace;
 
 namespace DAL.Models.Domain.MasterSetup
 {
@@ -23,6 +24,7 @@ namespace DAL.Models.Domain.MasterSetup
 
         //Collections
         public ICollection<CICIGTrainings>? CICIGTrainings { get; set; }
+        public ICollection<TechTraining>? TechTrainings { get; set; }
 
     }
 }

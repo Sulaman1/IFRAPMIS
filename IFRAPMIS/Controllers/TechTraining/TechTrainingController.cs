@@ -5,31 +5,27 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DAL.Models.Domain.SocialMobilization.Training;
+using DAL.Models.Domain.TechTrainingnamespace;
 
-namespace IFRAPMIS.Controllers.SocialMobilization.Training
+namespace IFRAPMIS.Controllers.TechTrainingnamespace
 {
-    public class CICIGTrainingController : Controller
-    {
+    public class TechTrainingController : Controller
+    {        
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CICIGTrainingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public TechTrainingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: CICIGTrainingss
+        // GET: TechTrainings
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = await _context.CICIGTrainings.Include(m => m.Village)
-                                                                    .Include(m => m.Phase)
-                                                                    .Include(m => m.CICIGTrainingTrainers)
-                                                                    .Include(m => m.TrainingTitle)
-                                                                        .ThenInclude(tt => tt.TrainingHead)
-                                                                    .ToListAsync();
-
+            var applicationDbContext = await _context.TechTrainings.Include(t => t.TrainingTitle)
+                                                                        .ThenInclude(t => t.TrainingHead)
+                                                                   .ToListAsync();
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             if (currentUser.DistrictName != "All")
             {
@@ -38,25 +34,23 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             return View(applicationDbContext);
         }
 
-        // GET: CICIGTrainingss/Details/5
+        // GET: TechTrainings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.CICIGTrainings == null)
+            if (id == null || _context.TechTrainings == null)
             {
                 return NotFound();
             }
 
-            var cicigTraining = await _context.CICIGTrainings
-                .Include(m => m.CICIGTrainingTrainers)
+            var techTraining = await _context.TechTrainings
                 .Include(a => a.Village.UnionCouncils.Tehsil.District)
-
                 .Include(m => m.TrainingTitle.TrainingHead)
-                .FirstOrDefaultAsync(m => m.CICIGTrainingsId == id);
-            if (cicigTraining == null)
+                .FirstOrDefaultAsync(m => m.TechTrainingId == id);
+            if (techTraining == null)
             {
                 return NotFound();
             }
-            return View(cicigTraining);
+            return View(techTraining);
         }
         public async Task<JsonResult> GetTrainingTypes(int trainingHeadId)
         {
@@ -78,80 +72,59 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             });
             return Json(employeeList);
         }
-        // GET: CICIGTrainingss/Create
+        // GET: TechTrainings/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["TrainingById"] = new SelectList(_context.Sections/*.Where(a => a.SectionId == 2)*/, "SectionId", "Name");
+            ViewData["TrainerId"] = new SelectList(_context.Trainers, "TrainerId", "TrainerName");//IP waghera
+            //ViewData["TrainingById"] = new SelectList(_context.Sections, "SectionId", "Name");
             var THead = _context.TrainingHeads;
             ViewData["TrainingHeadId"] = new SelectList(THead, "TrainingHeadId", "TrainingHeadName");
-            ViewData["TrainerId"] = new SelectList(_context.Trainers/*.Where(a => a.SectionId == 2)*/, "TrainerId", "TrainerName");
-
+            
             var districtAccess = await _context.Districts.ToListAsync();
-            //var districtAccess = _context.Districts.Where(a => a.DistrictId > 0);
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-
             if (currentUser.DistrictName != "All")
             {
                 districtAccess = districtAccess.Where(a => a.DistrictName == currentUser.DistrictName).ToList();
-
             }
 
             ViewData["District"] = new SelectList(districtAccess, "DistrictName", "DistrictName");
             ViewData["PhaseId"] = new SelectList(_context.Phases, "PhaseId", "Name");
-            //-----------------------------------------------            
-            CICIGTrainings obj = new CICIGTrainings();
-            obj.Started = DateTime.Today.Date;
-            //obj.IsCompleted = false;
+            //-----------------------------------------------
+            TechTraining obj = new TechTraining();
+            //TechTraining obj = new TechTraining();
+            obj.DateOfCreation = DateTime.Today.Date;
             return View(obj);
         }
 
-        // POST: CICIGTrainingss/Create
+        // POST: TechTrainings/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
-        //[Bind("CICIGTrainingsId, CommunityTypeId, EntryBy, DateOfCreation, District, Tehsil, UnionCouncil, VillageId, PhaseId, Name, HouseHoldNumber, HouseHoldParticipated, Venue, Lat, Long, Gender")] 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CICIGTrainings cicigTraining, int TrainingHeadId, IFormFile AttendanceAttachment, IFormFile ReportAttachment, IFormFile SessionPlanAttachment, IFormFile PictureAttachment1, IFormFile PictureAttachment2, IFormFile PictureAttachment3, IFormFile PictureAttachment4)
+        public async Task<IActionResult> Create(TechTraining techTraining, int TrainingHeadId, IFormFile AttendanceAttachment, IFormFile ReportAttachment, IFormFile SessionPlanAttachment, IFormFile PictureAttachment1, IFormFile PictureAttachment2, IFormFile PictureAttachment3, IFormFile PictureAttachment4)
         {
             if (ModelState.IsValid)
             {
-                /**
-                 * If trainingHead is present dont enter data
-                 * If trainingTitle is present dont enter data
-                 */
-
-                var TrainingCount = _context.CICIGTrainings.Count(a => a.TrainingTitleId == cicigTraining.TrainingTitleId) + 1;
-                var TrainingTypeInfo = _context.TrainingTitles.Find(cicigTraining.TrainingTitleId);
-                var TehsilName = _context.Tehsils.Where(t => t.TehsilId == Convert.ToInt32(cicigTraining.Tehsil)).Select(t => t.TehsilName).FirstOrDefault();
-                var UCName = _context.UnionCouncils.Where(uc => uc.UnionCouncilId == Convert.ToInt32(cicigTraining.UnionCouncil)).Select(t => t.UnionCouncilName).FirstOrDefault();
-                var TrainingHeadName = _context.TrainingHeads.Where(th => th.TrainingHeadId == Convert.ToInt32(cicigTraining.TrainingHeadName)).Select(t => t.TrainingHeadName).FirstOrDefault();
-                var TrainingTitleName = _context.TrainingTitles.Where(tt => tt.TitleId == Convert.ToInt32(cicigTraining.TrainingTitleId)).Select(t => t.TrainingName).FirstOrDefault();
-                
-                cicigTraining.Tehsil = TehsilName;
-                cicigTraining.UnionCouncil = UCName;
-                cicigTraining.TrainingHeadName = TrainingHeadName;
-                cicigTraining.TrainingTitleName = TrainingTitleName;
-
-                //var DistrictCode = _context.Districts.Find(cicigTraining.District).Code;
-                var DistrictCode = _context.Districts.FirstOrDefault(d => d.DistrictName == cicigTraining.District);
+                var TrainingCount = _context.TechTrainings.Count(a => a.TrainingTitleId == techTraining.TrainingTitleId) + 1;
+                var TrainingTypeInfo = _context.TrainingTitles.Find(techTraining.TrainingTitleId);
+                var DistrictCode = _context.Districts.Find(techTraining.District).Code;
                 string TrainingCode = DistrictCode + "-" + _context.TrainingHeads.Find(TrainingTypeInfo.TrainingHeadId).TrainingHeadCode + "-" + TrainingTypeInfo.TrainingTitleCode;
                 string val = (TrainingCount).ToString("D3");
-                cicigTraining.TrainingCode = (TrainingCode + "-" + val);
-                while (_context.CICIGTrainings.Count(a => a.TrainingCode == cicigTraining.TrainingCode) > 0)
+                techTraining.TrainingCode = (TrainingCode + "-" + val);
+                while (_context.TechTrainings.Count(a => a.TrainingCode == techTraining.TrainingCode) > 0)
                 {
                     val = (++TrainingCount).ToString("D3");
-                    cicigTraining.TrainingCode = (TrainingCode + "-" + val);
+                    techTraining.TrainingCode = (TrainingCode + "-" + val);
                 }
                 if (AttendanceAttachment != null && AttendanceAttachment.Length > 0)
                 {
                     var rootPath = Path.Combine(
-                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\AttendanceSheet\\");
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\AttendanceSheet\\");
                     string fileName = Path.GetFileName(AttendanceAttachment.FileName);
                     Random random = new Random();
                     int randomNumber = random.Next(9999, 999999);
                     fileName = "AttendanceSheet" + randomNumber.ToString() + Path.GetExtension(fileName);
-                    cicigTraining.AttendanceAttachment = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/AttendanceSheet/" + fileName);//Server Path
+                    techTraining.AttendanceAttachment = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/AttendanceSheet/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
                     if (!System.IO.Directory.Exists(sPath))
                     {
@@ -166,12 +139,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 if (ReportAttachment != null && ReportAttachment.Length > 0)
                 {
                     var rootPath = Path.Combine(
-                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\Report\\");
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\Report\\");
                     string fileName = Path.GetFileName(ReportAttachment.FileName);
                     Random random = new Random();
                     int randomNumber = random.Next(9999, 999999);
                     fileName = "Report" + randomNumber.ToString() + Path.GetExtension(fileName);
-                    cicigTraining.ReportAttachment = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/Report/" + fileName);//Server Path
+                    techTraining.ReportAttachment = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/Report/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
                     if (!System.IO.Directory.Exists(sPath))
                     {
@@ -186,12 +159,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 if (SessionPlanAttachment != null && SessionPlanAttachment.Length > 0)
                 {
                     var rootPath = Path.Combine(
-                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\SessionPlan\\");
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\SessionPlan\\");
                     string fileName = Path.GetFileName(SessionPlanAttachment.FileName);
                     Random random = new Random();
                     int randomNumber = random.Next(9999, 999999);
                     fileName = "SessionPlan" + randomNumber.ToString() + Path.GetExtension(fileName);
-                    cicigTraining.SessionPlanAttachment = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/SessionPlan/" + fileName);//Server Path
+                    techTraining.SessionPlanAttachment = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/SessionPlan/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
                     if (!System.IO.Directory.Exists(sPath))
                     {
@@ -206,12 +179,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 if (PictureAttachment1 != null && PictureAttachment1.Length > 0)
                 {
                     var rootPath = Path.Combine(
-                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\Pictures\\");
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\Pictures\\");
                     string fileName = Path.GetFileName(PictureAttachment1.FileName);
                     Random random = new Random();
                     int randomNumber = random.Next(9999, 999999);
                     fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
-                    cicigTraining.PictureAttachment1 = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
+                    techTraining.PictureAttachment1 = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
                     if (!System.IO.Directory.Exists(sPath))
                     {
@@ -226,12 +199,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 if (PictureAttachment2 != null && PictureAttachment2.Length > 0)
                 {
                     var rootPath = Path.Combine(
-                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\Pictures\\");
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\Pictures\\");
                     string fileName = Path.GetFileName(PictureAttachment2.FileName);
                     Random random = new Random();
                     int randomNumber = random.Next(9999, 999999);
                     fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
-                    cicigTraining.PictureAttachment2 = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
+                    techTraining.PictureAttachment2 = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
                     if (!System.IO.Directory.Exists(sPath))
                     {
@@ -246,12 +219,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 if (PictureAttachment3 != null && PictureAttachment3.Length > 0)
                 {
                     var rootPath = Path.Combine(
-                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\Pictures\\");
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\Pictures\\");
                     string fileName = Path.GetFileName(PictureAttachment3.FileName);
                     Random random = new Random();
                     int randomNumber = random.Next(9999, 999999);
                     fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
-                    cicigTraining.PictureAttachment3 = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
+                    techTraining.PictureAttachment3 = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
                     if (!System.IO.Directory.Exists(sPath))
                     {
@@ -266,12 +239,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 if (PictureAttachment4 != null && PictureAttachment4.Length > 0)
                 {
                     var rootPath = Path.Combine(
-                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\Pictures\\");
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\Pictures\\");
                     string fileName = Path.GetFileName(PictureAttachment4.FileName);
                     Random random = new Random();
                     int randomNumber = random.Next(9999, 999999);
                     fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
-                    cicigTraining.PictureAttachment4 = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
+                    techTraining.PictureAttachment4 = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
                     if (!System.IO.Directory.Exists(sPath))
                     {
@@ -283,91 +256,61 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                         await PictureAttachment4.CopyToAsync(stream);
                     }
                 }
+                
                 var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-                //cicigTraining.SubmittedForReviewBy = currentUser.UserName;
-                //cicigTraining.District = _context.Districts.Find(cicigTraining.District);
-                _context.Add(cicigTraining);
+                techTraining.District = _context.Districts.Find(techTraining.District).DistrictName;
+                _context.Add(techTraining);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["TrainingById"] = new MultiSelectList(_context.Sections/*.Where(a => a.SectionId == 2)*/, "SectionId", "Name", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));
-            //ViewData["TrainingById"] = new SelectList(_context.Sections.Where(a => a.SectionId == 2), "SectionId", "Name", cicigTraining.TrainerId);
+            ViewData["TrainingById"] = new SelectList(_context.Sections, "SectionId", "Name", techTraining.TrainingTitleId);
             ViewData["TrainingHeadId"] = new SelectList(_context.TrainingHeads, "TrainingHeadId", "TrainingHeadName", TrainingHeadId);
-            ViewData["TrainingTitleId"] = new SelectList(_context.TrainingTitles.Where(a => a.TrainingHeadId == TrainingHeadId), "TrainingTitleId", "TrainingTypeName", TrainingHeadId);
-            ViewData["PhaseId"] = new SelectList(_context.Phases, "PhaseId", "Name", cicigTraining.Phase);
-            return View(cicigTraining);
+            ViewData["TitleId"] = new SelectList(_context.TrainingTitles.Where(a => a.TrainingHeadId == TrainingHeadId), "TitleId", "TrainingTypeName", TrainingHeadId);
+            ViewData["TrainerId"] = new SelectList(_context.Trainers, "TrainerId", "TrainerName", techTraining.TrainingName);
+            ViewData["PhaseId"] = new SelectList(_context.Phases, "PhaseId", "Name", techTraining.Phase);
+            return View(techTraining);
         }
 
-        // GET: CICIGTrainingss/Edit/5
+        // GET: TechTrainings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.CICIGTrainings == null)
+            if (id == null || _context.TechTrainings == null)
             {
                 return NotFound();
             }
 
-
-            //var cicigTraining = await _context.CICIGTrainings.Include(a => a.Village.UnionCouncils.Tehsil)
-            //                                                 .Where(a => a.CICIGTrainingsId == id)
-            //                                                 .FirstOrDefaultAsync();
-            var cicigTraining = _context.CICIGTrainings
-                                 .Include(ct => ct.Phase)
-                                 .Include(ct => ct.CICIGTrainingTrainers)
-                                 .ThenInclude(tt => tt.Trainer)
-                                 .Include(ct => ct.Village)
-                                 .ThenInclude(v => v.UnionCouncils)
-                                 .ThenInclude(uc => uc.Tehsil)
-                                 .ThenInclude(t => t.District)
-                                 .FirstOrDefault(ct => ct.CICIGTrainingsId == id);
-
-            if (cicigTraining == null)
+            var techTraining = await _context.TechTrainings.Include(a => a.Village.UnionCouncils.Tehsil).Where(a => a.TechTrainingId == id).FirstOrDefaultAsync();
+            if (techTraining == null)
             {
                 return NotFound();
             }
-            int? TrainingHeadId = _context.TrainingTitles.Find(cicigTraining.TrainingTitleId).TrainingHeadId;
-
-            ViewData["SectionId"] = new MultiSelectList(_context.Sections, "SectionId", "Name", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));            
-            ViewData["TrainerId"] = new MultiSelectList(_context.Trainers/*.Where(a => a.SectionId == 2)*/, "TrainerId", "TrainerName", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));  // Pre-selected TrainerIds);            
+            int TrainingHeadId = _context.TrainingTitles.Find(techTraining.TrainingTitleId).TrainingHeadId ?? 0;
+            
+            //ViewData["TrainingById"] = new SelectList(_context.TVTTrainedBy, "Name", "Name", techTraining.TVTTrainer);
+            ViewData["TrainingById"] = new SelectList(_context.Sections, "SectionId", "Name", techTraining.TrainingTitleId);
+            
             ViewData["TrainingHeadId"] = new SelectList(_context.TrainingHeads, "TrainingHeadId", "TrainingHeadName", TrainingHeadId);
-
-            ViewData["TrainingTitleId"] = new SelectList(_context.TrainingTitles.Where(a => a.TrainingHeadId == TrainingHeadId), "TitleId", "TrainingName", TrainingHeadId);
-            var districtAccess = _context.Districts.Where(a => a.DistrictName == cicigTraining.District);
-            var tehsilAccess = _context.Tehsils.Where(a => a.District.DistrictName.Equals(cicigTraining.District));
-            //var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            ViewData["DistrictId"] = new SelectList(districtAccess, "DistrictName", "DistrictName");
-            ViewData["TehsilId"] = new SelectList(tehsilAccess, "TehsilId", "TehsilName", cicigTraining.Village.UnionCouncils.TehsilId);
-            ViewData["UnionCouncilId"] = new SelectList(_context.UnionCouncils.Where(a => a.TehsilId == cicigTraining.Village.UnionCouncils.TehsilId), "UnionCouncilId", "UnionCouncilName", cicigTraining.Village.UnionCouncilId);
-            ViewData["VillageId"] = new SelectList(_context.Villages.Where(a => a.UnionCouncilId == cicigTraining.Village.UnionCouncilId), "VillageId", "VillageName", cicigTraining.VillageId);
-
-            ViewData["PhaseId"] = new SelectList(_context.Phases, "PhaseId", "Name", cicigTraining.Phase);
+            ViewData["TitleId"] = new SelectList(_context.TrainingTitles.Where(a => a.TrainingHeadId == TrainingHeadId), "TitleId", "TrainingTypeName", TrainingHeadId);
+            ViewData["TrainerId"] = new SelectList(_context.Trainers, "TrainerId", "TrainerName", techTraining.TrainingName);
+            var districtAccess = _context.Districts.Where(a => a.DistrictName == techTraining.District);
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            ViewData["District"] = new SelectList(districtAccess, "DistrictName", "DistrictName");
+            ViewData["TehsilId"] = new SelectList(_context.Tehsils.Where(a => a.District.DistrictName == techTraining.District), "TehsilId", "TehsilName", techTraining.Village.UnionCouncils.TehsilId);
+            ViewData["UnionCouncilId"] = new SelectList(_context.UnionCouncils.Where(a => a.TehsilId == techTraining.Village.UnionCouncils.TehsilId), "UnionCouncilId", "UnionCouncilName", techTraining.Village.UnionCouncilId);
+            ViewData["VillageId"] = new SelectList(_context.Villages.Where(a => a.UnionCouncilId == techTraining.Village.UnionCouncilId), "VillageId", "Name", techTraining.VillageId);
+            ViewData["PhaseId"] = new SelectList(_context.Phases, "PhaseId", "Name", techTraining.Phase);
             ViewBag.IsAllow = true;
-            //var currentuser = await _userManager.GetUserAsync(User);
-            //if (cicigTraining.SubmittedForReviewBy != null)
-            //{
-            //    if (currentuser.UserName != cicigTraining.SubmittedForReviewBy)
-            //    {
-            //        ViewBag.IsAllow = false;
-            //    }
-            //}
-            //else
-            //{
-            //    ViewBag.IsAllow = true;
-            //    cicigTraining.SubmittedForReviewBy = currentuser.UserName;
-            //}
-
-
-            return View(cicigTraining);
+            return View(techTraining);
         }
 
-        // POST: CICIGTrainingss/Edit/5
+        // POST: TechTrainings/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CICIGTrainings cicigTraining, int TrainingHeadId, IFormFile? AttendanceAttachment, IFormFile? ReportAttachment, IFormFile? SessionPlanAttachment, IFormFile? PictureAttachment1, IFormFile? PictureAttachment2, IFormFile? PictureAttachment3, IFormFile? PictureAttachment4)
+        public async Task<IActionResult> Edit(int id, TechTraining techTraining, int TrainingHeadId, IFormFile? AttendanceAttachment, IFormFile? ReportAttachment, IFormFile? SessionPlanAttachment, IFormFile? PictureAttachment1, IFormFile? PictureAttachment2, IFormFile? PictureAttachment3, IFormFile? PictureAttachment4)
         {
-            if (id != cicigTraining.CICIGTrainingsId)
+            if (id != techTraining.TechTrainingId)
             {
                 return NotFound();
             }
@@ -379,12 +322,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                     if (AttendanceAttachment != null && AttendanceAttachment.Length > 0)
                     {
                         var rootPath = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\AttendanceSheet\\");
+                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\AttendanceSheet\\");
                         string fileName = Path.GetFileName(AttendanceAttachment.FileName);
                         Random random = new Random();
                         int randomNumber = random.Next(9999, 999999);
                         fileName = "AttendanceSheet" + randomNumber.ToString() + Path.GetExtension(fileName);
-                        cicigTraining.AttendanceAttachment = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/AttendanceSheet/" + fileName);//Server Path
+                        techTraining.AttendanceAttachment = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/AttendanceSheet/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
                         if (!System.IO.Directory.Exists(sPath))
                         {
@@ -399,12 +342,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                     if (ReportAttachment != null && ReportAttachment.Length > 0)
                     {
                         var rootPath = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\Report\\");
+                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\Report\\");
                         string fileName = Path.GetFileName(ReportAttachment.FileName);
                         Random random = new Random();
                         int randomNumber = random.Next(9999, 999999);
                         fileName = "Report" + randomNumber.ToString() + Path.GetExtension(fileName);
-                        cicigTraining.ReportAttachment = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/Report/" + fileName);//Server Path
+                        techTraining.ReportAttachment = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/Report/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
                         if (!System.IO.Directory.Exists(sPath))
                         {
@@ -419,12 +362,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                     if (SessionPlanAttachment != null && SessionPlanAttachment.Length > 0)
                     {
                         var rootPath = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\SessionPlan\\");
+                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\SessionPlan\\");
                         string fileName = Path.GetFileName(SessionPlanAttachment.FileName);
                         Random random = new Random();
                         int randomNumber = random.Next(9999, 999999);
                         fileName = "SessionPlan" + randomNumber.ToString() + Path.GetExtension(fileName);
-                        cicigTraining.SessionPlanAttachment = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/SessionPlan/" + fileName);//Server Path
+                        techTraining.SessionPlanAttachment = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/SessionPlan/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
                         if (!System.IO.Directory.Exists(sPath))
                         {
@@ -439,12 +382,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                     if (PictureAttachment1 != null && PictureAttachment1.Length > 0)
                     {
                         var rootPath = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\Pictures\\");
+                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\Pictures\\");
                         string fileName = Path.GetFileName(PictureAttachment1.FileName);
                         Random random = new Random();
                         int randomNumber = random.Next(9999, 999999);
                         fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
-                        cicigTraining.PictureAttachment1 = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
+                        techTraining.PictureAttachment1 = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
                         if (!System.IO.Directory.Exists(sPath))
                         {
@@ -459,12 +402,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                     if (PictureAttachment2 != null && PictureAttachment2.Length > 0)
                     {
                         var rootPath = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\Pictures\\");
+                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\Pictures\\");
                         string fileName = Path.GetFileName(PictureAttachment2.FileName);
                         Random random = new Random();
                         int randomNumber = random.Next(9999, 999999);
                         fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
-                        cicigTraining.PictureAttachment2 = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
+                        techTraining.PictureAttachment2 = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
                         if (!System.IO.Directory.Exists(sPath))
                         {
@@ -479,12 +422,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                     if (PictureAttachment3 != null && PictureAttachment3.Length > 0)
                     {
                         var rootPath = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\Pictures\\");
+                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\Pictures\\");
                         string fileName = Path.GetFileName(PictureAttachment3.FileName);
                         Random random = new Random();
                         int randomNumber = random.Next(9999, 999999);
                         fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
-                        cicigTraining.PictureAttachment3 = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
+                        techTraining.PictureAttachment3 = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
                         if (!System.IO.Directory.Exists(sPath))
                         {
@@ -499,12 +442,12 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                     if (PictureAttachment4 != null && PictureAttachment4.Length > 0)
                     {
                         var rootPath = Path.Combine(
-                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + cicigTraining.TrainingTitleId + "\\Pictures\\");
+                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + techTraining.TrainingTitleId + "\\Pictures\\");
                         string fileName = Path.GetFileName(PictureAttachment4.FileName);
                         Random random = new Random();
                         int randomNumber = random.Next(9999, 999999);
                         fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
-                        cicigTraining.PictureAttachment4 = Path.Combine("/Documents/Training" + cicigTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
+                        techTraining.PictureAttachment4 = Path.Combine("/Documents/Training" + techTraining.TrainingTitleId + "/Pictures/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
                         if (!System.IO.Directory.Exists(sPath))
                         {
@@ -516,24 +459,13 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                             await PictureAttachment4.CopyToAsync(stream);
                         }
                     }
-                    //cicigTraining.District = _context.Districts.Find(cicigTraining.District);
-
-                    var TehsilName = _context.Tehsils.Where(t => t.TehsilId == Convert.ToInt32(cicigTraining.Tehsil)).Select(t => t.TehsilName).FirstOrDefault();
-                    var UCName = _context.UnionCouncils.Where(uc => uc.UnionCouncilId == Convert.ToInt32(cicigTraining.UnionCouncil)).Select(t => t.UnionCouncilName).FirstOrDefault();
-                    var TrainingHeadName = _context.TrainingHeads.Where(th => th.TrainingHeadId == Convert.ToInt32(cicigTraining.TrainingHeadName)).Select(t => t.TrainingHeadName).FirstOrDefault();
-                    var TrainingTitleName = _context.TrainingTitles.Where(tt => tt.TitleId == Convert.ToInt32(cicigTraining.TrainingTitleId)).Select(t => t.TrainingName).FirstOrDefault();
-
-                    cicigTraining.Tehsil = TehsilName;
-                    cicigTraining.UnionCouncil = UCName;
-                    cicigTraining.TrainingHeadName = TrainingHeadName;
-                    cicigTraining.TrainingTitleName = TrainingTitleName;
-
-                    _context.Update(cicigTraining);
+                    techTraining.District = _context.Districts.Find(techTraining.District).DistrictName;
+                    _context.Update(techTraining);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CICIGTrainingsExists(cicigTraining.CICIGTrainingsId))
+                    if (!TechTrainingExists(techTraining.TechTrainingId))
                     {
                         return NotFound();
                     }
@@ -544,15 +476,15 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
                 }
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["SectionId"] = new SelectList(_context.Sections/*.Where(a => a.SectionId == 2)*/, "SectionId", "Name");                        
-            ViewData["TrainerId"] = new SelectList(_context.Trainers/*.Where(a => a.SectionId == 2)*/, "TrainerId", "TrainerName", cicigTraining.CICIGTrainingTrainers.Select(t => t.TrainerId));            
+            //ViewData["TrainingById"] = new SelectList(_context.TVTTrainedBy, "Name", "Name", techTraining.TVTTrainer);
+            ViewData["TrainingById"] = new SelectList(_context.Sections, "SectionId", "Name", techTraining.TrainingTitleId);
 
             ViewData["TrainingHeadId"] = new SelectList(_context.TrainingHeads, "TrainingHeadId", "TrainingHeadName", TrainingHeadId);
-            ViewData["TrainingTitleId"] = new SelectList(_context.TrainingTitles.Where(a => a.TrainingHeadId == TrainingHeadId), "TrainingTitleId", "TrainingTypeName", TrainingHeadId);
-            ViewData["VillageId"] = new SelectList(_context.Villages.Where(a => a.UnionCouncilId == cicigTraining.Village.UnionCouncilId), "VillageId", "Name", cicigTraining.VillageId);
-            ViewData["PhaseId"] = new SelectList(_context.Phases, "PhaseId", "Name", cicigTraining.Phase);
-            return View(cicigTraining);
+            ViewData["TitleId"] = new SelectList(_context.TrainingTitles.Where(a => a.TrainingHeadId == TrainingHeadId), "TitleId", "TrainingTypeName", TrainingHeadId);
+            ViewData["VillageId"] = new SelectList(_context.Villages.Where(a => a.UnionCouncilId == techTraining.Village.UnionCouncilId), "VillageId", "Name", techTraining.VillageId);
+            ViewData["TrainerId"] = new SelectList(_context.Trainers, "TrainerId", "TrainerName", techTraining.TrainingName);
+            ViewData["PhaseId"] = new SelectList(_context.Phases, "PhaseId", "Name", techTraining.Phase);
+            return View(techTraining);
         }
         public async Task<JsonResult> GetTehsils(int districtId)
         {
@@ -574,53 +506,47 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
             });
             return Json(UCList);
         }
-        // GET: CICIGTrainingss/Delete/5
+        // GET: TechTrainings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.CICIGTrainings == null)
+            if (id == null || _context.TechTrainings == null)
             {
                 return NotFound();
             }
 
-            var cicigTraining = await _context.CICIGTrainings
-                .Include(m => m.CICIGTrainingTrainers)
+            var techTraining = await _context.TechTrainings
                 .Include(m => m.TrainingTitle)
-                .FirstOrDefaultAsync(m => m.CICIGTrainingsId == id);
-            if (cicigTraining == null)
+                .FirstOrDefaultAsync(m => m.TechTrainingId == id);
+            if (techTraining == null)
             {
                 return NotFound();
             }
 
-            return View(cicigTraining);
+            return View(techTraining);
         }
 
-        // POST: CICIGTrainingss/Delete/5
+        // POST: TechTrainings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.CICIGTrainings == null)
+            if (_context.TechTrainings == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.CICIGTrainings'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.TechTraining'  is null.");
             }
-            var cicigTraining = await _context.CICIGTrainings.FindAsync(id);
-            if (cicigTraining != null)
+            var techTraining = await _context.TechTrainings.FindAsync(id);
+            if (techTraining != null)
             {
-
-
-                //_context.Database.ExecuteSqlRaw("delete [Training].[CITrainingMember] where CICIGTrainingsId=" + cicigTraining.CICIGTrainingsId);
-
-
-                _context.CICIGTrainings.Remove(cicigTraining);
+                _context.TechTrainings.Remove(techTraining);
                 await _context.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CICIGTrainingsExists(int id)
+        private bool TechTrainingExists(int id)
         {
-            return _context.CICIGTrainings.Any(e => e.CICIGTrainingsId == id);
+            return _context.TechTrainings.Any(e => e.TechTrainingId == id);
         }
     }
 }

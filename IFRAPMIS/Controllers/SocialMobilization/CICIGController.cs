@@ -91,9 +91,9 @@ namespace IFRAPMIS.Controllers.SocialMobilization
         }
         public async Task<JsonResult> AddBeneficiary(int BenVerifiedId, int CicigId, string DesignationId)
         {
-            var miscode = _context0.CICIGs.Where(c => c.CICIGId == CicigId).Select(c => c.Code).FirstOrDefault();
-
+            var miscode = _context0.CICIGs.Where(c => c.CICIGId == CicigId).Select(c => c.Code).FirstOrDefault();            
             var result = _context0.CIMembers.Count(a => a.BeneficiaryVerified.BeneficiaryVerifiedId == BenVerifiedId);
+
             if (BenVerifiedId == 0 || CicigId == 0)
             {
                 return Json(new { isValid = false, message = "Failed to Add BeneficiaryVerified!" });
@@ -107,7 +107,7 @@ namespace IFRAPMIS.Controllers.SocialMobilization
                 if (_context0.CIMembers.Count() == 0)
                 {
                     CIMember obj = new CIMember();
-                    obj.MemberCode = miscode + "- 1";
+                    obj.MemberCode = miscode + "-1";
                     obj.BeneficiaryVerifiedId = BenVerifiedId;
                     obj.CICIGId = CicigId;
                     //obj.CreatedOn = DateTime.Today.Date;
@@ -116,9 +116,41 @@ namespace IFRAPMIS.Controllers.SocialMobilization
                 }
                 else 
                 {
-                    string mcode = _context0.CIMembers.Last().MemberCode;
+                    //string mcode = _context0.CIMembers.Last().MemberCode;                    
+                    string mcode = _context0.CIMembers
+                                    .OrderByDescending(m => m.CIMemberId) // Replace MemberId with your unique identifier
+                                    .Select(m => m.MemberCode)
+                                    .FirstOrDefault() ?? string.Empty;
+
                     CIMember obj = new CIMember();
-                    obj.MemberCode = Convert.ToString(Convert.ToInt32(miscode.Split('-')[0].Trim())+1);
+                    //obj.MemberCode = Convert.ToString(Convert.ToInt32(miscode.Split('-')[0].Trim())+1);
+                    if (!string.IsNullOrEmpty(mcode) && mcode.Count(c => c == '-') >= 2)
+                    {
+                        var parts = mcode.Split('-');
+
+                        // Ensure the last part is numeric before converting and incrementing
+                        if (int.TryParse(parts[^1].Trim(), out int lastNumber))
+                        {
+                            // Increment the last number
+                            int incrementedNumber = lastNumber + 1;
+
+                            // Format the MemberCode, keeping the prefix and middle part intact
+                            obj.MemberCode = $"{parts[0]}-{parts[1]}-{incrementedNumber}";
+                        }
+                        else
+                        {
+                            // Handle the case where the last part is not a valid integer
+                            obj.MemberCode = "Invalid Code"; // Example fallback value
+                        }
+                    }
+                    else
+                    {
+                        // Handle the case where miscode is null, empty, or doesn't contain the expected format
+                        obj.MemberCode = "Invalid Code"; // Example fallback value
+                    }
+
+
+
                     obj.BeneficiaryVerifiedId = BenVerifiedId;
                     obj.CICIGId = CicigId;
                     //obj.CreatedOn = DateTime.Today.Date;

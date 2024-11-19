@@ -34,6 +34,7 @@ namespace DAL.Models.Domain.MasterSetup
 
         //Navigations 
         public ICollection<CICIGTrainingTrainer>? CICIGTrainingTrainers { get; set; }  // Navigation property for many-to-many relationship
+        public ICollection<TechTrainingTrainer>? TechTrainingTrainers { get; set; }  // Navigation property for many-to-many relationship
 
         //public int? CICIGTrainingsId { get; set; }
         //public CICIGTrainings? CICIGTrainings { get; set; }

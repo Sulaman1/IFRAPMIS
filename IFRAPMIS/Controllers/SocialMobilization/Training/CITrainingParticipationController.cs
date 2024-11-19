@@ -64,31 +64,34 @@ namespace IFRAPMIS.Controllers.SocialMobilization.Training
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> Create([Bind("CITrainingParticipationId, CICIGId, CICIGTrainingsId")] CITrainingParticipation ciTrainingParticipation, string DistrictId)
         {
             if (ModelState.IsValid)
             {
                 /**
                  * if CI is assigned to Training it cant be added to another training
+                 * Add all the beneficiaries of that CI to this training
                  */
-
-                _context.Add(ciTrainingParticipation);
-                await _context.SaveChangesAsync();
-                var MemberList = _context.CIMembers.Where(a => a.CICIGId == ciTrainingParticipation.CICIGId).ToList();
-                foreach (var member in MemberList)
+                var isCIExistInTraining = await _context.CITrainingParticipations.CountAsync(m => m.CICIGId == ciTrainingParticipation.CICIGId);
+                if (isCIExistInTraining == 0)
                 {
-                    var obj = new CITrainingMember();
-                    //obj.CreatedOn = DateTime.Now;
-                    obj.CICIGTrainingsId = ciTrainingParticipation.CICIGTrainingsId;
-                    obj.CIMemberId = member.CIMemberId;
-                    _context.CITrainingMembers.Add(obj);
-                }
-                if (MemberList.Count > 0)
-                {
+                    _context.Add(ciTrainingParticipation);
                     await _context.SaveChangesAsync();
-                }
-                return RedirectToAction(nameof(Details), "CICIGTraining", new { id = ciTrainingParticipation.CICIGTrainingsId });
+                    var MemberList = _context.CIMembers.Where(a => a.CICIGId == ciTrainingParticipation.CICIGId).ToList();
+                    foreach (var member in MemberList)
+                    {
+                        var obj = new CITrainingMember();
+                        //obj.CreatedOn = DateTime.Now;
+                        obj.CICIGTrainingsId = ciTrainingParticipation.CICIGTrainingsId;
+                        obj.CIMemberId = member.CIMemberId;
+                        _context.CITrainingMembers.Add(obj);
+                    }
+                    if (MemberList.Count > 0)
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+                    return RedirectToAction(nameof(Details), "CICIGTraining", new { id = ciTrainingParticipation.CICIGTrainingsId });
+                }               
             }
             ViewData["DistrictId"] = new SelectList(_context.Districts/*.Where(a => a.DistrictId > 1)*/, "DistrictName", "DistrictName"/*, DistrictId*/);
 
